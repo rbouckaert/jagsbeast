@@ -1,0 +1,8 @@
+# Eclipse ignores
+/.classpath
+/.project
+
+# OS X ignores
+.DS_Store
+
+/build
