@@ -33,232 +33,208 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 grammar Calculator;
 
 equation
-   : expression relop expression
+   : constant
    ;
 
+constant : FLOAT_LITERAL|DECIMAL_LITERAL|OCT_LITERAL|HEX_LITERAL|HEX_FLOAT_LITERAL|'true'|'false';
+
+expressionList
+    : expression (',' expression)*
+    ;
+
+methodCall
+    : IDENTIFIER '(' expressionList? ')'
+    ;
+
+distribution
+	: IDENTIFIER '~' IDENTIFIER '(' expressionList? ')'
+	;
+	
 expression
-   : multiplyingExpression ((PLUS | MINUS) multiplyingExpression)*
-   ;
-
-multiplyingExpression
-   : powExpression ((TIMES | DIV) powExpression)*
-   ;
-
-powExpression
-   : signedAtom (POW signedAtom)*
-   ;
-
-signedAtom
-   : PLUS signedAtom
-   | MINUS signedAtom
-   | func
-   | atom
-   ;
-
-atom
-   : scientific
-   | variable
-   | constant
-   | LPAREN expression RPAREN
-   ;
-
-scientific
-   : SCIENTIFIC_NUMBER
-   ;
-
-constant
-   : PI
-   | EULER
-   | I
-   ;
-
-variable
-   : VARIABLE
-   ;
-
-func
-   : funcname LPAREN expression (COMMA expression)* RPAREN
-   ;
-
-funcname
-   : COS
-   | TAN
-   | SIN
-   | ACOS
-   | ATAN
-   | ASIN
-   | LOG
-   | LN
-   | SQRT
-   ;
-
-relop
-   : EQ
-   | GT
-   | LT
-   ;
-
-
-COS
-   : 'cos'
-   ;
-
-
-SIN
-   : 'sin'
-   ;
-
-
-TAN
-   : 'tan'
-   ;
-
-
-ACOS
-   : 'acos'
-   ;
-
-
-ASIN
-   : 'asin'
-   ;
-
-
-ATAN
-   : 'atan'
-   ;
-
-
-LN
-   : 'ln'
-   ;
-
-
-LOG
-   : 'log'
-   ;
-
-
-SQRT
-   : 'sqrt'
-   ;
-
-
-LPAREN
-   : '('
-   ;
-
-
-RPAREN
-   : ')'
-   ;
-
-
-PLUS
-   : '+'
-   ;
-
-
-MINUS
-   : '-'
-   ;
-
-
-TIMES
-   : '*'
-   ;
-
-
-DIV
-   : '/'
-   ;
-
-
-GT
-   : '>'
-   ;
-
-
-LT
-   : '<'
-   ;
-
-
-EQ
-   : '='
-   ;
-
-
-COMMA
-   : ','
-   ;
-
-
-POINT
-   : '.'
-   ;
-
-
-POW
-   : '^'
-   ;
-
-
-PI
-   : 'pi'
-   ;
-
-
-EULER
-   : E2
-   ;
-
-
-I
-   : 'i'
-   ;
-
-
-VARIABLE
-   : VALID_ID_START VALID_ID_CHAR*
-   ;
-
-
-fragment VALID_ID_START
-   : ('a' .. 'z') | ('A' .. 'Z') | '_'
-   ;
-
-
-fragment VALID_ID_CHAR
-   : VALID_ID_START | ('0' .. '9')
-   ;
-
-
-SCIENTIFIC_NUMBER
-   : NUMBER ((E1 | E2) SIGN? NUMBER)?
-   ;
-
-
-fragment NUMBER
-   : ('0' .. '9') + ('.' ('0' .. '9') +)?
-   ;
-
-
-fragment E1
-   : 'E'
-   ;
-
-
-fragment E2
-   : 'e'
-   ;
-
-
-fragment SIGN
-   : ('+' | '-')
-   ;
-
-
-WS
-   : [ \r\n\t] + -> skip
-   ;
+    : '(' expression ')'
+    | expression bop='.'
+      ( IDENTIFIER
+      | methodCall
+      )
+    | expression '[' expression ']'
+    | methodCall
+    | expression postfix=('++' | '--')
+    | prefix=('+'|'-'|'++'|'--') expression
+    | prefix=('~'|'!') expression
+    | expression bop=('*'|'/'|'%') expression
+    | expression bop=('+'|'-') expression
+    | expression ('<' '<' | '>' '>' '>' | '>' '>') expression
+    | expression bop=('<=' | '>=' | '>' | '<') expression
+    | expression bop=('==' | '!=') expression
+    | expression bop='&' expression
+    | expression bop='^' expression
+    | expression bop='|' expression
+    | expression bop='&&' expression
+    | expression bop='||' expression
+    | expression bop='?' expression ':' expression
+    | <assoc=right> expression
+      bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+	  expression
+;
+
+   
+// JAGS tokens
+
+//C:                   'c';
+
+VAR:                 'var';
+DATA:                'data';
+MODEL:               'model';
+
+NAME:                Letter LetterOrDigit*;
+FUNC:                Letter LetterOrDigit*;
+SPECIAL:             Letter LetterOrDigit*;
+BADCHAR:             Letter LetterOrDigit*;
+
+IN:                  'in';
+ARROW:               '<-';
+FOR:                 'for';
+//GT GE LT LE EQ NE 
+//AND OR
+LENGTH:              'length';
+DIM:                 'dim';
+
+
+
+/*
+ * Copied from https://github.com/antlr/grammars-v4/blob/master/java/JavaLexer.g4
+ [The "BSD licence"]
+ Copyright (c) 2013 Terence Parr, Sam Harwell
+ Copyright (c) 2017 Ivan Kochurkin (upgrade to Java 8)
+ All rights reserved.
+
+*/
+
+// Literals
+
+DECIMAL_LITERAL:    ('0' | [1-9] (Digits? | '_'+ Digits)) [lL]?;
+HEX_LITERAL:        '0' [xX] [0-9a-fA-F] ([0-9a-fA-F_]* [0-9a-fA-F])? [lL]?;
+OCT_LITERAL:        '0' '_'* [0-7] ([0-7_]* [0-7])? [lL]?;
+BINARY_LITERAL:     '0' [bB] [01] ([01_]* [01])? [lL]?;
+                    
+FLOAT_LITERAL:      (Digits '.' Digits? | '.' Digits) ExponentPart? [fFdD]?
+             |       Digits (ExponentPart [fFdD]? | [fFdD])
+             ;
+
+HEX_FLOAT_LITERAL:  '0' [xX] (HexDigits '.'? | HexDigits? '.' HexDigits) [pP] [+-]? Digits [fFdD]?;
+
+BOOL_LITERAL:       'true'
+            |       'false'
+            ;
+
+CHAR_LITERAL:       '\'' (~['\\\r\n] | EscapeSequence) '\'';
+
+STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
+
+NULL_LITERAL:       'null';
+
+// Separators
+
+LPAREN:             '(';
+RPAREN:             ')';
+LBRACE:             '{';
+RBRACE:             '}';
+LBRACK:             '[';
+RBRACK:             ']';
+SEMI:               ';';
+COMMA:              ',';
+DOT:                '.';
+
+// Operators
+
+ASSIGN:             '=';
+GT:                 '>';
+LT:                 '<';
+BANG:               '!';
+TILDE:              '~';
+QUESTION:           '?';
+COLON:              ':';
+EQUAL:              '==';
+LE:                 '<=';
+GE:                 '>=';
+NOTEQUAL:           '!=';
+AND:                '&&';
+OR:                 '||';
+INC:                '++';
+DEC:                '--';
+ADD:                '+';
+SUB:                '-';
+MUL:                '*';
+DIV:                '/';
+BITAND:             '&';
+BITOR:              '|';
+CARET:              '^';
+MOD:                '%';
+
+ADD_ASSIGN:         '+=';
+SUB_ASSIGN:         '-=';
+MUL_ASSIGN:         '*=';
+DIV_ASSIGN:         '/=';
+AND_ASSIGN:         '&=';
+OR_ASSIGN:          '|=';
+XOR_ASSIGN:         '^=';
+MOD_ASSIGN:         '%=';
+LSHIFT_ASSIGN:      '<<=';
+RSHIFT_ASSIGN:      '>>=';
+URSHIFT_ASSIGN:     '>>>=';
+
+// Java 8 tokens
+
+//ARROW:              '->';
+COLONCOLON:         '::';
+
+// Additional symbols not defined in the lexical specification
+
+AT:                 '@';
+ELLIPSIS:           '...';
+
+// Whitespace and comments
+
+WS:                 [ \t\r\n\u000C]+ -> channel(HIDDEN);
+COMMENT:            '/*' .*? '*/'    -> channel(HIDDEN);
+LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
+
+// Identifiers
+
+IDENTIFIER:         Letter LetterOrDigit*;
+
+// Fragment rules
+
+fragment ExponentPart
+    : [eE] [+-]? Digits
+    ;
+
+fragment EscapeSequence
+    : '\\' [btnfr"'\\]
+    | '\\' ([0-3]? [0-7])? [0-7]
+    | '\\' 'u'+ HexDigit HexDigit HexDigit HexDigit
+    ;
+
+fragment HexDigits
+    : HexDigit ((HexDigit | '_')* HexDigit)?
+    ;
+
+fragment HexDigit
+    : [0-9a-fA-F]
+    ;
+
+fragment Digits
+    : [0-9] ([0-9_]* [0-9])?
+    ;
+
+fragment LetterOrDigit
+    : Letter
+    | [0-9]
+    ;
+
+fragment Letter
+    : [a-zA-Z$_] // these are the "java letters" below 0x7F
+    | ~[\u0000-\u007F\uD800-\uDBFF] // covers all characters above 0x7F which are not a surrogate
+    | [\uD800-\uDBFF] [\uDC00-\uDFFF] // covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
+    ;
+   

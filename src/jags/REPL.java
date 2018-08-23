@@ -44,8 +44,8 @@ public class REPL {
 			save(cmd);
 		} else {
 			try {
-				CalculatorListenerImpl parser = new CalculatorListenerImpl();
-				parser.parse(cmd + ";");
+				CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
+				parser.parse(cmd);
 			} catch (CalculatorParsingException e) {
 				Log.info(e.getMessage());
 			} catch (Exception e) {
