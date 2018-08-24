@@ -1,6 +1,7 @@
 package jags;
 
 
+
 import java.util.*;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -13,11 +14,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import beast.app.beauti.BeautiDoc;
 import beast.core.BEASTObject;
 import beast.core.Function;
-import beast.core.util.Log;
+import beast.math.distributions.ParametricDistribution;
 import jags.CalculatorParser.*;
 import jags.nodes.*;
 import jags.functions.*;
 import jags.operators.*;
+import jags.distributions.*;
 
 
 public class CalculatorListenerImpl extends CalculatorBaseListener {
@@ -30,12 +32,29 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		BEASTObject expression;
 		List<Distribution> distributions = new ArrayList<>();
 		Set<String> bivarOperators;
+		Set<String> univarDistirbutions;
+		Set<String> bivarDistirbutions;
+		Set<String> trivarDistirbutions;
 		
 		public CalculatorASTVisitor() {
 			bivarOperators = new HashSet<>();
 			for (String s : new String[]{"+","-","*","/","**","&&","||","<=","<",">=",">","!=","==","&","|","<<",">>",">>>"}) {
 				bivarOperators.add(s);
 			}
+			
+			univarDistirbutions = new HashSet<>();
+			bivarDistirbutions = new HashSet<>();
+			trivarDistirbutions = new HashSet<>();
+			for (String s : new String[]{"dchisq" ,"dexp" ,"dpois" ,"dgeom","ddirich"}){
+				univarDistirbutions.add(s);
+			}
+			for (String s : new String[]{"dnorm" ,"dlnorm" ,"dbeta" ,"dnchisq" ,"dnt" ,"dbinom" ,"dnbinom" ,"dnbinom_mu" ,"dcauchy" ,"df" ,"dgamma" ,"dunif" ,"dweibull" ,"dlogis" ,"dsignrank"}){
+				bivarDistirbutions.add(s);
+			}
+			for (String s : new String[]{"dnbeta" ,"dnf" ,"dhyper" ,"dwilcox"}){
+				trivarDistirbutions.add(s);			
+			}
+
 		}
 		
 		@Override
@@ -112,9 +131,73 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				} else if (s.equals("~")) {
 					Function f1 = (Function) visit(ctx.getChild(2));
 					transform = new Complement(f1);
+				} else if (s.equals("[")) {
+					Function var = (Function) visit(ctx.getChild(0));
+					Function f1 = (Function) visit(ctx.getChild(2));
+					transform = new Index(var, f1);
 				}
 			}
 			return transform; 
+		}
+		
+		@Override
+		public BEASTObject visitDistribution(DistributionContext ctx) {
+			super.visitDistribution(ctx);
+			String name = ctx.getChild(0).getText();
+			ParametricDistribution distr = null;
+			if (univarDistirbutions.contains(name)) {
+				Function f1 = (Function) visit(ctx.getChild(2));
+				switch (name) {
+				//case "dchisq": distr = new Chisq(f1); break;
+				case "dexp": distr = new Exponential(f1); break;
+				case "ddirich": distr = new Dirichlet(f1); break;
+				//case "dpois": distr = new Pois(f1); break;
+				//case "dgeom": distr = new Geom(f1); break;
+				}
+				
+			} else if (bivarDistirbutions.contains(name)) {
+				Function f1 = (Function) visit(ctx.getChild(2));
+				Function f2 = (Function) visit(ctx.getChild(3));
+				switch (name) {
+				case "dnorm": distr = new Normal(f1,f2); break;
+				case "dlnorm": distr = new LogNormal(f1,f2); break;
+				case "dbeta": distr = new Beta(f1,f2); break;
+				//case "dnchisq": distr = new Nchisq(f1,f2); break;
+				//case "dnt": distr = new Nt(f1,f2); break;
+				//case "dbinom": distr = new Binom(f1,f2); break;
+				//case "dnbinom": distr = new Nbinom(f1,f2); break;
+				//case "dnbinom_mu": distr = new Nbinom_mu(f1,f2); break;
+				//case "dcauchy": distr = new Cauchy(f1,f2); break;
+				//case "df": distr = new F(f1,f2); break;
+				//case "dgamma": distr = new Gamma(f1,f2); break;
+				//case "dunif": distr = new Unif(f1,f2); break;
+				//case "dweibull": distr = new Weibull(f1,f2); break;
+				//case "dlogis": distr = new Logis(f1,f2); break;
+				//case "dsignrank": distr = new Signrank(f1,f2); break;
+				}
+			} else if (trivarDistirbutions.contains(name)) {
+				Function f1 = (Function) visit(ctx.getChild(2));
+				Function f2 = (Function) visit(ctx.getChild(3));
+				Function f3 = (Function) visit(ctx.getChild(4));
+				
+				switch (name) {				
+					//case "dnbeta": distr = new Nbeta(f1,f2,f3); break;
+					//case "dnf": distr = new Nf(f1,f2,f3); break;
+					//case "dhyper": distr = new Hyper(f1,f2,f3); break;
+					//case "dwilcox": distr = new Wilcox(f1,f2,f3); break;
+				}
+				
+			} else {
+				throw new IllegalArgumentException("Unknown distributions. Choose one of " +
+						Arrays.toString(univarDistirbutions.toArray()) + 
+						Arrays.toString(bivarDistirbutions.toArray()) + 
+						Arrays.toString(trivarDistirbutions.toArray()) 
+						);
+			}
+			if (distr == null) {
+				throw new IllegalArgumentException("Distributions not implemented yet");
+			}
+			return distr; 
 		}
 		
 		
