@@ -10,7 +10,7 @@ import beast.core.Param;
 
 @Description("Constant in graphical model")
 public class Constant extends BEASTObject implements Function {
-	double [] value;
+	double [] values;
 
 	
 	public static Constant createConstant(double [] value) {
@@ -20,7 +20,7 @@ public class Constant extends BEASTObject implements Function {
 	}
 	
 	public Constant(@Param(name="value",description="one or more dimensional value") double [] value) {
-		this.value = value;
+		this.values = value;
 	}
 	
 	@Override
@@ -29,35 +29,35 @@ public class Constant extends BEASTObject implements Function {
 
 	@Override
 	public int getDimension() {
-		if (value == null) {
+		if (values == null) {
 			return 0;
 		}
-		return value.length;
+		return values.length;
 	}
 
 	@Override
 	public double getArrayValue() {
-		if (value == null) {
+		if (values == null) {
 			return Double.NaN;
 		}
-		return value[0];
+		return values[0];
 	}
 
 	@Override
 	public double getArrayValue(int dim) {
-		if (value == null) {
+		if (values == null) {
 			return Double.NaN;
 		}
-		return value[dim];
+		return values[dim];
 	}
 
 	
 	@Override
 	public String toString() {		
-		if (value.length == 1) {
-			return value[0] + "";
+		if (values.length == 1) {
+			return values[0] + "";
 		}
-		return Arrays.toString(value);
+		return Arrays.toString(values);
 	}
 	
 }

@@ -1,61 +1,93 @@
-/*
-BSD License
-
-Copyright (c) 2013, Tom Everett
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. Neither the name of Tom Everett nor the names of its contributors
-   may be used to endorse or promote products derived from this software
-   without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
 grammar Calculator;
 
-equation
-   : constant
-   ;
+
+// grammar adapted from parser.yy in JAGS-4.3.0 source code
+
+input:   /* empty */
+| model_stmt
+| var_stmt model_stmt
+| data_stmt model_stmt
+| var_stmt data_stmt model_stmt
+;
+
+var_stmt: VAR dec_list 
+| VAR dec_list ';' 
+;
+
+dec_list: node_dec 
+| dec_list ',' node_dec 
+;
+
+node_dec: NAME 
+| NAME '[' dim_list ']' 
+;
+
+dim_list: expression 
+| dim_list ',' expression 
+;
+
+data_stmt: DATA '{' relation_list '}' 
+;
+
+model_stmt: MODEL '{' relation_list '}' 
+;
+ 
+relations: '{' relation_list '}' 
+;
+
+relation_list:	relation 
+| relation_list relation 
+;
+
+relation: stoch_relation
+| determ_relation 
+| for_loop
+| stoch_relation ';'
+| determ_relation ';'
+;
+
+for_loop: counter relations 
+;
+
+counter: FOR '(' NAME IN range_element ')' 
+;
+
+assignment: ARROW 
+| '='
+;
+
+determ_relation: NAME assignment expression 
+| FUNC '(' NAME ')' assignment expression 
+;
+
+stoch_relation:	NAME '~' distribution 
+| NAME '~' distribution truncated 
+| NAME '~' distribution interval 
+;
+
+truncated: 'T' '(' expression ','  expression ')' ;
+interval: 'I' '(' expression ','  expression ')' ;
+
+
+range_element: 
+| expression 
+;
 
 constant : FLOAT_LITERAL|DECIMAL_LITERAL|OCT_LITERAL|HEX_LITERAL|HEX_FLOAT_LITERAL|'true'|'false';
 
-expressionList
+expression_list
     : expression (',' expression)*
     ;
 
 methodCall
-    : IDENTIFIER '(' expressionList? ')'
+    : NAME '(' expression_list? ')'
     ;
 
-distribution
-	: IDENTIFIER '~' IDENTIFIER '(' expressionList? ')'
-	;
+distribution: FUNC '(' expression_list ')';
 	
 expression
-    : '(' expression ')'
-    | expression bop='.'
-      ( IDENTIFIER
-      | methodCall
-      )
+    : constant
+    | '(' expression ')'
     | expression '[' expression ']'
     | methodCall
     | expression postfix=('++' | '--')
@@ -71,10 +103,10 @@ expression
     | expression bop='|' expression
     | expression bop='&&' expression
     | expression bop='||' expression
-    | expression bop='?' expression ':' expression
-    | <assoc=right> expression
-      bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
-	  expression
+//    | expression bop='?' expression ':' expression
+//    | <assoc=right> expression
+//      bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
+//	  expression
 ;
 
    
@@ -102,7 +134,7 @@ DIM:                 'dim';
 
 
 /*
- * Copied from https://github.com/antlr/grammars-v4/blob/master/java/JavaLexer.g4
+ * Adapted from https://github.com/antlr/grammars-v4/blob/master/java/JavaLexer.g4
  [The "BSD licence"]
  Copyright (c) 2013 Terence Parr, Sam Harwell
  Copyright (c) 2017 Ivan Kochurkin (upgrade to Java 8)
@@ -201,7 +233,7 @@ LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
 
 // Identifiers
 
-IDENTIFIER:         Letter LetterOrDigit*;
+//NAME:         Letter LetterOrDigit*;
 
 // Fragment rules
 

@@ -6,9 +6,13 @@ import beast.core.Function;
 
 @Description("Functional transformation in graphical model")
 public abstract class Transform extends CalculationNode implements Function {
-	double [] value;
-	double [] storedvalue;
-	boolean isUpToDate;
+	protected double [] values;
+	protected double [] storedvalues;
+	private boolean isUpToDate;
+	
+	public Transform() {
+		isUpToDate = false;
+	}
 	
 	@Override
 	public void initAndValidate() {
@@ -29,10 +33,10 @@ public abstract class Transform extends CalculationNode implements Function {
 		if (!isUpToDate) {
 			calc();
 		}
-		if (value == null) {
+		if (values == null) {
 			return 0;
 		}
-		return value.length;
+		return values.length;
 	}
 
 	@Override
@@ -40,10 +44,10 @@ public abstract class Transform extends CalculationNode implements Function {
 		if (!isUpToDate) {
 			calc();
 		}
-		if (value == null) {
+		if (values == null) {
 			return Double.NaN;
 		}
-		return value[0];
+		return values[0];
 	}
 
 	@Override
@@ -51,27 +55,27 @@ public abstract class Transform extends CalculationNode implements Function {
 		if (!isUpToDate) {
 			calc();
 		}
-		if (value == null) {
+		if (values == null) {
 			return Double.NaN;
 		}
-		return value[dim];
+		return values[dim];
 	}
 
 	// CalculationNode implementation
 	@Override
 	protected void store() {
-		if (storedvalue == null || storedvalue.length != value.length) {
-			storedvalue = new double[value.length];
+		if (storedvalues == null || storedvalues.length != values.length) {
+			storedvalues = new double[values.length];
 		}
-		System.arraycopy(value, 0, storedvalue, 0, value.length);
+		System.arraycopy(values, 0, storedvalues, 0, values.length);
 		super.store();
 	}
 	
 	@Override
 	protected void restore() {
-		double [] tmp = value;
-		value = storedvalue;
-		storedvalue = tmp;
+		double [] tmp = values;
+		values = storedvalues;
+		storedvalues = tmp;
 		super.restore();
 	}
 	

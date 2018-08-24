@@ -1,6 +1,8 @@
 package jags;
 
 
+import java.util.*;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -10,9 +12,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import beast.app.beauti.BeautiDoc;
 import beast.core.BEASTObject;
+import beast.core.Function;
 import beast.core.util.Log;
 import jags.CalculatorParser.*;
-import jags.nodes.Constant;
+import jags.nodes.*;
+import jags.functions.*;
+import jags.operators.*;
 
 
 public class CalculatorListenerImpl extends CalculatorBaseListener {
@@ -22,12 +27,21 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		this.doc = doc;
 	}
 	public class CalculatorASTVisitor extends CalculatorBaseVisitor<BEASTObject> {
+		BEASTObject expression;
+		List<Distribution> distributions = new ArrayList<>();
+		Set<String> bivarOperators;
 		
+		public CalculatorASTVisitor() {
+			bivarOperators = new HashSet<>();
+			for (String s : new String[]{"+","-","*","/","**","&&","||","<=","<",">=",">","!=","==","&","|","<<",">>",">>>"}) {
+				bivarOperators.add(s);
+			}
+		}
 		
 		@Override
-		public BEASTObject visitEquation(EquationContext ctx) {
+		public BEASTObject visitInput(InputContext ctx) {
 			// TODO Auto-generated method stub
-			return super.visitEquation(ctx);
+			return super.visitInput(ctx);
 		}
 		
 		@Override
@@ -44,10 +58,118 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				}
 			}
 			Constant c = Constant.createConstant(new double[]{d});
-			//System.out.println("value = " + text + " = " + d);
+			System.out.println("value = " + text + " = " + d);
+			expression = c;
 			return c;
 		}
 	
+		@Override
+		public BEASTObject visitDeterm_relation(Determ_relationContext ctx) {
+			String id = ctx.children.get(0).getText();
+			super.visitDeterm_relation(ctx);
+			Variable c = new Variable(id, (Function) expression);
+			c.setID(id);
+			return c;
+		}
+		
+		@Override
+		public BEASTObject visitExpression(ExpressionContext ctx) {
+			super.visitExpression(ctx);
+			Transform transform = null;
+			if (ctx.getChildCount() >= 2) {
+				String s = ctx.getChild(1).getText();
+				if (bivarOperators.contains(s)) {
+					Function f1 = (Function) visit(ctx.getChild(2));
+					Function f2 = (Function) visit(ctx.getChild(3));
+
+
+					switch (s) {
+					case "+": transform = new Plus(f1,f2); break;
+					case "-": transform = new Minus(f1,f2); break;
+					case "*": transform = new Times(f1,f2); break;
+					case "/": transform = new Div(f1,f2); break;
+					case "**": transform = new Pow(f1,f2); break;
+					case "&&": transform = new And(f1,f2); break;
+					case "||": transform = new Or(f1,f2); break;
+					case "<=": transform = new LE(f1,f2); break;
+					case "<": transform = new LT(f1,f2); break;
+					case ">=": transform = new GE(f1,f2); break;
+					case ">": transform = new GT(f1,f2); break;
+					case "!=": transform = new Ne(f1,f2); break;
+					case "==": transform = new Eq(f1,f2); break;
+					case "%": transform = new Modulo(f1,f2); break;
+
+					case "&": transform = new BitwiseAnd(f1,f2); break;
+					case "|": transform = new BitwiseOr(f1,f2); break;
+					case "^": transform = new BitwiseXOr(f1,f2); break;
+					case "<<": transform = new LeftShift(f1,f2); break;
+					case ">>": transform = new RightShift(f1,f2); break;
+					case ">>>": transform = new ZeroFillRightShift(f1,f2); break;
+					}
+				} else if (s.equals("!")) {
+					Function f1 = (Function) visit(ctx.getChild(2));
+					transform = new Not(f1);
+				} else if (s.equals("~")) {
+					Function f1 = (Function) visit(ctx.getChild(2));
+					transform = new Complement(f1);
+				}
+			}
+			return transform; 
+		}
+		
+		
+		@Override
+		public BEASTObject visitMethodCall(MethodCallContext ctx) {
+			super.visitMethodCall(ctx);
+			Transform transform;
+			String functionName = ctx.children.get(0).getText();
+			
+			Function f1 = null, f2 = null;
+			switch (ctx.children.size()) {
+				case 4 :  f1 = (Function) visit(ctx.getChild(3));
+				case 3 :  f1 = (Function) visit(ctx.getChild(2));
+			}
+			
+			switch (functionName) {
+				// Univariable functions
+				case "cos": transform = new Cos(f1);break;
+				case "sin": transform = new Sin(f1);break;
+				case "tan": transform = new Tan(f1);break;
+				case "abs": transform = new Abs(f1);break;
+				case "acos": transform = new Acos(f1);break;
+				case "asin": transform = new Asin(f1);break;
+				case "atan": transform = new Atan(f1);break;
+				case "sinh": transform = new Sinh(f1);break;
+				case "cosh": transform = new Cosh(f1);break;
+				case "tanh": transform = new Tanh(f1);break;
+
+				case "cbrt": transform = new Cbrt(f1);break;
+				case "sqrt": transform = new Sqrt(f1);break;
+				case "exp": transform = new Exp(f1);break;
+				case "expm1": transform = new Expm1(f1);break;
+				case "log": transform = new jags.functions.Log(f1);break;
+				case "log10": transform = new Log10(f1);break;
+				case "log1p": transform = new Log1p(f1);break;
+				case "ceil": transform = new Ceil(f1);break;
+				case "floor": transform = new Floor(f1);break;
+				case "round": transform = new Round(f1);break;
+				case "signum": transform = new Signum(f1);break;
+				
+				// Bivariable functions
+				case "hypot": transform = new Hypot(f1, f2);break;
+				case "atan2": transform = new Atan2(f1, f2);break;
+				case "min": transform = new Min(f1, f2);break;
+				case "max": transform = new Max(f1, f2);break;
+				case "pow": transform = new Pow(f1, f2);break;
+				
+				default:
+					throw new IllegalArgumentException("Unknown function : " + functionName);
+			}
+			
+			expression = transform;
+			return transform;
+		}
+		
 	}
 
 	public void parse(String CASentence) {
@@ -75,7 +197,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
 	 
-        ParseTree parseTree = parser.equation();
+        ParseTree parseTree = parser.input();
 //	    // Specify our entry point
 //	    CasentenceContext CASentenceContext = parser.casentence();
 //	 
