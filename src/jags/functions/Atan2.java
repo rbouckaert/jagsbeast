@@ -9,10 +9,8 @@ public class Atan2 extends BivariableFunction {
 	}
 
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = Math.atan2(x.getArrayValue(i), y.getArrayValue(i)); 
-		}
+	protected double doTransform(double x, double y) {
+		return Math.atan2(x, y);
 	}
-
+	
 }

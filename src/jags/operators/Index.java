@@ -16,8 +16,17 @@ public class Index extends BivariableFunction {
 		values[0] = x.getArrayValue((int) y.getArrayValue());
 	}
 	
+	
+	
 	@Override
-	protected void dimensionCheck() {
+	protected int dimensionCheck() {
+		mode = Mode.mode11;
+		return 1;
+	}
+
+	@Override
+	protected double doTransform(double x, double y) {
+		throw new RuntimeException("Do not call doTransform(x,y), call doTransform() instead");
 	}
 
 }

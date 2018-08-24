@@ -10,10 +10,7 @@ public class LE extends BivariableFunction {
 	}
 
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = (x.getArrayValue(i) <= y.getArrayValue(i)) ? 1 : 0; 
-		}
+	protected double doTransform(double x, double y) {
+		return (x <= y) ? 1 : 0;
 	}
-
 }

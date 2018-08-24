@@ -45,7 +45,7 @@ public class REPL {
 		} else {
 			try {
 				CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
-				parser.parse(cmd);
+				parser.parse("model{" + cmd + "}");
 			} catch (CalculatorParsingException e) {
 				Log.info(e.getMessage());
 			} catch (Exception e) {

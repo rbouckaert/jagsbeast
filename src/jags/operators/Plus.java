@@ -10,10 +10,7 @@ public class Plus extends BivariableFunction {
 	}
 
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = x.getArrayValue(i) + y.getArrayValue(i); 
-		}
+	protected double doTransform(double x, double y) {
+		return x + y;
 	}
-
 }

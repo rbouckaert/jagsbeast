@@ -87,6 +87,7 @@ distribution: FUNC '(' expression_list ')';
 	
 expression
     : constant
+    | NAME
     | '(' expression ')'
     | expression '[' expression ']'
     | methodCall

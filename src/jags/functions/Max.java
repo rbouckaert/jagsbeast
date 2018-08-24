@@ -9,10 +9,7 @@ public class Max extends BivariableFunction {
 	}
 
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = Math.max(x.getArrayValue(i), y.getArrayValue(i)); 
-		}
+	protected  double doTransform(double x, double y) {
+		return Math.max(x, y);
 	}
-
 }

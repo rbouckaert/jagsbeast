@@ -7,12 +7,10 @@ public class Min extends BivariableFunction {
 	public Min(Function x, Function y) {
 		super(x, y);
 	}
-
+	
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = Math.min(x.getArrayValue(i), y.getArrayValue(i)); 
-		}
+	protected double doTransform(double x, double y) {
+		return Math.min(x, y);
 	}
 
 }

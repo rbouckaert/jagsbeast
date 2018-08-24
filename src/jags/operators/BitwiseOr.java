@@ -10,10 +10,7 @@ public class BitwiseOr extends BivariableFunction {
 	}
 
 	@Override
-	protected void doTransform() {
-		for (int i = 0; i < x.getDimension(); i++) {
-			values[i] = ((int)x.getArrayValue(i) | (int)y.getArrayValue(i));  
-		}
+	protected double doTransform(double x, double y) {
+		return ((int)x | (int)y);
 	}
-
 }

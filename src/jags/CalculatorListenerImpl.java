@@ -31,6 +31,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	public class CalculatorASTVisitor extends CalculatorBaseVisitor<BEASTObject> {
 		BEASTObject expression;
 		List<Distribution> distributions = new ArrayList<>();
+		
 		Set<String> bivarOperators;
 		Set<String> univarDistirbutions;
 		Set<String> bivarDistirbutions;
@@ -85,21 +86,43 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		@Override
 		public BEASTObject visitDeterm_relation(Determ_relationContext ctx) {
 			String id = ctx.children.get(0).getText();
-			super.visitDeterm_relation(ctx);
-			Variable c = new Variable(id, (Function) expression);
+			Function f = (Function) visit(ctx.getChild(2));
+			Variable c = new Variable(id, f);
 			c.setID(id);
+			doc.registerPlugin(c);
+			System.out.println(c);			
 			return c;
 		}
 		
 		@Override
+		public BEASTObject visitStoch_relation(Stoch_relationContext ctx) {
+			ParametricDistribution distr = (ParametricDistribution) visit(ctx.getChild(2));
+			Function f = (Function) visit(ctx.getChild(0));
+			
+			Distribution distribution = new Distribution(distr, f);
+			
+			distributions.add(distribution);
+			
+			return distribution;
+		}
+		
+		
+		
+		@Override
 		public BEASTObject visitExpression(ExpressionContext ctx) {
-			super.visitExpression(ctx);
+			if (ctx.getChildCount() == 1) {
+				String key = ctx.getChild(0).getText();
+				if (doc.pluginmap.containsKey(key)) {
+					return (BEASTObject) doc.pluginmap.get(key);
+				}
+				return visit(ctx.getChild(0));
+			}
 			Transform transform = null;
 			if (ctx.getChildCount() >= 2) {
 				String s = ctx.getChild(1).getText();
 				if (bivarOperators.contains(s)) {
-					Function f1 = (Function) visit(ctx.getChild(2));
-					Function f2 = (Function) visit(ctx.getChild(3));
+					Function f1 = (Function) visit(ctx.getChild(0));
+					Function f2 = (Function) visit(ctx.getChild(2));
 
 
 					switch (s) {
