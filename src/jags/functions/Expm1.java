@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Expm1 extends UnivariableFunction {
 
-	public Expm1(Function x) {
+	public Expm1(JFunction x) {
 		super(x);
 	}
 

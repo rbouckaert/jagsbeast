@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Ceil extends UnivariableFunction {
 
-	public Ceil(Function x) {
+	public Ceil(JFunction x) {
 		super(x);
 	}
 

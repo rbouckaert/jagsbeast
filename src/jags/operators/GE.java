@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class GE extends BivariableFunction {
 
-	public GE(Function x, Function y) {
+	public GE(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

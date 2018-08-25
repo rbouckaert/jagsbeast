@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Round extends UnivariableFunction {
 
-	public Round(Function x) {
+	public Round(JFunction x) {
 		super(x);
 	}
 

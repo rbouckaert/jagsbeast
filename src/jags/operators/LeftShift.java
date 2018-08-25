@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class LeftShift extends BivariableFunction {
 
-	public LeftShift(Function x, Function y) {
+	public LeftShift(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

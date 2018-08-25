@@ -6,7 +6,7 @@ import org.apache.commons.math.distribution.Distribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Input;
 import beast.core.Param;
 import beast.core.parameter.RealParameter;
@@ -22,10 +22,10 @@ public class LogNormal extends JAGSDistribution {
 //    final public Input<RealParameter> SParameterInput = new Input<>("S", "S parameter of lognormal distribution. Equal to the standard deviation of the log-transformed distribution.");
 //    final public Input<Boolean> hasMeanInRealSpaceInput = new Input<>("meanInRealSpace", "Whether the M parameter is in real space, or in log-transformed space. Default false = log-transformed.", false);
 
-    Function M, S;
+    JFunction M, S;
     
-    public LogNormal(@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") Function M,
-    		@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") Function S) {
+    public LogNormal(@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction M,
+    		@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction S) {
     	this.M = M;
     	this.S = S;
     }

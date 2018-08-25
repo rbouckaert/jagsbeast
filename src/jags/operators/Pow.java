@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class Pow extends BivariableFunction {
 
-	public Pow(Function x, Function y) {
+	public Pow(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

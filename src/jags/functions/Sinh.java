@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Sinh extends UnivariableFunction {
 
-	public Sinh(Function x) {
+	public Sinh(JFunction x) {
 		super(x);
 	}
 

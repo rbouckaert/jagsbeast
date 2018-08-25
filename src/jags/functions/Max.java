@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Max extends BivariableFunction {
 
-	public Max(Function x, Function y) {
+	public Max(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

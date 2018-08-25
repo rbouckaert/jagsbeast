@@ -4,7 +4,7 @@ import org.apache.commons.math.distribution.BetaDistributionImpl;
 import org.apache.commons.math.distribution.ContinuousDistribution;
 
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Input;
 import beast.core.Param;
 import beast.core.parameter.RealParameter;
@@ -17,13 +17,13 @@ import beast.core.parameter.RealParameter;
         "separate independent component.")
 public class Beta extends JAGSDistribution {
 
-	Function alpha, beta;
+	JFunction alpha, beta;
 
     static org.apache.commons.math.distribution.BetaDistribution m_dist = new BetaDistributionImpl(1, 1);
 
     
-    public Beta(@Param(name="alpha", description="first shape parameter, defaults to 1") Function alpha,
-    		@Param(name="beat", description="the other shape parameter, defaults to 1") Function beta
+    public Beta(@Param(name="alpha", description="first shape parameter, defaults to 1") JFunction alpha,
+    		@Param(name="beat", description="the other shape parameter, defaults to 1") JFunction beta
     		) {
     	this.alpha = alpha;
     	this.beta = beta;

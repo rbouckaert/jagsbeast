@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Atan extends UnivariableFunction {
 
-	public Atan(Function x) {
+	public Atan(JFunction x) {
 		super(x);
 	}
 

@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class Times extends BivariableFunction {
 
-	public Times(Function x, Function y) {
+	public Times(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

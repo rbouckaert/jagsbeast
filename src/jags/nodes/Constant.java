@@ -4,12 +4,12 @@ import java.util.*;
 
 import beast.core.BEASTObject;
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Param;
 
 
 @Description("Constant in graphical model")
-public class Constant extends BEASTObject implements Function {
+public class Constant extends BEASTObject implements JFunction {
 	double [] values;
 
 	
@@ -58,6 +58,19 @@ public class Constant extends BEASTObject implements Function {
 			return values[0] + "";
 		}
 		return Arrays.toString(values);
+	}
+
+	@Override
+	public int getDimensionCount() {
+		return 1;
+	}
+
+	@Override
+	public int getDimension(int dim) {
+		if (dim > 0) {
+			return 0;
+		}
+		return getDimension();
 	}
 	
 }

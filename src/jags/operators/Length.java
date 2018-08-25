@@ -1,12 +1,12 @@
 package jags.operators;
 
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.UnivariableFunction;
 
 public class Length extends UnivariableFunction {
 
-	public Length(Function x) {
+	public Length(JFunction x) {
 		super(x);
 		values = new double[1];
 		storedvalues = new double[1];

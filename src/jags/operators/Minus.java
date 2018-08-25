@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class Minus extends BivariableFunction {
 
-	public Minus(Function x, Function y) {
+	public Minus(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Min extends BivariableFunction {
 
-	public Min(Function x, Function y) {
+	public Min(JFunction x, JFunction y) {
 		super(x, y);
 	}
 	

@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Floor extends UnivariableFunction {
 
-	public Floor(Function x) {
+	public Floor(JFunction x) {
 		super(x);
 	}
 

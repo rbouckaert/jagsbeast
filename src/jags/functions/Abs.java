@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Abs extends UnivariableFunction {
 
-	public Abs(Function x) {
+	public Abs(JFunction x) {
 		super(x);
 	}
 

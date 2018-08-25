@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Hypot extends BivariableFunction {
 
-	public Hypot(Function x, Function y) {
+	public Hypot(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

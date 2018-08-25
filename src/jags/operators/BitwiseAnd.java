@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class BitwiseAnd extends BivariableFunction {
 
-	public BitwiseAnd(Function x, Function y) {
+	public BitwiseAnd(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

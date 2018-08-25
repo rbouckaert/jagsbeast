@@ -1,12 +1,12 @@
 package jags.operators;
 
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.UnivariableFunction;
 
 public class Not extends UnivariableFunction {
 
-	public Not(Function x) {
+	public Not(JFunction x) {
 		super(x);
 	}
 

@@ -2,10 +2,10 @@ package jags.nodes;
 
 import beast.core.CalculationNode;
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 @Description("Functional transformation in graphical model")
-public abstract class Transform extends CalculationNode implements Function {
+public abstract class Transform extends CalculationNode implements JFunction {
 	protected double [] values;
 	protected double [] storedvalues;
 	private boolean isUpToDate;
@@ -27,7 +27,7 @@ public abstract class Transform extends CalculationNode implements Function {
 		isUpToDate = true;
 	}
 	
-	// Function implementation
+	// JFunction implementation
 	@Override
 	public int getDimension() {
 		if (!isUpToDate) {
@@ -85,4 +85,16 @@ public abstract class Transform extends CalculationNode implements Function {
 		return true;
 	}
 
+	@Override
+	public int getDimensionCount() {
+		return 1;
+	}
+
+	@Override
+	public int getDimension(int dim) {
+		if (dim > 0) {
+			return 0;
+		}
+		return getDimension();
+	}
 }

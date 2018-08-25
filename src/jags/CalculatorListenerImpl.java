@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import beast.app.beauti.BeautiDoc;
 import beast.core.BEASTObject;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.math.distributions.ParametricDistribution;
 import jags.CalculatorParser.*;
 import jags.nodes.*;
@@ -86,7 +86,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		@Override
 		public Object visitDeterm_relation(Determ_relationContext ctx) {
 			String id = ctx.children.get(0).getText();
-			Function f = (Function) visit(ctx.getChild(2));
+			JFunction f = (JFunction) visit(ctx.getChild(2));
 			Variable c = new Variable(id, f);
 			c.setID(id);
 			doc.registerPlugin(c);
@@ -97,7 +97,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		@Override
 		public Object visitStoch_relation(Stoch_relationContext ctx) {
 			ParametricDistribution distr = (ParametricDistribution) visit(ctx.getChild(2));
-			Function f = (Function) visit(ctx.getChild(0));
+			JFunction f = (JFunction) visit(ctx.getChild(0));
 			
 			Distribution distribution = new Distribution(distr, f);
 			
@@ -121,8 +121,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			if (ctx.getChildCount() >= 2) {
 				String s = ctx.getChild(1).getText();
 				if (bivarOperators.contains(s)) {
-					Function f1 = (Function) visit(ctx.getChild(0));
-					Function f2 = (Function) visit(ctx.getChild(2));
+					JFunction f1 = (JFunction) visit(ctx.getChild(0));
+					JFunction f2 = (JFunction) visit(ctx.getChild(2));
 
 
 					switch (s) {
@@ -149,14 +149,14 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 					case ">>>": transform = new ZeroFillRightShift(f1,f2); break;
 					}
 				} else if (s.equals("!")) {
-					Function f1 = (Function) visit(ctx.getChild(2));
+					JFunction f1 = (JFunction) visit(ctx.getChild(2));
 					transform = new Not(f1);
 				} else if (s.equals("~")) {
-					Function f1 = (Function) visit(ctx.getChild(2));
+					JFunction f1 = (JFunction) visit(ctx.getChild(2));
 					transform = new Complement(f1);
 				} else if (s.equals("[")) {
-					Function var = (Function) visit(ctx.getChild(0));
-					Function f1 = (Function) visit(ctx.getChild(2));
+					JFunction var = (JFunction) visit(ctx.getChild(0));
+					JFunction f1 = (JFunction) visit(ctx.getChild(2));
 					transform = new Index(var, f1);
 				}
 			}
@@ -169,7 +169,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			String name = ctx.getChild(0).getText();
 			ParametricDistribution distr = null;
 			if (univarDistirbutions.contains(name)) {
-				Function f1 = (Function) visit(ctx.getChild(2));
+				JFunction f1 = (JFunction) visit(ctx.getChild(2));
 				switch (name) {
 				//case "dchisq": distr = new Chisq(f1); break;
 				case "dexp": distr = new Exponential(f1); break;
@@ -179,8 +179,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				}
 				
 			} else if (bivarDistirbutions.contains(name)) {
-				Function f1 = (Function) visit(ctx.getChild(2));
-				Function f2 = (Function) visit(ctx.getChild(3));
+				JFunction f1 = (JFunction) visit(ctx.getChild(2));
+				JFunction f2 = (JFunction) visit(ctx.getChild(3));
 				switch (name) {
 				case "dnorm": distr = new Normal(f1,f2); break;
 				case "dlnorm": distr = new LogNormal(f1,f2); break;
@@ -199,9 +199,9 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				//case "dsignrank": distr = new Signrank(f1,f2); break;
 				}
 			} else if (trivarDistirbutions.contains(name)) {
-				Function f1 = (Function) visit(ctx.getChild(2));
-				Function f2 = (Function) visit(ctx.getChild(3));
-				Function f3 = (Function) visit(ctx.getChild(4));
+				JFunction f1 = (JFunction) visit(ctx.getChild(2));
+				JFunction f2 = (JFunction) visit(ctx.getChild(3));
+				JFunction f3 = (JFunction) visit(ctx.getChild(4));
 				
 				switch (name) {				
 					//case "dnbeta": distr = new Nbeta(f1,f2,f3); break;
@@ -238,9 +238,9 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 		@Override
 		public Object visitExpression_list(Expression_listContext ctx) {
-			Function [] f = new Function[ctx.getChildCount()/2+1];
+			JFunction [] f = new JFunction[ctx.getChildCount()/2+1];
 			for (int i = 0; i < f.length; i++) {
-				f[i] = (Function) visit(ctx.getChild(i*2));
+				f[i] = (JFunction) visit(ctx.getChild(i*2));
 			}
 			return f;
 		}
@@ -251,15 +251,15 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			String functionName = ctx.children.get(0).getText();
 			
 			if (functionName.equals("c")) {
-				Function [] f= (Function []) visit(ctx.getChild(2));				
+				JFunction [] f= (JFunction []) visit(ctx.getChild(2));				
 				Concat c = new Concat(f);
 				return c;
 			}
 			
-			Function f1 = null, f2 = null;
+			JFunction f1 = null, f2 = null;
 			switch (ctx.children.size()) {
-				case 4 :  f2 = (Function) visit(ctx.getChild(3));
-				case 3 :  f1 = (Function) visit(ctx.getChild(2));
+				case 4 :  f2 = (JFunction) visit(ctx.getChild(3));
+				case 3 :  f1 = (JFunction) visit(ctx.getChild(2));
 			}
 			
 			switch (functionName) {

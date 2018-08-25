@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class Modulo extends BivariableFunction {
 
-	public Modulo(Function x, Function y) {
+	public Modulo(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

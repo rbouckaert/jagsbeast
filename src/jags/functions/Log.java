@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Log extends UnivariableFunction {
 
-	public Log(Function x) {
+	public Log(JFunction x) {
 		super(x);
 	}
 

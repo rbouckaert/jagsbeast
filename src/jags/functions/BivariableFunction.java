@@ -1,18 +1,18 @@
 package jags.functions;
 
 import beast.core.*;
-import jags.nodes.Transform;
+import jags.nodes.*;
 
 @Description("Base class for deterministic function with two arguments")
 abstract public class BivariableFunction extends Transform {
-	protected Function x;
-	protected Function y;
+	protected JFunction x;
+	protected JFunction y;
 	public enum Mode {mode11,modeN1, mode1N, modeNN}
 	protected Mode mode;
 	
 	protected BivariableFunction(
-			@Param(name="x", description="argument of cosine function") Function x,
-			@Param(name="y", description="argument of cosine function") Function y
+			@Param(name="x", description="argument of cosine function") JFunction x,
+			@Param(name="y", description="argument of cosine function") JFunction y
 			) {
 		super();
 		this.x = x;

@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Sqrt extends UnivariableFunction {
 
-	public Sqrt(Function x) {
+	public Sqrt(JFunction x) {
 		super(x);
 	}
 

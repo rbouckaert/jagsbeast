@@ -5,7 +5,7 @@ import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.Param;
@@ -22,10 +22,10 @@ public class Normal extends JAGSDistribution {
 //    final public Input<RealParameter> tauInput = new Input<>("tau", "precission of the normal distribution, defaults to 1", Validate.XOR, sigmaInput);
 
 
-	Function mean, sigma;
+	JFunction mean, sigma;
 	
-    public Normal(@Param(name="mean", description="mean of the normal distribution, defaults to 0") Function mean,
-    		@Param(name="sigma", description="standard deviation of the normal distribution, defaults to 1") Function sigma
+    public Normal(@Param(name="mean", description="mean of the normal distribution, defaults to 0") JFunction mean,
+    		@Param(name="sigma", description="standard deviation of the normal distribution, defaults to 1") JFunction sigma
     		) {
     	this.mean = mean;
     	this.sigma = sigma;

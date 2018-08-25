@@ -1,10 +1,10 @@
 package jags.functions;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 
 public class Cbrt extends UnivariableFunction {
 
-	public Cbrt(Function x) {
+	public Cbrt(JFunction x) {
 		super(x);
 	}
 

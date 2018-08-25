@@ -6,17 +6,17 @@ import beast.core.*;
 import beast.core.parameter.RealParameter;
 
 @Description("Random variable in graphical model")
-public class Variable extends RealParameter {
-	Function fun;
+public class Variable extends RealParameter implements JFunction {
+	JFunction fun;
 	
 	public Variable(@Param(name="id",description="identifier for this variable") String id, 
-			@Param(name="fun", description="function that determines values of the Variable") Function fun) {
+			@Param(name="fun", description="function that determines values of the Variable") JFunction fun) {
 		super(funToDouble(fun));
 		this.fun = fun;
 		setID(id);
 	}
 
-	private static Double[] funToDouble(Function fun) {
+	private static Double[] funToDouble(JFunction fun) {
 		Double [] d = new Double[fun.getDimension()];
 		for (int i = 0; i < d.length; i++) {
 			d[i] = fun.getArrayValue(i);
@@ -32,4 +32,16 @@ public class Variable extends RealParameter {
 		return getID() + " = " + Arrays.toString(values);
 	}
 
+	@Override
+	public int getDimensionCount() {
+		return 1;
+	}
+
+	@Override
+	public int getDimension(int dim) {
+		if (dim > 0) {
+			return 0;
+		}
+		return getDimension();
+	}
 }

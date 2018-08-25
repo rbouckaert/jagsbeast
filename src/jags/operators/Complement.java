@@ -1,12 +1,12 @@
 package jags.operators;
 
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.UnivariableFunction;
 
 public class Complement extends UnivariableFunction {
 
-	public Complement(Function x) {
+	public Complement(JFunction x) {
 		super(x);
 	}
 

@@ -4,7 +4,7 @@ import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Param;
 import beast.core.util.Log;
 
@@ -14,9 +14,9 @@ import beast.core.util.Log;
         "separate independent component.")
 public class Exponential extends JAGSDistribution {
     
-    Function lambda;
+    JFunction lambda;
     
-    public Exponential(@Param(name="mean", description="mean of the distribution") Function lambda) {
+    public Exponential(@Param(name="mean", description="mean of the distribution") JFunction lambda) {
     	this.lambda = lambda;
     }
 

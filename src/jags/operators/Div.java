@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class Div extends BivariableFunction {
 
-	public Div(Function x, Function y) {
+	public Div(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

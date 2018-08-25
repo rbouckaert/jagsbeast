@@ -1,11 +1,11 @@
 package jags.operators;
 
-import beast.core.Function;
+import jags.nodes.JFunction;
 import jags.functions.BivariableFunction;
 
 public class BitwiseXOr extends BivariableFunction {
 
-	public BitwiseXOr(Function x, Function y) {
+	public BitwiseXOr(JFunction x, JFunction y) {
 		super(x, y);
 	}
 

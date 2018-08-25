@@ -6,6 +6,7 @@ import org.apache.commons.math.distribution.Distribution;
 
 import beast.core.Description;
 import beast.core.Function;
+import jags.nodes.JFunction;
 import beast.core.Input;
 import beast.core.Input.Validate;
 import beast.core.Param;
@@ -16,9 +17,9 @@ import beast.core.parameter.RealParameter;
 @Description("Dirichlet distribution.  p(x_1,...,x_n;alpha_1,...,alpha_n) = 1/B(alpha) prod_{i=1}^K x_i^{alpha_i - 1} " +
         "where B() is the beta function B(alpha) = prod_{i=1}^K Gamma(alpha_i)/ Gamma(sum_{i=1}^K alpha_i}. ")
 public class Dirichlet extends JAGSDistribution {
-	Function alpha;
+	JFunction alpha;
 
-    public Dirichlet(@Param(name="alpha", description="oefficients of the Dirichlet distribution") Function alpha) {
+    public Dirichlet(@Param(name="alpha", description="oefficients of the Dirichlet distribution") JFunction alpha) {
     	this.alpha = alpha;
     }
     

@@ -1,10 +1,10 @@
 package jags.nodes;
 
 import beast.core.Description;
-import beast.core.Function;
+import jags.nodes.JFunction;
 
-@Description("Function that supports higher dimensions")
-public interface JFunction extends Function {
+@Description("JFunction that supports higher dimensions")
+public interface JFunction extends beast.core.Function {
 	// get number of dimensions
 	int getDimensionCount();
 	
@@ -14,18 +14,18 @@ public interface JFunction extends Function {
 	// access functions
 	
 	/** @return matrix value at row i, column j **/
-	default double getMatrixValue(int i, int j) {
+	default double matrixValue(int i, int j) {
 		return getArrayValue(i * getDimension(0) + j);
 	}
 
 	/** @return cube value at row i, column j, depth k **/
-	default double getCubeValue(int i, int j, int k) {
+	default double cubeValue(int i, int j, int k) {
 		return getArrayValue((i * getDimension(0) + j) * getDimension(1) + k);
 	}
 
 	/** generic data cube access function
 	 * @return value at location indicates by indices in index **/
-	default double getValue(int [] index) {
+	default double value(int [] index) {
 		int k = index[0];
 		for (int i = 0; i < index.length; i++) {
 			k  = k * getDimension(i-1) + index[i];
