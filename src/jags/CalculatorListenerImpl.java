@@ -28,7 +28,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	CalculatorListenerImpl(BeautiDoc doc) {
 		this.doc = doc;
 	}
-	public class CalculatorASTVisitor extends CalculatorBaseVisitor<BEASTObject> {
+	public class CalculatorASTVisitor extends CalculatorBaseVisitor<Object> {
 		BEASTObject expression;
 		List<Distribution> distributions = new ArrayList<>();
 		
@@ -59,13 +59,13 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public BEASTObject visitInput(InputContext ctx) {
+		public Object visitInput(InputContext ctx) {
 			// TODO Auto-generated method stub
 			return super.visitInput(ctx);
 		}
 		
 		@Override
-		public BEASTObject visitConstant(ConstantContext ctx) {
+		public Object visitConstant(ConstantContext ctx) {
 			String text = ctx.getText();
 			double d = 0;
 			try {
@@ -84,7 +84,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 	
 		@Override
-		public BEASTObject visitDeterm_relation(Determ_relationContext ctx) {
+		public Object visitDeterm_relation(Determ_relationContext ctx) {
 			String id = ctx.children.get(0).getText();
 			Function f = (Function) visit(ctx.getChild(2));
 			Variable c = new Variable(id, f);
@@ -95,7 +95,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public BEASTObject visitStoch_relation(Stoch_relationContext ctx) {
+		public Object visitStoch_relation(Stoch_relationContext ctx) {
 			ParametricDistribution distr = (ParametricDistribution) visit(ctx.getChild(2));
 			Function f = (Function) visit(ctx.getChild(0));
 			
@@ -109,7 +109,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 		
 		@Override
-		public BEASTObject visitExpression(ExpressionContext ctx) {
+		public Object visitExpression(ExpressionContext ctx) {
 			if (ctx.getChildCount() == 1) {
 				String key = ctx.getChild(0).getText();
 				if (doc.pluginmap.containsKey(key)) {
@@ -164,7 +164,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public BEASTObject visitDistribution(DistributionContext ctx) {
+		public Object visitDistribution(DistributionContext ctx) {
 			super.visitDistribution(ctx);
 			String name = ctx.getChild(0).getText();
 			ParametricDistribution distr = null;
@@ -224,20 +224,49 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		
+		@Override // counter: FOR '(' NAME IN range_element ')'
+		public Object visitCounter(CounterContext ctx) {
+			
+			return super.visitCounter(ctx);
+		}
+		
+		@Override // 
+		public Object visitRange_element(Range_elementContext ctx) {
+			// 
+			return super.visitRange_element(ctx);
+		}
+		
 		@Override
-		public BEASTObject visitMethodCall(MethodCallContext ctx) {
-			super.visitMethodCall(ctx);
+		public Object visitExpression_list(Expression_listContext ctx) {
+			Function [] f = new Function[ctx.getChildCount()/2+1];
+			for (int i = 0; i < f.length; i++) {
+				f[i] = (Function) visit(ctx.getChild(i*2));
+			}
+			return f;
+		}
+		
+		@Override
+		public Object visitMethodCall(MethodCallContext ctx) {
 			Transform transform;
 			String functionName = ctx.children.get(0).getText();
 			
+			if (functionName.equals("c")) {
+				Function [] f= (Function []) visit(ctx.getChild(2));				
+				Concat c = new Concat(f);
+				return c;
+			}
+			
 			Function f1 = null, f2 = null;
 			switch (ctx.children.size()) {
-				case 4 :  f1 = (Function) visit(ctx.getChild(3));
+				case 4 :  f2 = (Function) visit(ctx.getChild(3));
 				case 3 :  f1 = (Function) visit(ctx.getChild(2));
 			}
 			
 			switch (functionName) {
 				// Univariable functions
+				case "length": transform = new Length(f1);break;
+				case "dim": transform = new Dim(f1);break;
+				
 				case "cos": transform = new Cos(f1);break;
 				case "sin": transform = new Sin(f1);break;
 				case "tan": transform = new Tan(f1);break;
