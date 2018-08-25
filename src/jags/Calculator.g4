@@ -88,10 +88,8 @@ distribution: FUNC '(' expression_list ')';
 expression
     : constant
     | NAME
-	| LENGTH '(' NAME ')'
-	| DIM '(' NAME ')'
     | '(' expression ')'
-    | expression '[' expression ']'
+    | expression '[' expression ']' // TODO: implement
     | methodCall
     | expression postfix=('++' | '--')
     | prefix=('+'|'-'|'++'|'--') expression
@@ -106,6 +104,7 @@ expression
     | expression bop='|' expression
     | expression bop='&&' expression
     | expression bop='||' expression
+    | expression bop=':' expression
 //    | expression bop='?' expression ':' expression
 //    | <assoc=right> expression
 //      bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')

@@ -147,6 +147,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 					case "<<": transform = new LeftShift(f1,f2); break;
 					case ">>": transform = new RightShift(f1,f2); break;
 					case ">>>": transform = new ZeroFillRightShift(f1,f2); break;
+					case ":": transform = new Range(f1,f2); break;
 					}
 				} else if (s.equals("!")) {
 					JFunction f1 = (JFunction) visit(ctx.getChild(2));
@@ -230,10 +231,12 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			return super.visitCounter(ctx);
 		}
 		
-		@Override // 
+		@Override // range_element: | expression 
 		public Object visitRange_element(Range_elementContext ctx) {
-			// 
-			return super.visitRange_element(ctx);
+			if (ctx.getChildCount() == 0) {
+				return null;
+			}
+			return visit(ctx.getChild(0));
 		}
 		
 		@Override
@@ -256,47 +259,79 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				return c;
 			}
 			
-			JFunction f1 = null, f2 = null;
-			switch (ctx.children.size()) {
-				case 4 :  f2 = (JFunction) visit(ctx.getChild(3));
-				case 3 :  f1 = (JFunction) visit(ctx.getChild(2));
+			JFunction [] f = new JFunction[ctx.getChildCount() - 2];
+			for (int i = 0; i < f.length; i++) {
+				f[i] = (JFunction) visit(ctx.getChild(i + 2));
 			}
 			
 			switch (functionName) {
 				// Univariable functions
-				case "length": transform = new Length(f1);break;
-				case "dim": transform = new Dim(f1);break;
-				
-				case "cos": transform = new Cos(f1);break;
-				case "sin": transform = new Sin(f1);break;
-				case "tan": transform = new Tan(f1);break;
-				case "abs": transform = new Abs(f1);break;
-				case "acos": transform = new Acos(f1);break;
-				case "asin": transform = new Asin(f1);break;
-				case "atan": transform = new Atan(f1);break;
-				case "sinh": transform = new Sinh(f1);break;
-				case "cosh": transform = new Cosh(f1);break;
-				case "tanh": transform = new Tanh(f1);break;
+				case "length": transform = new Length(f[0]);break;
+				case "dim": transform = new Dim(f[0]);break;
 
-				case "cbrt": transform = new Cbrt(f1);break;
-				case "sqrt": transform = new Sqrt(f1);break;
-				case "exp": transform = new Exp(f1);break;
-				case "expm1": transform = new Expm1(f1);break;
-				case "log": transform = new jags.functions.Log(f1);break;
-				case "log10": transform = new Log10(f1);break;
-				case "log1p": transform = new Log1p(f1);break;
-				case "ceil": transform = new Ceil(f1);break;
-				case "floor": transform = new Floor(f1);break;
-				case "round": transform = new Round(f1);break;
-				case "signum": transform = new Signum(f1);break;
+				case "sort": transform = new Sort(f[0]);break;
+				case "rank": transform = new Rank(f[0]);break;
+				case "order": transform = new Order(f[0]);break;
+				case "inverse": transform = new Inverse(f[0]);break;
+				case "t": transform = new Transpose(f[0]);break;
+				
+				case "abs": transform = new Abs(f[0]);break;
+				case "cos": transform = new Cos(f[0]);break;
+				case "sin": transform = new Sin(f[0]);break;
+				case "tan": transform = new Tan(f[0]);break;
+				case "arccos": 
+				case "acos": transform = new Acos(f[0]);break;
+				case "arcsin": 
+				case "asin": transform = new Asin(f[0]);break;
+				case "arctan": 
+				case "atan": transform = new Atan(f[0]);break;
+				case "sinh": transform = new Sinh(f[0]);break;
+				case "cosh": transform = new Cosh(f[0]);break;
+				case "tanh": transform = new Tanh(f[0]);break;
+				case "arcsinh": 
+				case "asinh": transform = new Asinh(f[0]);break;
+				case "arccosh": 
+				case "acosh": transform = new Acosh(f[0]);break;
+				case "arctanh": 
+				case "atanh": transform = new Atanh(f[0]);break;
+
+				case "cbrt": transform = new Cbrt(f[0]);break;
+				case "cloglog": transform = new CLogLog(f[0]);break;
+				case "sqrt": transform = new Sqrt(f[0]);break;
+				case "exp": transform = new Exp(f[0]);break;
+				case "expm1": transform = new Expm1(f[0]);break;
+				case "log": transform = new jags.functions.Log(f[0]);break;
+				case "log10": transform = new Log10(f[0]);break;
+				case "log1p": transform = new Log1p(f[0]);break;
+				case "logdet": transform = new LogDet(f[0]);break;
+				case "loggamm": transform = new LogGamma(f[0]);break;
+				case "logit": transform = new Logit(f[0]);break;
+				case "logfact": transform = new LogFact(f[0]);break;
+				case "probit": transform = new Probit(f[0]);break;
+				case "ceil": transform = new Ceil(f[0]);break;
+				case "trunc":
+				case "floor": transform = new Floor(f[0]);break;
+				case "round": transform = new Round(f[0]);break;
+				case "signum": transform = new Signum(f[0]);break;
+				case "step": transform = new Step(f[0]);break;
+				case "sd": transform = new StdDev(f[0]);break;
 				
 				// Bivariable functions
-				case "hypot": transform = new Hypot(f1, f2);break;
-				case "atan2": transform = new Atan2(f1, f2);break;
-				case "min": transform = new Min(f1, f2);break;
-				case "max": transform = new Max(f1, f2);break;
-				case "pow": transform = new Pow(f1, f2);break;
+				case "hypot": transform = new Hypot(f[0], f[1]);break;
+				case "atan2": transform = new Atan2(f[0], f[1]);break;
+				case "pow": transform = new Pow(f[0], f[1]);break;
+				case "rep": transform = new Rep(f[0], f[1]);break;
+				case "%*%": transform = new MatrixMult(f[0], f[1]);break;
+				case "equals": transform = new Eq(f[0], f[1]);break;
+				case "inprod": transform = new Times(f[0], f[1]); break;
 				
+				case "ifelse": transform = new IfElse(f[0], f[1], f[2]);break;
+				case "interp.lin": transform = new InterpLin(f[0], f[1], f[2]);break;
+				
+				case "min": transform = new Min(f);break;
+				case "max": transform = new Max(f);break;
+				case "sum": transform = new Max(f);break;
+
 				default:
 					throw new IllegalArgumentException("Unknown function : " + functionName);
 			}

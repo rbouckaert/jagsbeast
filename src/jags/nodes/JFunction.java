@@ -3,7 +3,10 @@ package jags.nodes;
 import beast.core.Description;
 import jags.nodes.JFunction;
 
-@Description("JFunction that supports higher dimensions")
+/** base functionality for each of the nodes, representing a discrete finite range
+ * of values, possibly over more than one dimension **/
+
+@Description("Function that supports higher dimensions")
 public interface JFunction extends beast.core.Function {
 	// get number of dimensions
 	int getDimensionCount();

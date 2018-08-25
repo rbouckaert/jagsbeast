@@ -1,7 +1,6 @@
-package jags.operators;
+package jags.functions;
 
 import jags.nodes.JFunction;
-import jags.functions.BivariableFunction;
 
 public class Times extends BivariableFunction {
 
