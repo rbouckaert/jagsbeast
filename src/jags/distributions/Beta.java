@@ -5,9 +5,7 @@ import org.apache.commons.math.distribution.ContinuousDistribution;
 
 import beast.core.Description;
 import jags.nodes.JFunction;
-import beast.core.Input;
 import beast.core.Param;
-import beast.core.parameter.RealParameter;
 
 
 

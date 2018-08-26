@@ -69,5 +69,4 @@ abstract public class BivariableFunction extends Transform {
 			
 		throw new IllegalArgumentException("dimensions of x and y should be the same");
 	}
-		
 }

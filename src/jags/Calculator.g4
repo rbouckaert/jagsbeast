@@ -56,7 +56,7 @@ assignment: ARROW
 | '='
 ;
 
-determ_relation: NAME assignment expression 
+determ_relation: var assignment expression 
 | FUNC '(' NAME ')' assignment expression 
 ;
 
@@ -68,6 +68,13 @@ stoch_relation:	NAME '~' distribution
 truncated: 'T' '(' expression ','  expression ')' ;
 interval: 'I' '(' expression ','  expression ')' ;
 
+
+var: NAME 
+| NAME '[' range_list ']';
+
+range_list: range_element
+| range_list ',' range_element
+;
 
 range_element: 
 | expression 

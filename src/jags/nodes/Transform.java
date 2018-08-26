@@ -22,11 +22,20 @@ public abstract class Transform extends CalculationNode implements JFunction {
 	/** perform the actual transformation, and store results in the value array **/
 	abstract protected void doTransform();
 	
+	/** calculate values for this Transform 
+	 * Implementations should implement doTransform() 
+	 **/
 	protected void calc() {
 		doTransform();
 		isUpToDate = true;
 	}
 	
+	/** return name of the transform used for identifying this function 
+	 * parsing JAGS fragments **/
+	public String getTransformName() {
+		return this.getClass().getSimpleName().toLowerCase();
+	}
+
 	// JFunction implementation
 	@Override
 	public int getDimension() {

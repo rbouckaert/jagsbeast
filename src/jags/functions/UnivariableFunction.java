@@ -14,5 +14,14 @@ abstract public class UnivariableFunction extends Transform {
 		values = new double[x.getDimension()];
 		storedvalues = new double[x.getDimension()];
 	}
-		
+	
+	@Override
+	public int getDimensionCount() {
+		return x.getDimensionCount();
+	}
+	
+	@Override
+	public int getDimension(int dim) {
+		return x.getDimension(dim);
+	}		
 }

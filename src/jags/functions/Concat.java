@@ -26,5 +26,28 @@ public class Concat extends Transform {
 		}
 		
 	}
+	
+	@Override
+	public int getDimensionCount() {
+		if (function[0].getDimensionCount() > 1) {
+			return function[0].getDimensionCount() + 1;
+		}
+		if (function[0].getDimension() > 1) {
+			return function[0].getDimensionCount() + 1;
+		}
+		return 1;
+	}
+	
+	@Override
+	public int getDimension(int dim) {
+		if (dim == 0) {
+			return function.length;
+		}
+		if (getDimensionCount() > 1) {
+			return function[0].getDimension(dim - 1);
+		}
+		return 0;
+	}
+
 
 }

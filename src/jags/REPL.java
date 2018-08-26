@@ -77,7 +77,7 @@ public class REPL {
 
 
 	public static void main(String[] args) {
-		System.out.println("A simple Read-Eval-Print-Loop for the Compact Analysis language for BEAST");
+		System.out.println("A simple Read-Eval-Print-Loop for the JAGS language for BEAST");
 		REPL repl = new REPL();
 		repl.doREPL();
 	}

@@ -1,5 +1,6 @@
 package jags.distributions;
 
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.Distribution;
@@ -7,7 +8,6 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 import beast.core.Description;
 import jags.nodes.JFunction;
-import beast.core.Input;
 import beast.core.Param;
 import beast.core.parameter.RealParameter;
 

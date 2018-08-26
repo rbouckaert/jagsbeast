@@ -1,15 +1,13 @@
 package jags.distributions;
 
 
+
 import org.apache.commons.math.distribution.ContinuousDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 import beast.core.Description;
 import jags.nodes.JFunction;
-import beast.core.Input;
-import beast.core.Input.Validate;
 import beast.core.Param;
-import beast.core.parameter.RealParameter;
 
 
 

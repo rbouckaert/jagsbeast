@@ -7,10 +7,7 @@ import org.apache.commons.math.distribution.Distribution;
 import beast.core.Description;
 import beast.core.Function;
 import jags.nodes.JFunction;
-import beast.core.Input;
-import beast.core.Input.Validate;
 import beast.core.Param;
-import beast.core.parameter.RealParameter;
 
 
 

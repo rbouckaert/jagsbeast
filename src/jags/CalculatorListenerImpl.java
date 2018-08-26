@@ -24,18 +24,21 @@ import jags.distributions.*;
 
 public class CalculatorListenerImpl extends CalculatorBaseListener {
 	BeautiDoc doc;
+	static private Set<String> bivarOperators;
+	static private Set<String> univarDistirbutions;
+	static private Set<String> bivarDistirbutions;
+	static private Set<String> trivarDistirbutions;
 	
 	CalculatorListenerImpl(BeautiDoc doc) {
 		this.doc = doc;
 	}
+	
+	// we want to return JFunction and JFunction[] -- so make it a visitor of Object
 	public class CalculatorASTVisitor extends CalculatorBaseVisitor<Object> {
-		BEASTObject expression;
 		List<Distribution> distributions = new ArrayList<>();
 		
-		Set<String> bivarOperators;
-		Set<String> univarDistirbutions;
-		Set<String> bivarDistirbutions;
-		Set<String> trivarDistirbutions;
+		Map<String, Integer> iteratorValue = new HashMap<>();
+		Map<String, Integer> iteratorDimension = new HashMap<>();
 		
 		public CalculatorASTVisitor() {
 			bivarOperators = new HashSet<>();
@@ -79,7 +82,6 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			}
 			Constant c = Constant.createConstant(new double[]{d});
 			System.out.println("value = " + text + " = " + d);
-			expression = c;
 			return c;
 		}
 	
@@ -113,7 +115,29 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			if (ctx.getChildCount() == 1) {
 				String key = ctx.getChild(0).getText();
 				if (doc.pluginmap.containsKey(key)) {
-					return (BEASTObject) doc.pluginmap.get(key);
+					return doc.pluginmap.get(key);
+				}
+				if (iteratorValue.containsKey(key)) {
+					return new JFunction() {						
+						@Override
+						public int getDimension() {return 1;}
+						
+						@Override
+						public double getArrayValue(int dim) {
+							return iteratorValue.get(key);
+						}
+						
+						@Override
+						public double getArrayValue() {
+							return iteratorValue.get(key);
+						}
+						
+						@Override
+						public int getDimensionCount() {return 1;}
+						
+						@Override
+						public int getDimension(int dim) {return 1;}
+					};
 				}
 				return visit(ctx.getChild(0));
 			}
@@ -169,23 +193,26 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			super.visitDistribution(ctx);
 			String name = ctx.getChild(0).getText();
 			ParametricDistribution distr = null;
+			
+			JFunction [] f = new JFunction[ctx.getChildCount() - 2];
+			for (int i = 0; i < f.length; i++) {
+				f[i] = (JFunction) visit(ctx.getChild(i + 2));
+			}
+			
 			if (univarDistirbutions.contains(name)) {
-				JFunction f1 = (JFunction) visit(ctx.getChild(2));
 				switch (name) {
 				//case "dchisq": distr = new Chisq(f1); break;
-				case "dexp": distr = new Exponential(f1); break;
-				case "ddirich": distr = new Dirichlet(f1); break;
+				case "dexp": distr = new Exponential(f[0]); break;
+				case "ddirich": distr = new Dirichlet(f[0]); break;
 				//case "dpois": distr = new Pois(f1); break;
 				//case "dgeom": distr = new Geom(f1); break;
 				}
 				
 			} else if (bivarDistirbutions.contains(name)) {
-				JFunction f1 = (JFunction) visit(ctx.getChild(2));
-				JFunction f2 = (JFunction) visit(ctx.getChild(3));
 				switch (name) {
-				case "dnorm": distr = new Normal(f1,f2); break;
-				case "dlnorm": distr = new LogNormal(f1,f2); break;
-				case "dbeta": distr = new Beta(f1,f2); break;
+				case "dnorm": distr = new Normal(f[0],f[1]); break;
+				case "dlnorm": distr = new LogNormal(f[0],f[1]); break;
+				case "dbeta": distr = new Beta(f[0],f[1]); break;
 				//case "dnchisq": distr = new Nchisq(f1,f2); break;
 				//case "dnt": distr = new Nt(f1,f2); break;
 				//case "dbinom": distr = new Binom(f1,f2); break;
@@ -200,10 +227,6 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				//case "dsignrank": distr = new Signrank(f1,f2); break;
 				}
 			} else if (trivarDistirbutions.contains(name)) {
-				JFunction f1 = (JFunction) visit(ctx.getChild(2));
-				JFunction f2 = (JFunction) visit(ctx.getChild(3));
-				JFunction f3 = (JFunction) visit(ctx.getChild(4));
-				
 				switch (name) {				
 					//case "dnbeta": distr = new Nbeta(f1,f2,f3); break;
 					//case "dnf": distr = new Nf(f1,f2,f3); break;
@@ -224,10 +247,26 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			return distr; 
 		}
 		
+
+		@Override // for_loop: counter relations 
+		public Object visitFor_loop(For_loopContext ctx) {
+			ParseTree counter = ctx.getChild(0);
+			// counter: FOR '(' NAME IN range_element ')'
+			String name = counter.getChild(2).getText();
+			JFunction range = (JFunction) visit(counter.getChild(4));
+			iteratorDimension.remove(range.getDimension());
+			for (int i = 0; i < range.getDimension(); i++) {
+				int value = (int) range.getArrayValue(i);
+				iteratorValue.put(name, value);
+				visit(ctx.getChild(1));
+			}
+			iteratorValue.remove(name);
+			iteratorDimension.remove(name);
+			return null;
+		}
 		
 		@Override // counter: FOR '(' NAME IN range_element ')'
 		public Object visitCounter(CounterContext ctx) {
-			
 			return super.visitCounter(ctx);
 		}
 		
@@ -239,7 +278,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			return visit(ctx.getChild(0));
 		}
 		
-		@Override
+		@Override // expression_list : expression (',' expression)*
 		public Object visitExpression_list(Expression_listContext ctx) {
 			JFunction [] f = new JFunction[ctx.getChildCount()/2+1];
 			for (int i = 0; i < f.length; i++) {
@@ -259,10 +298,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				return c;
 			}
 			
-			JFunction [] f = new JFunction[ctx.getChildCount() - 2];
-			for (int i = 0; i < f.length; i++) {
-				f[i] = (JFunction) visit(ctx.getChild(i + 2));
-			}
+			// process expression_list
+			JFunction [] f =  (JFunction[]) visit(ctx.getChild(2));
 			
 			switch (functionName) {
 				// Univariable functions
@@ -336,7 +373,6 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 					throw new IllegalArgumentException("Unknown function : " + functionName);
 			}
 			
-			expression = transform;
 			return transform;
 		}
 		
