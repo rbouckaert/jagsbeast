@@ -28,7 +28,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	static private Set<String> bivarDistirbutions;
 	static private Set<String> trivarDistirbutions;
 	
-	CalculatorListenerImpl(BeautiDoc doc) {
+	public CalculatorListenerImpl(BeautiDoc doc) {
 		this.doc = doc;
 	}
 	
@@ -357,6 +357,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				case "round": transform = new Round(f[0]);break;
 				case "signum": transform = new Signum(f[0]);break;
 				case "step": transform = new Step(f[0]);break;
+				case "mean": transform = new Mean(f[0]);break;
 				case "sd": transform = new StdDev(f[0]);break;
 				
 				// Bivariable functions
@@ -373,7 +374,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				
 				case "min": transform = new Min(f);break;
 				case "max": transform = new Max(f);break;
-				case "sum": transform = new Max(f);break;
+				case "sum": transform = new Sum(f);break;
 
 				default:
 					throw new IllegalArgumentException("Unknown function : " + functionName);

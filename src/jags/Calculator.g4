@@ -81,7 +81,7 @@ range_element:
 | expression 
 ;
 
-constant : FLOAT_LITERAL|DECIMAL_LITERAL|OCT_LITERAL|HEX_LITERAL|HEX_FLOAT_LITERAL|'true'|'false';
+constant : '-'? (FLOAT_LITERAL|DECIMAL_LITERAL|OCT_LITERAL|HEX_LITERAL|HEX_FLOAT_LITERAL|'true'|'false');
 
 expression_list
     : expression (',' expression)*

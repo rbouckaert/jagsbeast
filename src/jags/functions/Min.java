@@ -22,7 +22,7 @@ public class Min extends Transform {
 	@Override
 	protected void doTransform() {
 		double min = Double.MAX_VALUE;
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < function.length; i++) {
 			JFunction f = function[i];
 			for (double d : f.getDoubleValues()) {
 				min = Math.min(min, d);

@@ -18,7 +18,7 @@ public class Rank extends UnivariableFunction {
 		}
 		HeapSort.sort(values, indices);
 		for (int i = 0; i < x.getDimension(); i++) {
-			values[indices[i]] = i;
+			values[indices[i]] = i + 1;
 		}
 	}
 

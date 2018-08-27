@@ -22,7 +22,7 @@ public class Max extends Transform {
 	@Override
 	protected void doTransform() {
 		double max = Double.MIN_VALUE;
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < function.length; i++) {
 			JFunction f = function[i];
 			for (double d : f.getDoubleValues()) {
 				max = Math.max(max, d);

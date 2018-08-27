@@ -27,7 +27,7 @@ public class StdDev extends Transform {
 			double v = x.getArrayValue(i);
 			sum += v * v - mean2; 
 		}
-		values[0] = Math.sqrt(sum/x.getDimension());
+		values[0] = Math.sqrt(sum/(x.getDimension() - 1));
 	}
 
 }
