@@ -16,6 +16,20 @@ public class Variable extends RealParameter implements JFunction {
 		setID(id);
 	}
 
+	public Variable(String id, JFunction f, JFunction dimensions) {
+		super(toDouble(dimensions));
+		setMinorDimension((int) dimensions.getArrayValue(0)); 
+		setID(id);
+	}
+
+	private static Double[] toDouble(JFunction dimensions) {
+		int k = 1;
+		for (int i = 0; i < dimensions.getDimension(); i++) {
+			k *= dimensions.getArrayValue(i);
+		}
+		return new Double[k];
+	}
+
 	private static Double[] funToDouble(JFunction fun) {
 		Double [] d = new Double[fun.getDimension()];
 		for (int i = 0; i < d.length; i++) {
@@ -43,5 +57,19 @@ public class Variable extends RealParameter implements JFunction {
 			return 0;
 		}
 		return getDimension();
+	}
+
+	public void setValue(JFunction range, JFunction f) {
+		int k = (int) range.getArrayValue(0);
+		for (int i = 1; i < range.getDimension(); i++) {
+			k = k * getDimension(i) + (int) range.getArrayValue(i);
+		}
+		setValue(k, f.getArrayValue());
+	}
+	
+	@Override
+	public void setValue(int param, Double value) {
+		values[param] = value;		
+		super.setValue(param, value);
 	}
 }

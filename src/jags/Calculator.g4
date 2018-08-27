@@ -3,6 +3,7 @@ grammar Calculator;
 
 // grammar adapted from parser.yy in JAGS-4.3.0 source code
 
+
 input:   /* empty */
 | model_stmt
 | var_stmt model_stmt
@@ -49,7 +50,7 @@ relation: stoch_relation
 for_loop: counter relations 
 ;
 
-counter: FOR '(' NAME IN range_element ')' 
+counter: 'for' '(' NAME 'in' range_element ')' 
 ;
 
 assignment: ARROW 
@@ -132,9 +133,9 @@ FUNC:                Letter LetterOrDigit*;
 SPECIAL:             Letter LetterOrDigit*;
 BADCHAR:             Letter LetterOrDigit*;
 
-IN:                  'in';
+//IN:                  'in';
 ARROW:               '<-';
-FOR:                 'for';
+//FOR:                 'for';
 //GT GE LT LE EQ NE 
 //AND OR
 LENGTH:              'length';
@@ -164,75 +165,75 @@ FLOAT_LITERAL:      (Digits '.' Digits? | '.' Digits) ExponentPart? [fFdD]?
 
 HEX_FLOAT_LITERAL:  '0' [xX] (HexDigits '.'? | HexDigits? '.' HexDigits) [pP] [+-]? Digits [fFdD]?;
 
-BOOL_LITERAL:       'true'
-            |       'false'
-            ;
-
-CHAR_LITERAL:       '\'' (~['\\\r\n] | EscapeSequence) '\'';
-
-STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
-
-NULL_LITERAL:       'null';
+//BOOL_LITERAL:       'true'
+//            |       'false'
+//            ;
+//
+//CHAR_LITERAL:       '\'' (~['\\\r\n] | EscapeSequence) '\'';
+//
+//STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
+//
+//NULL_LITERAL:       'null';
 
 // Separators
 
-LPAREN:             '(';
-RPAREN:             ')';
-LBRACE:             '{';
-RBRACE:             '}';
-LBRACK:             '[';
-RBRACK:             ']';
-SEMI:               ';';
-COMMA:              ',';
-DOT:                '.';
+//LPAREN:             '(';
+//RPAREN:             ')';
+//LBRACE:             '{';
+//RBRACE:             '}';
+//LBRACK:             '[';
+//RBRACK:             ']';
+//SEMI:               ';';
+//COMMA:              ',';
+//DOT:                '.';
 
 // Operators
 
-ASSIGN:             '=';
-GT:                 '>';
-LT:                 '<';
-BANG:               '!';
-TILDE:              '~';
-QUESTION:           '?';
-COLON:              ':';
-EQUAL:              '==';
-LE:                 '<=';
-GE:                 '>=';
-NOTEQUAL:           '!=';
-AND:                '&&';
-OR:                 '||';
-INC:                '++';
-DEC:                '--';
-ADD:                '+';
-SUB:                '-';
-MUL:                '*';
-DIV:                '/';
-BITAND:             '&';
-BITOR:              '|';
-CARET:              '^';
-MOD:                '%';
-
-ADD_ASSIGN:         '+=';
-SUB_ASSIGN:         '-=';
-MUL_ASSIGN:         '*=';
-DIV_ASSIGN:         '/=';
-AND_ASSIGN:         '&=';
-OR_ASSIGN:          '|=';
-XOR_ASSIGN:         '^=';
-MOD_ASSIGN:         '%=';
-LSHIFT_ASSIGN:      '<<=';
-RSHIFT_ASSIGN:      '>>=';
-URSHIFT_ASSIGN:     '>>>=';
+//ASSIGN:             '=';
+//GT:                 '>';
+//LT:                 '<';
+//BANG:               '!';
+//TILDE:              '~';
+//QUESTION:           '?';
+//COLON:              ':';
+//EQUAL:              '==';
+//LE:                 '<=';
+//GE:                 '>=';
+//NOTEQUAL:           '!=';
+//AND:                '&&';
+//OR:                 '||';
+//INC:                '++';
+//DEC:                '--';
+//ADD:                '+';
+//SUB:                '-';
+//MUL:                '*';
+//DIV:                '/';
+//BITAND:             '&';
+//BITOR:              '|';
+//CARET:              '^';
+//MOD:                '%';
+//
+//ADD_ASSIGN:         '+=';
+//SUB_ASSIGN:         '-=';
+//MUL_ASSIGN:         '*=';
+//DIV_ASSIGN:         '/=';
+//AND_ASSIGN:         '&=';
+//OR_ASSIGN:          '|=';
+//XOR_ASSIGN:         '^=';
+//MOD_ASSIGN:         '%=';
+//LSHIFT_ASSIGN:      '<<=';
+//RSHIFT_ASSIGN:      '>>=';
+//URSHIFT_ASSIGN:     '>>>=';
 
 // Java 8 tokens
 
 //ARROW:              '->';
-COLONCOLON:         '::';
+//COLONCOLON:         '::';
 
 // Additional symbols not defined in the lexical specification
 
-AT:                 '@';
-ELLIPSIS:           '...';
+//AT:                 '@';
+//ELLIPSIS:           '...';
 
 // Whitespace and comments
 

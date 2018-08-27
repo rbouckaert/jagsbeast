@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import beast.app.beauti.BeautiDoc;
-import beast.core.BEASTObject;
 import jags.nodes.JFunction;
 import beast.math.distributions.ParametricDistribution;
 import jags.CalculatorParser.*;
@@ -33,7 +32,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		this.doc = doc;
 	}
 	
-	// we want to return JFunction and JFunction[] -- so make it a visitor of Object
+	// we want to return JFunction and JFunction[] -- so make it a visitor of Object and cast to expected type
 	public class CalculatorASTVisitor extends CalculatorBaseVisitor<Object> {
 		List<Distribution> distributions = new ArrayList<>();
 		
@@ -60,13 +59,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			}
 
 		}
-		
-		@Override
-		public Object visitInput(InputContext ctx) {
-			// TODO Auto-generated method stub
-			return super.visitInput(ctx);
-		}
-		
+				
 		@Override
 		public Object visitConstant(ConstantContext ctx) {
 			String text = ctx.getText();
@@ -87,8 +80,23 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	
 		@Override
 		public Object visitDeterm_relation(Determ_relationContext ctx) {
-			String id = ctx.children.get(0).getText();
 			JFunction f = (JFunction) visit(ctx.getChild(2));
+			String id = ctx.children.get(0).getText();
+			if (id.indexOf('[') >= 0) {
+				id = ctx.getChild(0).getChild(0).getText();
+				JFunction range = (JFunction) visit(ctx.getChild(0).getChild(2));
+				Variable c = null;
+				if (doc.pluginmap.containsKey(id)) {
+					c = (Variable) doc.pluginmap.get(id);
+					c.setValue(range, f);
+				} else {
+					throw new IllegalArgumentException("Variable " + id + " should have been declared before using [] notation");
+					//c = new Variable(id, f, dimensions);
+					//c.setValue(range, f);
+				}
+				return c;
+			}
+
 			Variable c = new Variable(id, f);
 			c.setID(id);
 			doc.registerPlugin(c);
@@ -106,9 +114,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			distributions.add(distribution);
 			
 			return distribution;
-		}
-		
-		
+		}		
 		
 		@Override
 		public Object visitExpression(ExpressionContext ctx) {
