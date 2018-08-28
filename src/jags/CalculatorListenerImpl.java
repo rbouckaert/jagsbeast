@@ -14,7 +14,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import beast.app.beauti.BeautiDoc;
 import jags.nodes.JFunction;
 import beast.math.distributions.ParametricDistribution;
-import jags.CalculatorParser.*;
+import jags.parser.*;
+import jags.parser.CalculatorParser.*;
 import jags.nodes.*;
 import jags.functions.*;
 import jags.operators.*;
@@ -41,7 +42,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 		public CalculatorASTVisitor() {
 			bivarOperators = new HashSet<>();
-			for (String s : new String[]{"+","-","*","/","**","&&","||","<=","<",">=",">","!=","==","&","|","<<",">>",">>>"}) {
+			for (String s : new String[]{"+","-","*","/","**","&&","||","<=","<",">=",">","%",":","^","!=","==","&","|","<<",">>",">>>"}) {
 				bivarOperators.add(s);
 			}
 			
@@ -110,6 +111,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			JFunction f = (JFunction) visit(ctx.getChild(0));
 			
 			Distribution distribution = new Distribution(distr, f);
+			distribution.setID("logP." + ctx.getChild(0).getText());
 			
 			distributions.add(distribution);
 			
@@ -152,7 +154,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				String s = ctx.getChild(1).getText();
 				if (bivarOperators.contains(s)) {
 					JFunction f1 = (JFunction) visit(ctx.getChild(0));
-					JFunction f2 = (JFunction) visit(ctx.getChild(2));
+					JFunction f2 = (JFunction) visit(ctx.getChild(ctx.getChildCount() - 1));
 
 
 					switch (s) {
@@ -164,9 +166,25 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 					case "&&": transform = new And(f1,f2); break;
 					case "||": transform = new Or(f1,f2); break;
 					case "<=": transform = new LE(f1,f2); break;
-					case "<": transform = new LT(f1,f2); break;
+					case "<": 
+						switch (ctx.getChildCount()) {
+						case 3:
+							transform = new LT(f1,f2); break;
+						case 4:
+							transform = new LeftShift(f1,f2); break;
+						} 
+						break;
 					case ">=": transform = new GE(f1,f2); break;
-					case ">": transform = new GT(f1,f2); break;
+					case ">":
+						switch (ctx.getChildCount()) {
+						case 3:
+							transform = new GT(f1,f2); break;
+						case 4:
+							transform = new RightShift(f1,f2); break;
+						case 5:
+							transform = new ZeroFillRightShift(f1,f2); break;
+						} 
+						break;
 					case "!=": transform = new Ne(f1,f2); break;
 					case "==": transform = new Eq(f1,f2); break;
 					case "%": transform = new Modulo(f1,f2); break;

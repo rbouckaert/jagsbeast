@@ -20,8 +20,11 @@ public class Distribution extends beast.core.Distribution {
 	ParametricDistribution distr;
 	JFunction x;
 		
-	public Distribution(@Param(name="distr", description="distribution used to calculate prior, e.g. normal, beta, gamma.") ParametricDistribution distr,
-			@Param(name="x", description="point at which the density is calculated") JFunction x) {
+	public Distribution(
+			@Param(name="distr", description="distribution used to calculate prior, e.g. normal, beta, gamma.") 
+				ParametricDistribution distr,
+			@Param(name="x", description="point at which the density is calculated") 
+				JFunction x) {
 		this.distr = distr;
 		this.x = x;
 	}

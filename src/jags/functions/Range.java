@@ -18,6 +18,8 @@ public class Range extends Transform {
 		int dim = (int)(y.getArrayValue() - x.getArrayValue()) + 1;
 		values = new double[dim];
 		storedvalues = new double[dim];
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class Range extends Transform {
 			values = new double[dim];
 		}
 		values[0] = (int) x.getArrayValue();
-		for (int i = 1; i <= dim; i++) {
+		for (int i = 1; i < values.length; i++) {
 			values[i] = values[i-1] + 1;
 		}
 	}

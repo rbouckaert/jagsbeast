@@ -176,7 +176,7 @@ public class FunctionTest extends TestCase {
 	double acosh(double val) {return (Math.log(val + Math.sqrt(val + 1) * Math.sqrt(val - 1)));}
 	double atanh(double val) {return (0.5 * Math.log((1 + val) / (1 - val)));} 
 	
-	private double test(String cmd) {
+	protected static double test(String cmd) {
 		try {
 			BeautiDoc doc = new BeautiDoc();
 			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
