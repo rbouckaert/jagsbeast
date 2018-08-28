@@ -57,9 +57,9 @@ public class Variable extends RealParameter implements JFunction {
 	}
 
 	public void setValue(JFunction range, JFunction f) {
-		int k = (int) range.getArrayValue(0);
+		int k = (int) range.getArrayValue(0) - 1;
 		for (int i = 1; i < range.getDimension(); i++) {
-			k = k * getDimension(i) + (int) range.getArrayValue(i);
+			k = k * getDimension(i) + (int) range.getArrayValue(i) - 1;
 		}
 		setValue(k, f.getArrayValue());
 	}

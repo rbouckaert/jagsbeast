@@ -30,6 +30,7 @@ dim_list: expression
 data_stmt: DATA '{' relation_list '}' 
 ;
 
+
 model_stmt: MODEL '{' relation_list '}' 
 ;
  
@@ -61,7 +62,7 @@ determ_relation: var assignment expression
 | FUNC '(' NAME ')' assignment expression 
 ;
 
-stoch_relation:	NAME '~' distribution 
+stoch_relation:	NAME TILDE distribution 
 | NAME '~' distribution truncated 
 | NAME '~' distribution interval 
 ;
@@ -91,7 +92,9 @@ methodCall
     : NAME '(' expression_list? ')'
     ;
 
-distribution: FUNC '(' expression_list ')';
+distribution
+	: NAME '(' expression_list ')'
+	;
 	
 expression
     : constant
@@ -130,9 +133,9 @@ DATA:                'data';
 MODEL:               'model';
 
 NAME:                Letter LetterOrDigit*;
-FUNC:                Letter LetterOrDigit*;
-SPECIAL:             Letter LetterOrDigit*;
-BADCHAR:             Letter LetterOrDigit*;
+//FUNC:                Letter LetterOrDigit*;
+//SPECIAL:             Letter LetterOrDigit*;
+//BADCHAR:             Letter LetterOrDigit*;
 
 //IN:                  'in';
 ARROW:               '<-';
@@ -194,7 +197,7 @@ HEX_FLOAT_LITERAL:  '0' [xX] (HexDigits '.'? | HexDigits? '.' HexDigits) [pP] [+
 //GT:                 '>';
 //LT:                 '<';
 //BANG:               '!';
-//TILDE:              '~';
+TILDE:              '~';
 //QUESTION:           '?';
 //COLON:              ':';
 //EQUAL:              '==';

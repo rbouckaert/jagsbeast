@@ -7,11 +7,13 @@ import java.util.*;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import beast.app.beauti.BeautiDoc;
+import beast.core.util.Log;
 import jags.nodes.JFunction;
 import beast.math.distributions.ParametricDistribution;
 import jags.parser.*;
@@ -62,7 +64,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 				
 		@Override
-		public Object visitConstant(ConstantContext ctx) {
+		public Object visitConstant(CalculatorParser.ConstantContext ctx) {
 			String text = ctx.getText();
 			double d = 0;
 			try {
@@ -80,7 +82,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 	
 		@Override
-		public Object visitDeterm_relation(Determ_relationContext ctx) {
+		public Object visitDeterm_relation(CalculatorParser.Determ_relationContext ctx) {
 			JFunction f = (JFunction) visit(ctx.getChild(2));
 			String id = ctx.children.get(0).getText();
 			if (id.indexOf('[') >= 0) {
@@ -106,20 +108,27 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public Object visitStoch_relation(Stoch_relationContext ctx) {
+		public Object visitStoch_relation(CalculatorParser.Stoch_relationContext ctx) {
 			ParametricDistribution distr = (ParametricDistribution) visit(ctx.getChild(2));
-			JFunction f = (JFunction) visit(ctx.getChild(0));
+			String id = ctx.getChild(0).getText();
+			JFunction f;
+			if (id.indexOf('[') == -1) {
+				f = (JFunction) doc.pluginmap.get(id);
+			} else {
+				f = (JFunction) visit(ctx.getChild(0));
+			}
 			
 			Distribution distribution = new Distribution(distr, f);
 			distribution.setID("logP." + ctx.getChild(0).getText());
 			
 			distributions.add(distribution);
+			doc.registerPlugin(distribution);
 			
 			return distribution;
 		}		
 		
 		@Override
-		public Object visitExpression(ExpressionContext ctx) {
+		public Object visitExpression(CalculatorParser.ExpressionContext ctx) {
 			if (ctx.getChildCount() == 1) {
 				String key = ctx.getChild(0).getText();
 				if (doc.pluginmap.containsKey(key)) {
@@ -213,15 +222,12 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public Object visitDistribution(DistributionContext ctx) {
+		public Object visitDistribution(CalculatorParser.DistributionContext ctx) {
 			super.visitDistribution(ctx);
 			String name = ctx.getChild(0).getText();
 			ParametricDistribution distr = null;
 			
-			JFunction [] f = new JFunction[ctx.getChildCount() - 2];
-			for (int i = 0; i < f.length; i++) {
-				f[i] = (JFunction) visit(ctx.getChild(i + 2));
-			}
+			JFunction [] f = (JFunction[]) visit(ctx.getChild(2));
 			
 			if (univarDistirbutions.contains(name)) {
 				switch (name) {
@@ -273,7 +279,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 
 		@Override // for_loop: counter relations 
-		public Object visitFor_loop(For_loopContext ctx) {
+		public Object visitFor_loop(CalculatorParser.For_loopContext ctx) {
 			ParseTree counter = ctx.getChild(0);
 			// counter: FOR '(' NAME IN range_element ')'
 			String name = counter.getChild(2).getText();
@@ -290,12 +296,12 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override // counter: FOR '(' NAME IN range_element ')'
-		public Object visitCounter(CounterContext ctx) {
+		public Object visitCounter(CalculatorParser.CounterContext ctx) {
 			return super.visitCounter(ctx);
 		}
 		
 		@Override // range_element: | expression 
-		public Object visitRange_element(Range_elementContext ctx) {
+		public Object visitRange_element(CalculatorParser.Range_elementContext ctx) {
 			if (ctx.getChildCount() == 0) {
 				return null;
 			}
@@ -303,7 +309,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override // expression_list : expression (',' expression)*
-		public Object visitExpression_list(Expression_listContext ctx) {
+		public Object visitExpression_list(CalculatorParser.Expression_listContext ctx) {
 			JFunction [] f = new JFunction[ctx.getChildCount()/2+1];
 			for (int i = 0; i < f.length; i++) {
 				f[i] = (JFunction) visit(ctx.getChild(i*2));
@@ -312,7 +318,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		}
 		
 		@Override
-		public Object visitMethodCall(MethodCallContext ctx) {
+		public Object visitMethodCall(CalculatorParser.MethodCallContext ctx) {
 			Transform transform;
 			String functionName = ctx.children.get(0).getText();
 			
@@ -407,13 +413,31 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	public void parse(String CASentence) {
         // Custom parse/lexer error listener
         BaseErrorListener errorListener = new BaseErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer,
-                                    Object offendingSymbol,
-                                    int line, int charPositionInLine,
-                                    String msg, RecognitionException e) {
-                throw new CalculatorParsingException(msg, charPositionInLine, line);
-            }
+        	@Override
+        	public void syntaxError(Recognizer<?, ?> recognizer, 
+        			Object offendingSymbol, int line, int charPositionInLine,
+        			String msg, RecognitionException e) {
+        		e.printStackTrace();
+        	    if ( e instanceof NoViableAltException ) {
+        	    	NoViableAltException nvae = (NoViableAltException)e;
+        	    	Log.info(nvae.getLocalizedMessage());
+//              msg = "X no viable alt; token="+nvae.token+
+//                 " (decision="+nvae.decisionNumber+
+//                 " state "+nvae.stateNumber+")"+
+//                 " decision=<<"+nvae.grammarDecisionDescription+">>";
+           }
+           else {
+           }
+        	    throw new CalculatorParsingException(msg, charPositionInLine, line);
+        	}
+
+//            @Override
+//            public void syntaxError(Recognizer<?, ?> recognizer,
+//                                    Object offendingSymbol,
+//                                    int line, int charPositionInLine,
+//                                    String msg, RecognitionException e) {
+//                throw new CalculatorParsingException(msg, charPositionInLine, line);
+//            }
         };
 
         // Get our lexer
