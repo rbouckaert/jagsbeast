@@ -15,16 +15,28 @@ public class Concat extends Transform {
 		for (int i = 0; i < function.length; i++) {
 			this.function[i] = function[i];
 		}
-		values = new double[function.length];
-		storedvalues = new double[function.length];
+		int dim = 0;
+		for (JFunction f: function) {
+			System.out.println(f);
+			dim += f.getDimension();
+		}
+		values = new double[dim];
+		storedvalues = new double[dim];
 	}
 	
 	@Override
 	protected void doTransform() {
-		for (int i = 0; i < values.length; i++) {
-			values[i] = function[i].getArrayValue();
-		}
-		
+		int k = 0;
+		for (JFunction f: function) {
+			for (int j = 0; j < f.getDimension(); j++) {
+				values[k++] = f.getArrayValue(j);
+			}
+		}		
+	}
+	
+	@Override
+	public int getDimension() {
+		return super.getDimension();
 	}
 	
 	@Override

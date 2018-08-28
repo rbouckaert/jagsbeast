@@ -19,7 +19,7 @@ import jags.nodes.*;
 import jags.functions.*;
 import jags.operators.*;
 import jags.distributions.*;
-
+ 
 
 public class CalculatorListenerImpl extends CalculatorBaseListener {
 	BeautiDoc doc;
@@ -365,6 +365,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				case "atan2": transform = new Atan2(f[0], f[1]);break;
 				case "pow": transform = new Pow(f[0], f[1]);break;
 				case "rep": transform = new Rep(f[0], f[1]);break;
+				case "prod":
 				case "%*%": transform = new MatrixMult(f[0], f[1]);break;
 				case "equals": transform = new Eq(f[0], f[1]);break;
 				case "inprod": transform = new Times(f[0], f[1]); break;

@@ -48,15 +48,12 @@ public class Variable extends RealParameter implements JFunction {
 
 	@Override
 	public int getDimensionCount() {
-		return 1;
+		return fun.getDimensionCount();
 	}
 
 	@Override
 	public int getDimension(int dim) {
-		if (dim > 0) {
-			return 0;
-		}
-		return getDimension();
+		return fun.getDimension(dim);
 	}
 
 	public void setValue(JFunction range, JFunction f) {

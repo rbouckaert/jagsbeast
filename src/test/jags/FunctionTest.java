@@ -19,11 +19,43 @@ public class FunctionTest extends TestCase {
 
 	@Test
 	public void testMatrixFunctions() {
-		// TODO
-//	assertEquals(test("a=logdet(" + v + ")"), logdet(d));
-//		case "rep": transform = new Rep(f[0], f[1]);break;
-//		case "%*%": transform = new MatrixMult(f[0], f[1]);break;
-//		case "inprod": transform = new Times(f[0], f[1]); break;
+		String m1 = "m1=c(c(1,2),c(3,4))";
+		String m2 = "m2=c(c(2,1),c(4,3))";
+		String m3 = "m3=c(c(2,1,0),c(4,3,2))";
+
+		assertEquals(test(m1 + " a=dim(m1)[1]"), 2.0);
+		assertEquals(test(m1 + " a=dim(m1)[2]"), 2.0);
+		assertEquals(test(m3 + " a=dim(m3)[1]"), 2.0);
+		assertEquals(test(m3 + " a=dim(m3)[2]"), 3.0);
+		
+		assertEquals(test(m1 + " a=length(m1)"), 4.0);
+		assertEquals(test(m3 + " a=length(m3)"), 6.0);
+
+		assertEquals(test(m1 + " a=length(dim(m1))"), 2.0);
+		assertEquals(test(m3 + " a=length(dim(m3))"), 2.0);
+
+		assertEquals(test(m1 +" a= inverse(m1)[1]"), -2.0, 1e-12);
+		assertEquals(test(m1 +" a= inverse(m1)[2]"), 1.5, 1e-12);
+		assertEquals(test(m1 +" a= inverse(m1)[3]"), 1.0, 1e-12);
+		assertEquals(test(m1 +" a= inverse(m1)[4]"), -0.5, 1e-12);
+		
+		assertEquals(test(m1 + " " + m2 +" a= inprod(m1,m2)[1]"), 2.0);
+		assertEquals(test(m1 + " " + m2 +" a= inprod(m1,m2)[2]"), 2.0);
+		assertEquals(test(m1 + " " + m2 +" a= inprod(m1,m2)[3]"), 12.0);
+		assertEquals(test(m1 + " " + m2 +" a= inprod(m1,m2)[4]"), 12.0);
+		
+		assertEquals(test(m1 + " " + m2 +" a= prod(m1,m2)[1]"), 10.0);
+		assertEquals(test(m1 + " " + m2 +" a= prod(m1,m2)[2]"), 7.0);
+		assertEquals(test(m1 + " " + m2 +" a= prod(m1,m2)[3]"), 22.0);
+		assertEquals(test(m1 + " " + m2 +" a= prod(m1,m2)[4]"), 15.0);
+
+		assertEquals(test(m1 +" a=t(m1)[1]"), 1.0);
+		assertEquals(test(m1 +" a=t(m1)[2]"), 3.0);
+		assertEquals(test(m1 +" a=t(m1)[3]"), 2.0);
+		assertEquals(test(m1 +" a=t(m1)[4]"), 4.0);
+		
+		assertEquals(test(m2 + " a= logdet(m2)"), log(2.0));
+		//assertEquals(test(m1 + " " + m2 +" a= m1 %*% m2"), 1.0);
 	}
 	
 	@Test

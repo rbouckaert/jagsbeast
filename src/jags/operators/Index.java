@@ -13,7 +13,7 @@ public class Index extends BivariableFunction {
 
 	@Override
 	protected void doTransform() {
-		values[0] = x.getArrayValue((int) y.getArrayValue());
+		values[0] = x.getArrayValue((int) y.getArrayValue() - 1);
 	}
 	
 	
