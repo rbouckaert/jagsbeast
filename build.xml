@@ -71,7 +71,6 @@
 
         <property name="build-beast" location="build-beast"/>
         <mkdir dir="${build-beast}"/>
-
         <get src="https://github.com/CompEvol/beast2/archive/${beast-branch}.zip" dest="${build-beast}/beast.zip"/>
         <unzip src="${build-beast}/beast.zip" dest="${build-beast}"/>
         <mkdir dir="${build-beast}/beast2-${beast-version}/build"/>
@@ -83,13 +82,15 @@
                 <fileset dir="${build-beast}/beast2-${beast-version}/lib" includes="*.jar"/>
             </classpath>
         </javac>
+        <copy todir="${build-beast}/beast2-${beast-version}/build">
+            <fileset dir="${build-beast}/beast2-${beast-version}/src" includes="**/*.properties" />
+            <fileset dir="${build-beast}/beast2-${beast-version}/src" includes="**/*.png" />
+        </copy>
         <jar jarfile="${build-lib}/beast2.jar" basedir="${build-beast}/beast2-${beast-version}/build" />
         <copy todir="${build-lib}">
             <fileset dir="${build-beast}/beast2-${beast-version}/lib" includes="*.jar"/>
         </copy>
-
         <delete dir="${build-beast}" />
-
     </target>
 
     <target name="build-local-beast" depends="find-beast" if="localBeastAvailable">
@@ -110,7 +111,6 @@
         <copy todir="${build-lib}">
             <fileset dir="${beastDir}/lib" includes="*.jar"/>
         </copy>
-
         <delete dir="${build-beast}" />
     </target>
 
