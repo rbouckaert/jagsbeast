@@ -1,4 +1,4 @@
-// Generated from Calculator.g4 by ANTLR 4.7.1
+// Generated from Calculator.g4 by ANTLR 4.7
 package jags.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

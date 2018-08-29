@@ -31,6 +31,23 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	static private Set<String> bivarDistirbutions;
 	static private Set<String> trivarDistirbutions;
 	
+	static JFunction fun0 = new JFunction() {		
+		@Override
+		public int getDimension() {return 1;}
+		
+		@Override
+		public double getArrayValue(int dim) {return 0;}
+		
+		@Override
+		public double getArrayValue() {return 0;}
+		
+		@Override
+		public int getDimensionCount() {return 1;}
+		
+		@Override
+		public int getDimension(int dim) {return 1;}
+	};
+	
 	public CalculatorListenerImpl(BeautiDoc doc) {
 		this.doc = doc;
 	}
@@ -61,6 +78,48 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				trivarDistirbutions.add(s);			
 			}
 
+		}
+		
+		@Override
+		public Object visitVar_stmt(Var_stmtContext ctx) {			
+			return visit(ctx.getChild(1));
+		}
+		
+		
+		@Override
+		public Object visitDim_list(Dim_listContext ctx) {
+			int dim = (ctx.getChildCount() + 1) / 2;
+			double [] range = new double[dim];
+			for (int i = 0; i < dim; i++) {
+				range[i] = (int) ((JFunction) visit(ctx.getChild(i*2))).getArrayValue();
+			}
+			
+			Constant c = new Constant(range);
+			return c;
+		}
+
+		
+		@Override
+		public Object visitNode_dec(Node_decContext ctx) {
+			String id = ctx.getText();
+			Variable v;
+			if (id.indexOf('[') > -1) {
+				id = ctx.getChild(0).getText();
+								
+				JFunction fs = (JFunction) visit(ctx.getChild(2));
+				int k = 1;
+				for (int i = 0; i < fs.getDimension(); i++) {
+					k *= fs.getArrayValue(i);
+				}				
+				Constant c = new Constant(new double[k]);
+				v = new Variable(id, c, fs);
+								
+			} else {
+				JFunction f = fun0;
+				v = new Variable(id, f);
+			}
+			doc.registerPlugin(v);
+			return v;
 		}
 				
 		@Override
@@ -115,17 +174,39 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			if (id.indexOf('[') == -1) {
 				f = (JFunction) doc.pluginmap.get(id);
 			} else {
+				id = ctx.getChild(0).getChild(0).getText() + '[';
+				for (int i = 2; i < ctx.getChild(0).getChildCount() -1; i++) {
+					id += (int) ((JFunction) visit(ctx.getChild(0).getChild(i))).getArrayValue();
+					if (i < ctx.getChild(0).getChildCount() -2) {
+						id += ',';
+					}
+				}
+				id += ']';
 				f = (JFunction) visit(ctx.getChild(0));
 			}
 			
 			Distribution distribution = new Distribution(distr, f);
-			distribution.setID("logP." + ctx.getChild(0).getText());
+			distribution.setID("logP." + id);
 			
 			distributions.add(distribution);
 			doc.registerPlugin(distribution);
 			
 			return distribution;
 		}		
+		
+		@Override
+		public Object visitVar(VarContext ctx) {
+			String id = ctx.getChild(0).getText();
+			JFunction var = (JFunction) doc.pluginmap.get(id);
+			if (ctx.getChildCount() == 1) {
+				// variable not indexed
+				return var;
+			}
+			JFunction index = (JFunction) visit(ctx.getChild(2));
+			JFunction element = new Index(var, index);
+			return element;
+		}
+		
 		
 		@Override
 		public Object visitExpression(CalculatorParser.ExpressionContext ctx) {
@@ -135,18 +216,19 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 					return doc.pluginmap.get(key);
 				}
 				if (iteratorValue.containsKey(key)) {
+					final int ivalue = iteratorValue.get(key);
 					return new JFunction() {						
 						@Override
 						public int getDimension() {return 1;}
 						
 						@Override
 						public double getArrayValue(int dim) {
-							return iteratorValue.get(key);
+							return ivalue;
 						}
 						
 						@Override
 						public double getArrayValue() {
-							return iteratorValue.get(key);
+							return ivalue;
 						}
 						
 						@Override

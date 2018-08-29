@@ -17,8 +17,8 @@ public class Variable extends RealParameter implements JFunction {
 	}
 
 	public Variable(String id, JFunction f, JFunction dimensions) {
-		super(toDouble(dimensions));
-		setMinorDimension((int) dimensions.getArrayValue(0)); 
+		super(toDouble(f));
+		setMinorDimension((int) dimensions.getArrayValue(1)); 
 		setID(id);
 	}
 

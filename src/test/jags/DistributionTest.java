@@ -21,13 +21,24 @@ public class DistributionTest extends TestCase {
 		assertEquals(test("a = 0.5  a ~ dlnorm(1, 1)"), -3.318330080327547/2);
 	}
 
-	
+	@Test
+	public void testLoopWithDistr() {
+		String cmd = "a0 = c(1,2,3) for (i in 1:3) { a0[i] ~ dnorm(0,1)}";
+		assertEquals(test(cmd, "logP.a0[1]"), -1.4189385332046727);
+		assertEquals(test(cmd, "logP.a0[2]"), -2.9189385332046727);
+		assertEquals(test(cmd, "logP.a0[3]"), -5.418938533204672);
+	}
+
 	protected static double test(String cmd) {
+		return test(cmd, "logP.a");
+	}
+	
+	protected static double test(String cmd, String valueOfInterest) {
 		try {
 			BeautiDoc doc = new BeautiDoc();
 			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
 			parser.parse("model{" + cmd + "}");
-			Distribution a = (Distribution) doc.pluginmap.get("logP.a");
+			Distribution a = (Distribution) doc.pluginmap.get(valueOfInterest);
 			double logP = a.calculateLogP();
 			return logP;
 			//parser.parse(cmd);

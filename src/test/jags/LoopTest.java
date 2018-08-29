@@ -9,7 +9,7 @@ import jags.CalculatorParsingException;
 import jags.nodes.JFunction;
 import junit.framework.TestCase;
 
-public class TestLoop extends TestCase {
+public class LoopTest extends TestCase {
 
 	
 	@Test
@@ -29,7 +29,6 @@ public class TestLoop extends TestCase {
 		assertEquals(8.0, test(cmd + " a = a0[2]"));
 		assertEquals(7.0, test(cmd + " a = a0[3]"));
 	}
-	
 	
 	protected static double test(String cmd) {
 		try {

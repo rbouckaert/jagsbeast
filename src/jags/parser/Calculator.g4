@@ -62,9 +62,9 @@ determ_relation: var assignment expression
 | FUNC '(' NAME ')' assignment expression 
 ;
 
-stoch_relation:	NAME TILDE distribution 
-| NAME '~' distribution truncated 
-| NAME '~' distribution interval 
+stoch_relation:	var TILDE distribution 
+| var '~' distribution truncated 
+| var '~' distribution interval 
 ;
 
 truncated: 'T' '(' expression ','  expression ')' ;
