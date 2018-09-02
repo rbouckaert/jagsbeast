@@ -31,16 +31,34 @@ public class VarTest extends TestCase {
 		doc = test("var a, b[N]; model{c=3}", doc);
 		JFunction b = ((JFunction)doc.pluginmap.get("b"));
 		assertEquals(10, b.getDimension());		
+		assertEquals(1, b.getDimensionCount());		
+		assertEquals(10, b.getDimension(0));		
 	}
 
 	@Test
-	public void testVarTwoeDimensinalStatement() {
+	public void testVarTwoDimensinalStatement() {
 		BeautiDoc doc = new BeautiDoc();
 		test("model{N=10}", doc);
 		doc = test("var a, b[N,N]; model{c=3}", doc);
 		JFunction b = ((JFunction)doc.pluginmap.get("b"));
 		assertEquals(100, b.getDimension());		
+		assertEquals(2, b.getDimensionCount());		
+		assertEquals(10, b.getDimension(0));		
+		assertEquals(10, b.getDimension(1));		
 	}
+
+	@Test
+	public void testVarTwoDimensinalStatement2() {
+		BeautiDoc doc = new BeautiDoc();
+		test("model{N=10}", doc);
+		doc = test("var a, b[N-1,N]; model{c=3}", doc);
+		JFunction b = ((JFunction)doc.pluginmap.get("b"));
+		assertEquals(90, b.getDimension());		
+		assertEquals(2, b.getDimensionCount());		
+		assertEquals(9, b.getDimension(0));		
+		assertEquals(10, b.getDimension(1));		
+	}
+
 
 	BeautiDoc test(String cmd, BeautiDoc doc) {
 		try {

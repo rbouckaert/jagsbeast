@@ -11,6 +11,7 @@ import beast.core.Param;
 @Description("Constant in graphical model")
 public class Constant extends BEASTObject implements JFunction {
 	double [] values;
+	int [] dimensions;
 
 	
 	public static Constant createConstant(double [] value) {
@@ -23,6 +24,14 @@ public class Constant extends BEASTObject implements JFunction {
 		this.values = value;
 	}
 	
+	public Constant(@Param(name="value",description="one or more dimensional value") double [] value, JFunction dimensions) {
+		this.values = value;		
+		this.dimensions = new int [dimensions.getLength()];
+		for (int i = 0; i < this.dimensions.length; i++) {
+			this.dimensions[i] = (int) dimensions.getArrayValue(i);
+		}
+	}
+
 	@Override
 	public void initAndValidate() {
 	}
@@ -62,15 +71,15 @@ public class Constant extends BEASTObject implements JFunction {
 
 	@Override
 	public int getDimensionCount() {
-		return 1;
+		return dimensions.length;
 	}
 
 	@Override
 	public int getDimension(int dim) {
-		if (dim > 0) {
+		if (dim > dimensions.length) {
 			return 0;
 		}
-		return getDimension();
+		return dimensions[dim];
 	}
 	
 }

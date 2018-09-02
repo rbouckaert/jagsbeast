@@ -30,6 +30,7 @@ public class LoopTest extends TestCase {
 		assertEquals(7.0, test(cmd + " a = a0[3]"));
 	}
 	
+	
 	protected static double test(String cmd) {
 		try {
 			BeautiDoc doc = new BeautiDoc();

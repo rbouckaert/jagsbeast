@@ -14,6 +14,10 @@ public interface JFunction extends beast.core.Function {
 	// get range of particular dimension
 	int getDimension(int dim);
 	
+	
+	// alias for Function.getDimension() 
+	default int getLength() {return getDimension();}
+
 	// access functions
 	
 	/** @return matrix value at row i, column j **/

@@ -111,7 +111,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				for (int i = 0; i < fs.getDimension(); i++) {
 					k *= fs.getArrayValue(i);
 				}				
-				Constant c = new Constant(new double[k]);
+				Constant c = new Constant(new double[k], fs);
 				v = new Variable(id, c, fs);
 								
 			} else {
