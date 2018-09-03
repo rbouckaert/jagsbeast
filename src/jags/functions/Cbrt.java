@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Cbrt extends UnivariableFunction {
 
-	public Cbrt(JFunction x) {
+	public Cbrt(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

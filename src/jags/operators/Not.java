@@ -2,11 +2,12 @@ package jags.operators;
 
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 import jags.functions.UnivariableFunction;
 
 public class Not extends UnivariableFunction {
 
-	public Not(JFunction x) {
+	public Not(@Param(name="x", description="value or function to apply not() to") JFunction x) {
 		super(x);
 	}
 

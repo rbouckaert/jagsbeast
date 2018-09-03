@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Cos extends UnivariableFunction {
 
-	public Cos(JFunction x) {
+	public Cos(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

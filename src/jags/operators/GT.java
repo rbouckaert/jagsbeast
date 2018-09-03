@@ -1,11 +1,12 @@
 package jags.operators;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 import jags.functions.BivariableFunction;
 
 public class GT extends BivariableFunction {
 
-	public GT(JFunction x, JFunction y) {
+	public GT(@Param(name="x", description="first function or value argument") JFunction x, @Param(name="y", description="second function or value argument")JFunction y) {
 		super(x, y);
 	}
 

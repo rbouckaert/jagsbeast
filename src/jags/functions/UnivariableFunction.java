@@ -3,6 +3,7 @@ package jags.functions;
 
 import beast.core.*;
 import jags.nodes.*;
+import beast.core.Param;
 
 @Description("Base class for deterministic function")
 abstract public class UnivariableFunction extends Transform {
@@ -23,5 +24,11 @@ abstract public class UnivariableFunction extends Transform {
 	@Override
 	public int getDimension(int dim) {
 		return x.getDimension(dim);
-	}		
+	}
+	
+	public JFunction getX() {return x;}
+	public void setX(JFunction x) {
+		this.x = x;
+		resetValue(x.getDimension());
+	}
 }

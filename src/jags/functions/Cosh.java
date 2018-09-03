@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Cosh extends UnivariableFunction {
 
-	public Cosh(JFunction x) {
+	public Cosh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

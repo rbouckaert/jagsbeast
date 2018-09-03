@@ -3,10 +3,11 @@ package jags.functions;
 import org.apache.commons.math.MathException;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Probit extends UnivariableFunction {
 	
-	public Probit(JFunction x) {
+	public Probit(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

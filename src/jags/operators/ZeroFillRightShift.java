@@ -1,11 +1,12 @@
 package jags.operators;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 import jags.functions.BivariableFunction;
 
 public class ZeroFillRightShift extends BivariableFunction {
 
-	public ZeroFillRightShift(JFunction x, JFunction y) {
+	public ZeroFillRightShift(@Param(name="x", description="first function or value argument") JFunction x, @Param(name="y", description="second function or value argument")JFunction y) {
 		super(x, y);
 	}
 

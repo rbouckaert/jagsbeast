@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Signum extends UnivariableFunction {
 
-	public Signum(JFunction x) {
+	public Signum(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

@@ -2,6 +2,7 @@ package jags.functions;
 
 import beast.core.*;
 import jags.nodes.*;
+import beast.core.Param;
 
 @Description("Base class for deterministic function with two arguments")
 abstract public class BivariableFunction extends Transform {
@@ -11,8 +12,8 @@ abstract public class BivariableFunction extends Transform {
 	protected Mode mode;
 	
 	protected BivariableFunction(
-			@Param(name="x", description="argument of cosine function") JFunction x,
-			@Param(name="y", description="argument of cosine function") JFunction y
+			@Param(name="x", description="argument of this function") JFunction x,
+			@Param(name="y", description="argument of this function") JFunction y
 			) {
 		super();
 		this.x = x;
@@ -69,4 +70,10 @@ abstract public class BivariableFunction extends Transform {
 			
 		throw new IllegalArgumentException("dimensions of x and y should be the same");
 	}
+	
+	
+	public JFunction getX() {return x;}
+	public void setX(JFunction x) {this.x = x;}
+	public JFunction getY() {return y;}
+	public void setY(JFunction y) {this.y = y;}
 }

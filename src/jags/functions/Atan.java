@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Atan extends UnivariableFunction {
 
-	public Atan(JFunction x) {
+	public Atan(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

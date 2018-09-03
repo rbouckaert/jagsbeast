@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Logit extends UnivariableFunction {
 
-	public Logit(JFunction x) {
+	public Logit(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

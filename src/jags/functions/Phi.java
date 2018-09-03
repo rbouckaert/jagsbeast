@@ -5,11 +5,12 @@ import org.apache.commons.math.distribution.NormalDistribution;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Phi extends UnivariableFunction {
 	NormalDistribution norm;
 	
-	public Phi(JFunction x) {
+	public Phi(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 		norm = new NormalDistributionImpl();
 	}

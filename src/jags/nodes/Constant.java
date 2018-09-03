@@ -14,9 +14,9 @@ public class Constant extends BEASTObject implements JFunction {
 	int [] dimensions;
 
 	
-	public static Constant createConstant(double [] value) {
+	public static jags.nodes.Constant createConstant(double [] value) {
 		// TODO: get from constantCache
-		Constant c = new Constant(value);
+		jags.nodes.Constant c = new jags.nodes.Constant(value);
 		return c;
 	}
 	
@@ -82,6 +82,14 @@ public class Constant extends BEASTObject implements JFunction {
 			return 0;
 		}
 		return dimensions[dim];
+	}
+	
+	public double [] getValue() {return values.clone();}
+	
+	public void setValue(double [] values) {
+		this.values = values.clone();
+		this.dimensions = new int [1];
+		this.dimensions[0] = values.length;
 	}
 	
 }

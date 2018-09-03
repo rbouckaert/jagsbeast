@@ -3,10 +3,11 @@ package jags.functions;
 import java.util.Arrays;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Sort extends UnivariableFunction {
 
-	public Sort(JFunction x) {
+	public Sort(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

@@ -3,10 +3,11 @@ package jags.functions;
 
 import beast.util.HeapSort;
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Order extends UnivariableFunction {
 
-	public Order(JFunction x) {
+	public Order(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

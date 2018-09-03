@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Tanh extends UnivariableFunction {
 
-	public Tanh(JFunction x) {
+	public Tanh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

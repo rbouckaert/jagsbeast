@@ -72,7 +72,7 @@ public abstract class Transform extends CalculationNode implements JFunction {
 
 	// CalculationNode implementation
 	@Override
-	protected void store() {
+	public void store() {
 		if (storedvalues == null || storedvalues.length != values.length) {
 			storedvalues = new double[values.length];
 		}
@@ -81,7 +81,7 @@ public abstract class Transform extends CalculationNode implements JFunction {
 	}
 	
 	@Override
-	protected void restore() {
+	public void restore() {
 		double [] tmp = values;
 		values = storedvalues;
 		storedvalues = tmp;
@@ -106,4 +106,17 @@ public abstract class Transform extends CalculationNode implements JFunction {
 		}
 		return getDimension();
 	}
+
+	public double [] getValue() {return values.clone();}
+	
+	public void setValue(double [] values) {
+		this.values = values.clone();
+	}
+	
+	public void resetValue(int dim) {
+		isUpToDate = false;
+		values = new double[dim];
+		storedvalues = new double[dim];
+	}
+	
 }

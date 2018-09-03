@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Log10 extends UnivariableFunction {
 
-	public Log10(JFunction x) {
+	public Log10(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

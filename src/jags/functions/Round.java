@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Round extends UnivariableFunction {
 
-	public Round(JFunction x) {
+	public Round(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

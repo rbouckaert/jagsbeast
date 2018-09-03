@@ -1,10 +1,11 @@
 package jags.functions;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class Acos extends UnivariableFunction {
 
-	public Acos(JFunction x) {
+	public Acos(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

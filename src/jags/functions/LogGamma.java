@@ -3,10 +3,11 @@ package jags.functions;
 import org.apache.commons.math.special.Gamma;
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 
 public class LogGamma extends UnivariableFunction {
 
-	public LogGamma(JFunction x) {
+	public LogGamma(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);
 	}
 

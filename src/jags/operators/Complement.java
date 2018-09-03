@@ -2,11 +2,12 @@ package jags.operators;
 
 
 import jags.nodes.JFunction;
+import beast.core.Param;
 import jags.functions.UnivariableFunction;
 
 public class Complement extends UnivariableFunction {
 
-	public Complement(JFunction x) {
+	public Complement(@Param(name="x", description="value or function to take complement from") JFunction x) {
 		super(x);
 	}
 
