@@ -1708,6 +1708,9 @@ public class CalculatorParser extends Parser {
 		public MethodCallContext methodCall() {
 			return getRuleContext(MethodCallContext.class,0);
 		}
+		public Range_listContext range_list() {
+			return getRuleContext(Range_listContext.class,0);
+		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2009,7 +2012,7 @@ public class CalculatorParser extends Parser {
 						setState(294);
 						match(T__2);
 						setState(295);
-						expression(0);
+						range_list(0);
 						setState(296);
 						match(T__3);
 						}
@@ -2226,8 +2229,8 @@ public class CalculatorParser extends Parser {
 		"\u0120\7#\2\2\u0120\u012f\5\62\32\6\u0121\u0122\f\4\2\2\u0122\u0123\7"+
 		"$\2\2\u0123\u012f\5\62\32\5\u0124\u0125\f\3\2\2\u0125\u0126\7%\2\2\u0126"+
 		"\u012f\5\62\32\4\u0127\u0128\f\21\2\2\u0128\u0129\7\5\2\2\u0129\u012a"+
-		"\5\62\32\2\u012a\u012b\7\6\2\2\u012b\u012f\3\2\2\2\u012c\u012d\f\17\2"+
-		"\2\u012d\u012f\t\t\2\2\u012e\u00fe\3\2\2\2\u012e\u0101\3\2\2\2\u012e\u0104"+
+		"\5&\24\2\u012a\u012b\7\6\2\2\u012b\u012f\3\2\2\2\u012c\u012d\f\17\2\2"+
+		"\u012d\u012f\t\t\2\2\u012e\u00fe\3\2\2\2\u012e\u0101\3\2\2\2\u012e\u0104"+
 		"\3\2\2\2\u012e\u010f\3\2\2\2\u012e\u0112\3\2\2\2\u012e\u0115\3\2\2\2\u012e"+
 		"\u0118\3\2\2\2\u012e\u011b\3\2\2\2\u012e\u011e\3\2\2\2\u012e\u0121\3\2"+
 		"\2\2\u012e\u0124\3\2\2\2\u012e\u0127\3\2\2\2\u012e\u012c\3\2\2\2\u012f"+

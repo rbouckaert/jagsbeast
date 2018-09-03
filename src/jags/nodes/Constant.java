@@ -22,6 +22,8 @@ public class Constant extends BEASTObject implements JFunction {
 	
 	public Constant(@Param(name="value",description="one or more dimensional value") double [] value) {
 		this.values = value;
+		this.dimensions = new int [1];
+		this.dimensions[0] = values.length;
 	}
 	
 	public Constant(@Param(name="value",description="one or more dimensional value") double [] value, JFunction dimensions) {

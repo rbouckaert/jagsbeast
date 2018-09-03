@@ -59,6 +59,26 @@ public class VarTest extends TestCase {
 		assertEquals(10, b.getDimension(1));		
 	}
 
+	@Test
+	public void testLoop2DimAssignment() {
+		BeautiDoc doc = new BeautiDoc();
+		test("model{N=3}", doc);
+		String cmd = "var b[N,N]; model{"
+				+ "a = c(c(3,2,1),c(30,20,10),c(300,200,100)) "
+				+ "for (j in 1:3) {"
+				+ "  for (i in 1:3) { "
+				+ "    b[i,j] = a[j,i] "
+				+ "  }"
+				+ "}"
+				+ "}";
+		doc = test(cmd, doc);
+		JFunction b = ((JFunction)doc.pluginmap.get("b"));
+		assertEquals(9, b.getDimension());
+		double [] expected = new double[] {3, 30, 300, 2, 20, 200, 1, 10, 100}; 
+		for (int i = 0; i < 9; i++) {
+			assertEquals(expected[i], b.getArrayValue(i));
+		}
+	}	
 
 	BeautiDoc test(String cmd, BeautiDoc doc) {
 		try {

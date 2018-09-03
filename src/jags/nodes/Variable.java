@@ -44,10 +44,27 @@ public class Variable extends RealParameter implements JFunction {
 	
 	@Override
 	public String toString() {
-		if (fun.getDimension() == 1) {
+		if (fun.getLength() == 1) {
 			return getID() + " = " + values[0];
 		}
-		return getID() + " = " + Arrays.toString(values);
+		if (fun.getDimensionCount() == 1) {
+			return getID() + " = " + Arrays.toString(values);
+		}
+		
+		StringBuilder b = new StringBuilder();
+		b.append(getID() + " = [");
+		int k = 0;
+		for (int i = 0; i < getDimension(0); i++) {
+			b.append('[');
+			for (int j = 0; j < getDimension(1) - 1; j++) {
+				b.append(values[k++]);
+				b.append(", ");
+			}
+			b.append(values[k++]);			
+			b.append("] ");
+		}
+		b.append("]");
+		return b.toString();
 	}
 
 	@Override

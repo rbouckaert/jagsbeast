@@ -44,7 +44,7 @@ public class Concat extends Transform {
 		if (function[0].getDimensionCount() > 1) {
 			return function[0].getDimensionCount() + 1;
 		}
-		if (function[0].getDimension() > 1) {
+		if (function[0].getLength() > 1) {
 			return function[0].getDimensionCount() + 1;
 		}
 		return 1;

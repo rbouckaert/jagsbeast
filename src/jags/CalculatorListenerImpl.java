@@ -381,6 +381,15 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		public Object visitCounter(CalculatorParser.CounterContext ctx) {
 			return super.visitCounter(ctx);
 		}
+
+		@Override
+		public Object visitRange_list(Range_listContext ctx) {
+			double [] f = new double[ctx.getChildCount()/2+1];
+			for (int i = 0; i < f.length; i++) {
+				f[i] = ((JFunction) visit(ctx.getChild(i*2))).getArrayValue();
+			}
+			return new Constant(f);
+		}
 		
 		@Override // range_element: | expression 
 		public Object visitRange_element(CalculatorParser.Range_elementContext ctx) {

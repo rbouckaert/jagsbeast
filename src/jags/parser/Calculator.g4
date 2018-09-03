@@ -100,7 +100,7 @@ expression
     : constant
     | NAME
     | '(' expression ')'
-    | expression '[' expression ']' // TODO: implement
+    | expression '[' range_list ']' // TODO: implement
     | methodCall
     | expression postfix=('++' | '--')
     | prefix=('+'|'-'|'++'|'--') expression

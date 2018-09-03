@@ -15,7 +15,11 @@ public class Index extends BivariableFunction {
 
 	@Override
 	protected void doTransform() {
-		values[0] = x.getArrayValue((int) y.getArrayValue() - 1);
+		int k = (int) y.getArrayValue(0) - 1;
+		for (int i = 1; i < y.getLength(); i++) {
+			k = (int)(k * x.getDimension(i-1) + y.getArrayValue(i)-1);
+		}
+		values[0] = x.getArrayValue(k);
 	}
 	
 	
