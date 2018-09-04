@@ -11,6 +11,7 @@ import beast.util.LogAnalyser;
 import jags.CalculatorListenerImpl;
 import jags.CalculatorParsingException;
 import jags.nodes.Distribution;
+import jags.nodes.JFunction;
 import jags.nodes.Variable;
 import junit.framework.TestCase;
 
@@ -18,7 +19,7 @@ public class MCMCTest extends TestCase {
 
 	
 	final static String FILE_NAME = "jagsbeast.log";
-	
+
 	@Test
 	public void testMCMC() {
 		String cmd = "a = 0.1  a ~ dnorm(100, 1)";
@@ -56,4 +57,43 @@ public class MCMCTest extends TestCase {
 		}
 	}
 	
+	@Test
+	public void testMCMC2() {
+		String cmd = "b = 0.1  a = 2 * b  a ~ dnorm(100, 1)";
+		try {
+			BeautiDoc doc = new BeautiDoc();
+			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
+			parser.parse("model{" + cmd + "}");
+			Distribution logP = (Distribution) doc.pluginmap.get("logP.a");
+			JFunction a = (JFunction) doc.pluginmap.get("a");
+			Variable b = (Variable) doc.pluginmap.get("b");
+			ScaleOperator operator = new ScaleOperator();
+			operator.initByName("parameter", b, "weight", 1.0, "scaleFactor", 0.75);
+			Logger logger = new Logger();
+			logger.initByName("log", b, "log", a, "log", logP, "fileName", FILE_NAME, "logEvery", 10);
+			
+			Logger.FILE_MODE = Logger.FILE_MODE.overwrite;
+			MCMC mcmc = new MCMC();
+			mcmc.initByName("distribution", logP, "operator", operator, "logger", logger, "chainLength", 100000L);
+
+			mcmc.run();
+			
+			
+			LogAnalyser traceLog = new LogAnalyser(FILE_NAME);
+			double bMean = traceLog.getMean("b");
+			assertEquals(bMean, 50, 1e-1);
+			double aMean = traceLog.getMean("a");
+			assertEquals(aMean, 100, 1e-1);
+			double logPMean = traceLog.getMean("logP.a");
+			assertEquals(logPMean, -1.419, 2e-2);
+			
+			
+		} catch (CalculatorParsingException e) {
+			Log.info("model{" + cmd + "}");
+			Log.info(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace(Log.err);
+			Log.info("Error: " + e.getMessage());
+		}
+	}
 }

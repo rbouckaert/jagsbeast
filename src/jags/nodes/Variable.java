@@ -9,6 +9,7 @@ import beast.core.parameter.RealParameter;
 @Description("Random variable in graphical model")
 public class Variable extends RealParameter implements JFunction {
 	JFunction fun;
+	boolean isUpToDate = false;
 	
 	public Variable() {
 	}
@@ -55,6 +56,7 @@ public class Variable extends RealParameter implements JFunction {
 
         valuesInput.get().clear();
 		valuesInput.setRule(Validate.OPTIONAL);
+		isUpToDate = true;
 	}
 	
 	private static Double[] toDouble(JFunction dimensions) {
@@ -64,7 +66,27 @@ public class Variable extends RealParameter implements JFunction {
 		}
 		return new Double[k];
 	}
+	
+	private void update() {
+		for (int i = 0; i < values.length; i++) {
+			values[i] = fun.getArrayValue(i);
+		}
+		isUpToDate = true;
+	}
 
+	@Override
+	public double getArrayValue(int index) {
+		if (!isUpToDate) {
+			update();
+		}
+		return super.getArrayValue(index);
+	}
+	
+	@Override
+	public double getArrayValue() {
+		return getArrayValue(0);
+	}
+	
 	private static Double[] funToDouble(JFunction fun) {
 		Double [] d = new Double[fun.getDimension()];
 		for (int i = 0; i < d.length; i++) {
@@ -142,5 +164,12 @@ public class Variable extends RealParameter implements JFunction {
         for (Double value : values) {
         	valuesInput.get().add(value);
         }
+	}
+	
+	
+	@Override
+	protected boolean requiresRecalculation() {
+		isUpToDate = false;
+		return super.requiresRecalculation();
 	}
 }
