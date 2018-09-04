@@ -40,8 +40,8 @@ public class Variable extends RealParameter implements JFunction {
 
         int dimension = Math.max(dimensionInput.get(), valuesString.length);
         dimensionInput.setValue(dimension, this);
-        values = (Double[]) Array.newInstance(getMax().getClass(), dimension);
-        storedValues = (Double[]) Array.newInstance(getMax().getClass(), dimension);
+        values = new Double[dimension];
+        storedValues = new Double[dimension];
         for (int i = 0; i < values.length; i++) {
             values[i] = valuesString[i % valuesString.length];
         }
@@ -137,8 +137,8 @@ public class Variable extends RealParameter implements JFunction {
 		Double [] values = funToDouble(fun);
         this.values = values.clone();
         this.storedValues = values.clone();
-        m_fUpper = getMax();
-        m_fLower = getMin();
+        m_fUpper = Double.POSITIVE_INFINITY;
+        m_fLower = Double.NEGATIVE_INFINITY;
         m_bIsDirty = new boolean[values.length];
         for (Double value : values) {
         	valuesInput.get().add(value);
