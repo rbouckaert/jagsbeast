@@ -4,6 +4,9 @@ import jags.nodes.JFunction;
 import beast.core.Param;
 import jags.functions.BivariableFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Index operation")
 public class Index extends BivariableFunction {
 
 	public Index(@Param(name="x", description="variable to be indexed") JFunction x, 
@@ -21,9 +24,7 @@ public class Index extends BivariableFunction {
 		}
 		values[0] = x.getArrayValue(k);
 	}
-	
-	
-	
+			
 	@Override
 	protected int dimensionCheck() {
 		mode = Mode.mode11;
@@ -35,4 +36,6 @@ public class Index extends BivariableFunction {
 		throw new RuntimeException("Do not call doTransform(x,y), call doTransform() instead");
 	}
 
+	public JFunction getIndex() {return y;}
+	public void setIndex(JFunction index) {y = index;}
 }

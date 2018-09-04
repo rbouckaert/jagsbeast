@@ -9,11 +9,11 @@ import beast.core.parameter.RealParameter;
 public class Variable extends RealParameter implements JFunction {
 	JFunction fun;
 	
-	public Variable(@Param(name="id",description="identifier for this variable") String id, 
+	public Variable(//@Param(name="id",description="identifier for this variable") String id, 
 			@Param(name="fun", description="function that determines values of the Variable") JFunction fun) {
 		super(funToDouble(fun));
 		this.fun = fun;
-		setID(id);
+		//setID(id);
 	}
 
 	public Variable(String id, JFunction f, JFunction dimensions) {
@@ -89,5 +89,13 @@ public class Variable extends RealParameter implements JFunction {
 	public void setValue(int param, Double value) {
 		values[param] = value;		
 		super.setValue(param, value);
+	}
+	
+	
+	public JFunction getFun() {
+		return fun;
+	}
+	public void setFun(JFunction fun) {
+		this.fun = fun;
 	}
 }

@@ -16,7 +16,7 @@ public class Exponential extends JAGSDistribution {
     
     JFunction lambda;
     
-    public Exponential(@Param(name="mean", description="mean of the distribution") JFunction lambda) {
+    public Exponential(@Param(name="lambda", description="mean of the distribution") JFunction lambda) {
     	this.lambda = lambda;
     }
 
@@ -66,4 +66,10 @@ public class Exponential extends JAGSDistribution {
 		return 1;
 	}
 
+	public JFunction getLambda() {
+		return lambda;
+	}
+	public void setLambda(JFunction lambda) {
+		this.lambda = lambda;
+	}
 } // class Exponential

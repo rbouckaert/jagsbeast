@@ -3,6 +3,9 @@ package jags.functions;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Atan function")
 public class Atan extends UnivariableFunction {
 
 	public Atan(@Param(name="x", description="function or value argument") JFunction x) {

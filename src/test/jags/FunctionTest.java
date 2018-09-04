@@ -38,8 +38,8 @@ public class FunctionTest extends TestCase {
 		assertEquals(test(m3 + " a=length(dim(m3))"), 2.0);
 
 		assertEquals(test(m1 +" a= inverse(m1)[1]"), -2.0, 1e-12);
-		assertEquals(test(m1 +" a= inverse(m1)[2]"), 1.5, 1e-12);
-		assertEquals(test(m1 +" a= inverse(m1)[3]"), 1.0, 1e-12);
+		assertEquals(test(m1 +" a= inverse(m1)[3]"), 1.5, 1e-12);
+		assertEquals(test(m1 +" a= inverse(m1)[2]"), 1.0, 1e-12);
 		assertEquals(test(m1 +" a= inverse(m1)[4]"), -0.5, 1e-12);
 		
 		assertEquals(test(m1 + " " + m2 +" a= inprod(m1,m2)[1]"), 2.0);
@@ -185,7 +185,7 @@ public class FunctionTest extends TestCase {
 			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
 			parser.parse("model{" + cmd + "}");
 			JFunction a = (JFunction) doc.pluginmap.get("a");
-			XMLProducer p = new XMLProducer();
+//			XMLProducer p = new XMLProducer();
 //			String xml = p.toXML((BEASTObject) a);
 //			System.out.println(xml);
 			return a.getArrayValue();

@@ -5,6 +5,9 @@ import jags.nodes.JFunction;
 import beast.core.Param;
 import jags.functions.UnivariableFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Not operation")
 public class Not extends UnivariableFunction {
 
 	public Not(@Param(name="x", description="value or function to apply not() to") JFunction x) {

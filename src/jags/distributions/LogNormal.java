@@ -24,8 +24,8 @@ public class LogNormal extends JAGSDistribution {
 
     JFunction M, S;
     
-    public LogNormal(@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction M,
-    		@Param(name="mean", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction S) {
+    public LogNormal(@Param(name="mu", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction M,
+    		@Param(name="sigma", description="M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.") JFunction S) {
     	this.M = M;
     	this.S = S;
     }
@@ -160,4 +160,17 @@ public class LogNormal extends JAGSDistribution {
 		return 2;
 	}
 
+	
+	public JFunction getMu() {
+		return M;
+	}
+	public void setMu(JFunction m) {
+		M = m;
+	}
+	public JFunction getSigma() {
+		return S;
+	}
+	public void setSigma(JFunction s) {
+		S = s;
+	}
 }

@@ -31,4 +31,10 @@ public class Sum extends Transform {
 		values[0] = sum;
 	}
 
+	public JFunction[] getF() {
+		return function;
+	}
+	public void setF(JFunction[] function) {
+		this.function = function;
+	}
 }

@@ -3,7 +3,9 @@ package test.jags;
 import org.junit.Test;
 
 import beast.app.beauti.BeautiDoc;
+import beast.core.BEASTObject;
 import beast.core.util.Log;
+import beast.util.XMLProducer;
 import jags.CalculatorListenerImpl;
 import jags.CalculatorParsingException;
 import jags.nodes.JFunction;
@@ -48,6 +50,9 @@ public class LoopTest extends TestCase {
 			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
 			parser.parse("model{" + cmd + "}");
 			JFunction a = (JFunction) doc.pluginmap.get("a");
+//			XMLProducer p = new XMLProducer();
+//			String xml = p.toXML((BEASTObject) a);
+//			System.out.println(xml);
 			return a.getArrayValue();
 			//parser.parse(cmd);
 		} catch (CalculatorParsingException e) {

@@ -3,6 +3,9 @@ package jags.functions;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Asinh function")
 public class Asinh extends UnivariableFunction {
 
 	public Asinh(@Param(name="x", description="function or value argument") JFunction x) {

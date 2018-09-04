@@ -4,6 +4,9 @@ import beast.core.Param;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
+import beast.core.Description;
+
+@Description("Performs the Mean function")
 public class Mean extends Transform {
 	JFunction x;
 
@@ -22,4 +25,11 @@ public class Mean extends Transform {
 		values[0] = sum / x.getDimension();
 	}
 
+	public JFunction getX() {
+		return x;
+	}
+	public void setX(JFunction  x) {
+		this.x = x;
+		resetValue(1);
+	}
 }

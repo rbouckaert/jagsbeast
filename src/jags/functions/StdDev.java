@@ -4,6 +4,9 @@ import beast.core.Param;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
+import beast.core.Description;
+
+@Description("Performs the StdDev function")
 public class StdDev extends Transform {
 	JFunction x;
 
@@ -30,4 +33,11 @@ public class StdDev extends Transform {
 		values[0] = Math.sqrt(sum/(x.getDimension() - 1));
 	}
 
+	public JFunction getX() {
+		return x;
+	}
+	public void setX(JFunction  x) {
+		this.x = x;
+		resetValue(1);
+	}
 }

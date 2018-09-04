@@ -2,7 +2,10 @@ package jags.functions;
 
 import beast.core.Description;
 import beast.core.Param;
-import beast.math.matrixalgebra.Matrix;
+//import beast.math.matrixalgebra.Matrix;
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
@@ -30,10 +33,17 @@ public class Inverse extends Transform {
 				in[i][j] = a.matrixValue(i, j);
 			}
 		}
-		Matrix A = new Matrix(in);
-		double [][] Inverse = A.inverse().toComponents();
+//		Matrix A = new Matrix(in);
+//		double [][] Inverse = A.inverse().toComponents();
+//		for (int i = 0; i < m; i++) {
+//			System.arraycopy(Inverse[i], 0, values, i*n, n);
+//		}
+		DoubleMatrix2D A = DoubleFactory2D.dense.make(in);
+		
+		Algebra a = new Algebra();
+		double [][] inverse = a.inverse(A).toArray();
 		for (int i = 0; i < m; i++) {
-			System.arraycopy(Inverse[i], 0, values, i*n, n);
+			System.arraycopy(inverse[i], 0, values, i*n, n);
 		}
 	}
 
@@ -49,5 +59,13 @@ public class Inverse extends Transform {
 		case  1: return	a.getDimension(0);
 		} 
 		return 0;
+	}
+	
+	public JFunction getA() {
+		return a;
+	}
+	public void setA(JFunction a) {
+		this.a = a;
+		resetValue(a.getDimension());
 	}
 }

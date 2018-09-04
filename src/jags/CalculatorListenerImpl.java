@@ -116,7 +116,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 								
 			} else {
 				JFunction f = fun0;
-				v = new Variable(id, f);
+				v = new Variable(f);
+				v.setID(id);
 			}
 			doc.registerPlugin(v);
 			return v;
@@ -159,7 +160,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				return c;
 			}
 
-			Variable c = new Variable(id, f);
+			Variable c = new Variable(f);
 			c.setID(id);
 			doc.registerPlugin(c);
 			System.out.println(c);			

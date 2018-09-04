@@ -34,4 +34,17 @@ public class Range extends Transform {
 		}
 	}
 
+	
+	public JFunction getStart() {
+		return x;
+	}
+	public void setStart(JFunction x) {
+		this.x = x;
+	}
+	public JFunction getEnd() {
+		return y;
+	}
+	public void setEnd(JFunction y) {
+		this.y = y;
+	}
 }

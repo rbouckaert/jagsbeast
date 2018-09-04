@@ -2,8 +2,11 @@ package jags.functions;
 
 import beast.core.Description;
 import beast.core.Param;
-import beast.math.matrixalgebra.IllegalDimension;
-import beast.math.matrixalgebra.Matrix;
+//import beast.math.matrixalgebra.IllegalDimension;
+//import beast.math.matrixalgebra.Matrix;
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
@@ -48,16 +51,24 @@ public class MatrixMult extends Transform {
 			}
 		}
 		
-		Matrix A = new Matrix(in);
-		Matrix B = new Matrix(in2);
-		double[][] Inverse;
-		try {
-			Inverse = A.product(B).toComponents();
-			for (int i = 0; i < m; i++) {
-				System.arraycopy(Inverse[i], 0, values, i*n, n);
-			}
-		} catch (IllegalDimension e) {
-			e.printStackTrace();
+//		Matrix A = new Matrix(in);
+//		Matrix B = new Matrix(in2);
+//		double[][] Inverse;
+//		try {
+//			Inverse = A.product(B).toComponents();
+//			for (int i = 0; i < m; i++) {
+//				System.arraycopy(Inverse[i], 0, values, i*n, n);
+//			}
+//		} catch (IllegalDimension e) {
+//			e.printStackTrace();
+//		}
+		
+		DoubleMatrix2D A = DoubleFactory2D.dense.make(in);
+		DoubleMatrix2D B = DoubleFactory2D.dense.make(in2);
+		Algebra a = new Algebra();
+		double [][] mult = a.mult(A, B).toArray();
+		for (int i = 0; i < m; i++) {
+			System.arraycopy(mult[i], 0, values, i*n, n);
 		}
 	}
 
@@ -74,4 +85,22 @@ public class MatrixMult extends Transform {
 		} 
 		return 0;
 	}
+
+	public JFunction getA() {
+		return a;
+	}
+
+	public void setA(JFunction a) {
+		this.a = a;
+	}
+
+	public JFunction getB() {
+		return b;
+	}
+
+	public void setB(JFunction b) {
+		this.b = b;
+	}
+	
+	
 }

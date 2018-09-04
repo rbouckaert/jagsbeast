@@ -5,6 +5,9 @@ import java.util.Arrays;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Sort function")
 public class Sort extends UnivariableFunction {
 
 	public Sort(@Param(name="x", description="function or value argument") JFunction x) {

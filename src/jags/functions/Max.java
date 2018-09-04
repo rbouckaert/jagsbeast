@@ -5,6 +5,8 @@ import beast.core.Param;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
+import beast.core.Description;
+
 @Description("Gets maximum of list of functions")
 public class Max extends Transform {
 	JFunction [] function;
@@ -30,6 +32,13 @@ public class Max extends Transform {
 		}
 		values[0] = max;
 		
+	}
+	
+	public JFunction[] getF() {
+		return function;
+	}
+	public void setF(JFunction[] function) {
+		this.function = function;
 	}
 
 }

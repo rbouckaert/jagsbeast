@@ -3,7 +3,9 @@ package test.jags;
 import org.junit.Test;
 
 import beast.app.beauti.BeautiDoc;
+import beast.core.BEASTObject;
 import beast.core.util.Log;
+import beast.util.XMLProducer;
 import jags.CalculatorListenerImpl;
 import jags.CalculatorParsingException;
 import jags.nodes.*;
@@ -40,6 +42,9 @@ public class DistributionTest extends TestCase {
 			parser.parse("model{" + cmd + "}");
 			Distribution a = (Distribution) doc.pluginmap.get(valueOfInterest);
 			double logP = a.calculateLogP();
+//			XMLProducer p = new XMLProducer();
+//			String xml = p.toXML((BEASTObject) a);
+//			System.out.println(xml);
 			return logP;
 			//parser.parse(cmd);
 		} catch (CalculatorParsingException e) {

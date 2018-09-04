@@ -12,6 +12,7 @@ import beast.core.Param;
 public class Constant extends BEASTObject implements JFunction {
 	double [] values;
 	int [] dimensions;
+	JFunction dim;
 
 	
 	public static jags.nodes.Constant createConstant(double [] value) {
@@ -26,12 +27,14 @@ public class Constant extends BEASTObject implements JFunction {
 		this.dimensions[0] = values.length;
 	}
 	
-	public Constant(@Param(name="value",description="one or more dimensional value") double [] value, JFunction dimensions) {
+	public Constant(@Param(name="value",description="one or more dimensional value") double [] value, 
+			@Param(name="dim",description="dimensions of the value")JFunction dimensions) {
 		this.values = value;		
 		this.dimensions = new int [dimensions.getLength()];
 		for (int i = 0; i < this.dimensions.length; i++) {
 			this.dimensions[i] = (int) dimensions.getArrayValue(i);
 		}
+		this.dim = dimensions;
 	}
 
 	@Override
@@ -90,6 +93,11 @@ public class Constant extends BEASTObject implements JFunction {
 		this.values = values.clone();
 		this.dimensions = new int [1];
 		this.dimensions[0] = values.length;
+	}
+	
+	public JFunction getDim() {return dim;}
+	public void setDim(JFunction dim) {
+		this.dim = dim;
 	}
 	
 }

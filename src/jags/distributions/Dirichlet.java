@@ -92,4 +92,10 @@ public class Dirichlet extends JAGSDistribution {
 		return 1;
 	}
 
+	public JFunction getAlpha() {
+		return alpha;
+	}
+	public void setAlpha(JFunction alpha) {
+		this.alpha = alpha;
+	}
 }

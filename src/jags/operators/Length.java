@@ -5,6 +5,9 @@ import jags.nodes.JFunction;
 import beast.core.Param;
 import jags.functions.UnivariableFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Length operation")
 public class Length extends UnivariableFunction {
 
 	public Length(@Param(name="x", description="value or function to take length of") JFunction x) {

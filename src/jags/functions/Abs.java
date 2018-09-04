@@ -3,6 +3,9 @@ package jags.functions;
 import beast.core.Param;
 import jags.nodes.JFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Abs function")
 public class Abs extends UnivariableFunction {
 
 	public Abs(@Param(name="x", description="function or value argument") JFunction x) {

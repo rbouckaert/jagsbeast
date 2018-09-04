@@ -6,6 +6,9 @@ import jags.functions.UnivariableFunction;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Dim operation")
 public class Dim extends UnivariableFunction {
 
 	public Dim(@Param(name="x", description="value or function to take dimentions of") JFunction x) {

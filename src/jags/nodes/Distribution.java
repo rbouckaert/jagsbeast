@@ -107,4 +107,16 @@ public class Distribution extends beast.core.Distribution {
         return arguments;
     }
 
+    public ParametricDistribution getDistr() {
+		return distr;
+	}
+    public void setDistr(ParametricDistribution distr) {
+		this.distr = distr;
+	}
+    public JFunction getX() {
+		return x;
+	}
+    public void setX(JFunction x) {
+		this.x = x;
+	}
 }

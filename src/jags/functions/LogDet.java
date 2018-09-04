@@ -2,8 +2,11 @@ package jags.functions;
 
 import beast.core.Description;
 import beast.core.Param;
-import beast.math.matrixalgebra.IllegalDimension;
-import beast.math.matrixalgebra.Matrix;
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.linalg.Algebra;
+//import beast.math.matrixalgebra.IllegalDimension;
+//import beast.math.matrixalgebra.Matrix;
 import jags.nodes.JFunction;
 import jags.nodes.Transform;
 
@@ -31,13 +34,22 @@ public class LogDet extends Transform {
 				in[i][j] = a.matrixValue(i, j);
 			}
 		}
-		Matrix A = new Matrix(in);
-		try {
-			values[0] = Math.log(A.determinant());
-		} catch (IllegalDimension e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		Matrix A = new Matrix(in);
+//		try {
+//			values[0] = Math.log(A.determinant());
+//		} catch (IllegalDimension e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		DoubleMatrix2D A = DoubleFactory2D.dense.make(in);
+		Algebra a = new Algebra();
+		values[0] = Math.log(a.det(A));
 	}
 
+	public JFunction getA() {
+		return a;
+	}
+	public void setA(JFunction a) {
+		this.a = a;
+	}
 }

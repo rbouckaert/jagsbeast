@@ -5,6 +5,9 @@ import jags.nodes.JFunction;
 import beast.core.Param;
 import jags.functions.UnivariableFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Complement operation")
 public class Complement extends UnivariableFunction {
 
 	public Complement(@Param(name="x", description="value or function to take complement from") JFunction x) {

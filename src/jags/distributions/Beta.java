@@ -21,7 +21,7 @@ public class Beta extends JAGSDistribution {
 
     
     public Beta(@Param(name="alpha", description="first shape parameter, defaults to 1") JFunction alpha,
-    		@Param(name="beat", description="the other shape parameter, defaults to 1") JFunction beta
+    		@Param(name="beta", description="the other shape parameter, defaults to 1") JFunction beta
     		) {
     	this.alpha = alpha;
     	this.beta = beta;
@@ -72,5 +72,18 @@ public class Beta extends JAGSDistribution {
 	public int getParameterCount() {
 		return 2;
 	}
+
 	
+	public JFunction getAlpha() {
+		return alpha;
+	}
+	public void setAlpha(JFunction alpha) {
+		this.alpha = alpha;
+	}
+	public JFunction getBeta() {
+		return beta;
+	}
+	public void setBeta(JFunction beta) {
+		this.beta = beta;
+	}
 } // class Beta

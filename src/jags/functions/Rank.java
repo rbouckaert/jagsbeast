@@ -4,6 +4,9 @@ import beast.util.HeapSort;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Rank function")
 public class Rank extends UnivariableFunction {
 	// inverse of Order(x)
 	public Rank(@Param(name="x", description="function or value argument") JFunction x) {

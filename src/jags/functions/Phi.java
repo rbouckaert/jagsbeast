@@ -7,6 +7,9 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Phi function")
 public class Phi extends UnivariableFunction {
 	NormalDistribution norm;
 	

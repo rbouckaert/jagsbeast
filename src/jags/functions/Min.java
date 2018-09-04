@@ -32,4 +32,10 @@ public class Min extends Transform {
 		
 	}
 
+	public JFunction[] getF() {
+		return function;
+	}
+	public void setF(JFunction[] function) {
+		this.function = function;
+	}
 }

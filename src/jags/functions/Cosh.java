@@ -3,6 +3,9 @@ package jags.functions;
 import jags.nodes.JFunction;
 import beast.core.Param;
 
+import beast.core.Description;
+
+@Description("Performs the Cosh function")
 public class Cosh extends UnivariableFunction {
 
 	public Cosh(@Param(name="x", description="function or value argument") JFunction x) {

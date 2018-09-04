@@ -22,7 +22,7 @@ public class Normal extends JAGSDistribution {
 
 	JFunction mean, sigma;
 	
-    public Normal(@Param(name="mean", description="mean of the normal distribution, defaults to 0") JFunction mean,
+    public Normal(@Param(name="mu", description="mean of the normal distribution, defaults to 0") JFunction mean,
     		@Param(name="sigma", description="standard deviation of the normal distribution, defaults to 1") JFunction sigma
     		) {
     	this.mean = mean;
@@ -85,5 +85,18 @@ public class Normal extends JAGSDistribution {
 	@Override
 	public int getParameterCount() {
 		return 2;
+	}
+	
+	public void setMu(JFunction mean) {
+		this.mean = mean;
+	}
+	public JFunction getMu() {
+		return mean;
+	}
+	public JFunction getSigma() {
+		return sigma;
+	}
+	public void setSigma(JFunction sigma) {
+		this.sigma = sigma;
 	}
 } // class Normal

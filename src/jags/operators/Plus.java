@@ -4,6 +4,9 @@ import jags.nodes.JFunction;
 import beast.core.Param;
 import jags.functions.BivariableFunction;
 
+import beast.core.Description;
+
+@Description("Performs the Plus operation")
 public class Plus extends BivariableFunction {
 
 	public Plus(@Param(name="x", description="first function or value argument") JFunction x, @Param(name="y", description="second function or value argument")JFunction y) {
