@@ -87,7 +87,7 @@ public class Constant extends BEASTObject implements JFunction {
 		return dimensions[dim];
 	}
 	
-	public double [] getValue() {return values.clone();}
+	public double [] getValue() {return values;}
 	
 	public void setValue(double [] values) {
 		this.values = values.clone();

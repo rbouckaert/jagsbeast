@@ -107,7 +107,7 @@ public abstract class Transform extends CalculationNode implements JFunction {
 		return getDimension();
 	}
 
-	public double [] getValue() {return values.clone();}
+	public double [] getValue() {return values;}
 	
 	public void setValue(double [] values) {
 		this.values = values.clone();
