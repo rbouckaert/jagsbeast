@@ -9,7 +9,7 @@
     <property name="beastDir" location="../beast2"/>
 
     <!-- Location to check for local copy of BEASTLabs repository -->
-    <property name="beastLabsDir" location="../BEASTLabs"/>
+    <!--property name="beastLabsDir" location="../BEASTLabs"/-->
 
     <!-- BEAST 2 currently uses Java 1.8 -->
     <property name="sourceVersion" value="1.8"/>
@@ -117,7 +117,7 @@
     <target name="build-beast" depends="build-local-beast,build-remote-beast"/>
 
     <!-- Get BEASTLabs -->
-
+<!--
     <target name="find-beastlabs" depends="init">
         <available file="${beastLabsDir}" property="localBeastLabsAvailable"/>
     </target>
@@ -148,7 +148,6 @@
 
         <delete dir="${build-beastlabs}" />
     </target>
-
     <target name="build-local-beastlabs" depends="find-beastlabs" if="localBeastLabsAvailable">
         <echo>Compiling against local BEASTLabs source found at ${beastLabsDir}.</echo>
 
@@ -173,9 +172,13 @@
     </target>
 
     <target name="build-beastlabs" depends="build-local-beastlabs,build-remote-beastlabs"/>
+-->
 
     <!-- Compile -->
+<!--
     <target name="compile" depends="build-beast,build-beastlabs">
+-->    
+    <target name="compile" depends="build-beast">
         <javac target="${targetVersion}" source="${sourceVersion}" srcdir="${src}" destdir="${build}" includeantruntime="false">
             <classpath>
                 <pathelement path="${classpath}"/>

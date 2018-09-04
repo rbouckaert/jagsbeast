@@ -1,31 +1,63 @@
 package jags.nodes;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import beast.core.*;
+import beast.core.Input.Validate;
 import beast.core.parameter.RealParameter;
 
 @Description("Random variable in graphical model")
 public class Variable extends RealParameter implements JFunction {
 	JFunction fun;
 	
+	public Variable() {
+	}
+	
 	public Variable(//@Param(name="id",description="identifier for this variable") String id, 
 			@Param(name="fun", description="function that determines values of the Variable") JFunction fun) {
 		super(funToDouble(fun));
 		this.fun = fun;
+		initAndValidate();
 		//setID(id);
 	}
 
 	public Variable(String id, JFunction f, JFunction dimensions) {
-		super(funToDouble(f));
-		initAndValidate();
+		this(f);
 		if (dimensions.getDimension() > 1) {
 			setMinorDimension((int) dimensions.getArrayValue(1));
 		}
 		setID(id);
-		this.fun = f;
 	}
 
+	@Override
+	public void initAndValidate() {
+		Double [] valuesString = valuesInput.get().toArray(new Double[]{});
+		if (valuesString.length == 0) {
+			// already initialised
+			return;
+		}
+
+        int dimension = Math.max(dimensionInput.get(), valuesString.length);
+        dimensionInput.setValue(dimension, this);
+        values = (Double[]) Array.newInstance(getMax().getClass(), dimension);
+        storedValues = (Double[]) Array.newInstance(getMax().getClass(), dimension);
+        for (int i = 0; i < values.length; i++) {
+            values[i] = valuesString[i % valuesString.length];
+        }
+
+        m_bIsDirty = new boolean[dimensionInput.get()];
+
+        minorDimension = minorDimensionInput.get();
+        if (minorDimension > 0 && dimensionInput.get() % minorDimension > 0) {
+            throw new IllegalArgumentException("Dimension must be divisible by stride");
+        }
+        this.storedValues = values.clone();
+
+        valuesInput.get().clear();
+		valuesInput.setRule(Validate.OPTIONAL);
+	}
+	
 	private static Double[] toDouble(JFunction dimensions) {
 		int k = 1;
 		for (int i = 0; i < dimensions.getDimension(); i++) {
@@ -76,6 +108,11 @@ public class Variable extends RealParameter implements JFunction {
 	public int getDimension(int dim) {
 		return fun.getDimension(dim);
 	}
+	
+	@Override
+	public int getDimension() {
+		return fun.getDimension();
+	}
 
 	public void setValue(JFunction range, JFunction f) {
 		int k = (int) range.getArrayValue(0) - 1;
@@ -96,6 +133,15 @@ public class Variable extends RealParameter implements JFunction {
 		return fun;
 	}
 	public void setFun(JFunction fun) {
-		this.fun = fun;
+		this.fun = fun;		
+		Double [] values = funToDouble(fun);
+        this.values = values.clone();
+        this.storedValues = values.clone();
+        m_fUpper = getMax();
+        m_fLower = getMin();
+        m_bIsDirty = new boolean[values.length];
+        for (Double value : values) {
+        	valuesInput.get().add(value);
+        }
 	}
 }

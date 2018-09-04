@@ -8,6 +8,7 @@ import org.junit.Test;
 import beast.app.beauti.BeautiDoc;
 import beast.core.BEASTObject;
 import beast.core.util.Log;
+import beast.util.XMLParser;
 import beast.util.XMLProducer;
 import jags.CalculatorListenerImpl;
 import jags.CalculatorParsingException;
@@ -185,9 +186,24 @@ public class FunctionTest extends TestCase {
 			CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
 			parser.parse("model{" + cmd + "}");
 			JFunction a = (JFunction) doc.pluginmap.get("a");
-//			XMLProducer p = new XMLProducer();
-//			String xml = p.toXML((BEASTObject) a);
-//			System.out.println(xml);
+
+			try {
+				// test we are using xbeast
+				Class.forName("xbeast.Operator");
+
+				// we are in xbeast
+				// create XML, then parse it back to BEAST objects
+				XMLProducer p = new XMLProducer();
+				String xml = p.toXML((BEASTObject) a);
+				System.out.println(xml);
+				
+				XMLParser xmlparser = new XMLParser();
+				Object o = xmlparser.parseBareFragment(xml, true);
+				a = (JFunction) o;
+			} catch (ClassNotFoundException e) {
+				// using beast2, not xbeast -- pass XML detour
+			}
+			
 			return a.getArrayValue();
 			//parser.parse(cmd);
 		} catch (CalculatorParsingException e) {
