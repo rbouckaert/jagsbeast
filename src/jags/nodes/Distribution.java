@@ -15,8 +15,8 @@ import beast.core.parameter.IntegerParameter;
 import beast.core.parameter.RealParameter;
 import beast.math.distributions.ParametricDistribution;
 
-@Description("Distribution in graphical model")
-public class Distribution extends beast.core.Distribution {
+@Description("Distribution in a graphical model")
+public class Distribution extends beast.core.Distribution implements JFunction {
 	ParametricDistribution distr;
 	JFunction x;
 		
@@ -118,5 +118,20 @@ public class Distribution extends beast.core.Distribution {
 	}
     public void setX(JFunction x) {
 		this.x = x;
+	}
+
+	@Override
+	public int getDimensionCount() {		
+		return 1;
+	}
+
+	@Override
+	public int getDimension(int dim) {
+		return 1;
+	}
+	
+	@Override
+	public int getDimension() {
+		return 1;
 	}
 }

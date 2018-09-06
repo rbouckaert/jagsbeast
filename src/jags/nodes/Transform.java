@@ -30,12 +30,6 @@ public abstract class Transform extends CalculationNode implements JFunction {
 		isUpToDate = true;
 	}
 	
-	/** return name of the transform used for identifying this function 
-	 * parsing JAGS fragments **/
-	public String getTransformName() {
-		return this.getClass().getSimpleName().toLowerCase();
-	}
-
 	// JFunction implementation
 	@Override
 	public int getDimension() {

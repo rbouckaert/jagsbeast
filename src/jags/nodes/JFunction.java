@@ -39,4 +39,10 @@ public interface JFunction extends beast.core.Function {
 		}
 		return getArrayValue(k);		
 	}
+
+	/** return name of the transform used for identifying this function 
+	 * parsing JAGS fragments **/
+	default public String getJAGSName() {
+		return this.getClass().getSimpleName().toLowerCase();
+	}
 }

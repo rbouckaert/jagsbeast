@@ -2,10 +2,13 @@ package jags;
 
 
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.RecognitionException;
@@ -14,8 +17,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import beast.app.beauti.BeautiDoc;
 import beast.core.util.Log;
-import jags.nodes.JFunction;
 import beast.math.distributions.ParametricDistribution;
+import beast.util.PackageManager;
 import jags.parser.*;
 import jags.parser.CalculatorParser.*;
 import jags.nodes.*;
@@ -31,6 +34,45 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 	static private Set<String> bivarDistirbutions;
 	static private Set<String> trivarDistirbutions;
 	
+	
+	static public Map<String, String> mapNameToClass;
+	static public Map<String, String> mapDistrToClass;
+	
+	static public void initNameMap() {
+		if (mapNameToClass == null) {
+			mapNameToClass = new HashMap<>();
+			initMap(Transform.class, mapNameToClass);
+
+			mapDistrToClass = new HashMap<>();
+			initMap(JAGSDistribution.class, mapDistrToClass);
+		}
+	}
+
+	private static void initMap(Class baseClass, Map<String, String> mapNameToClass) {
+		List<String> classes = PackageManager.find(baseClass, "jags");
+		for (String _class : classes) {
+			try {
+				Class _impl = Class.forName(_class);
+					if (!Modifier.isAbstract(_impl.getModifiers())) {
+					Constructor<?> ctor;
+					JFunction t = null;
+					try {
+						ctor = _impl.getConstructor();
+						t = (JFunction) ctor.newInstance();
+					} catch (NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
+						// ignore
+					}
+					if (t != null) {
+						String name = t.getJAGSName();
+						mapNameToClass.put(name, _class);
+					}
+				}
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+
 	static JFunction fun0 = new JFunction() {		
 		@Override
 		public int getDimension() {return 1;}
@@ -60,6 +102,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		Map<String, Integer> iteratorDimension = new HashMap<>();
 		
 		public CalculatorASTVisitor() {
+			initNameMap();
+			
 			bivarOperators = new HashSet<>();
 			for (String s : new String[]{"+","-","*","/","**","&&","||","<=","<",">=",">","%",":","^","!=","==","&","|","<<",">>",">>>"}) {
 				bivarOperators.add(s);
@@ -307,10 +351,44 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		@Override
 		public Object visitDistribution(CalculatorParser.DistributionContext ctx) {
 			super.visitDistribution(ctx);
+			
 			String name = ctx.getChild(0).getText();
 			ParametricDistribution distr = null;
 			
 			JFunction [] f = (JFunction[]) visit(ctx.getChild(2));
+			
+			
+			if (mapDistrToClass.containsKey(name)) {
+				String className = mapDistrToClass.get(name);
+				Constructor ctor = null;
+				try {
+				switch (f.length) {
+				case 0: 
+					ctor = Class.forName(className).getConstructor();
+					distr = (ParametricDistribution) ctor.newInstance();
+					break;
+				case 1: 
+					ctor = Class.forName(className).getConstructor(JFunction.class); 
+					distr = (ParametricDistribution) ctor.newInstance(f[0]);
+					break;
+				case 2: 
+					ctor = Class.forName(className).getConstructor(JFunction.class, JFunction.class); 
+					distr = (ParametricDistribution) ctor.newInstance(f[0], f[1]);
+					break;
+				case 3: 
+					ctor = Class.forName(className).getConstructor(JFunction.class, JFunction.class, JFunction.class); 
+					distr = (ParametricDistribution) ctor.newInstance(f[0], f[1], f[2]);
+					break;
+				}
+				} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+					
+				}
+				if (distr != null) {
+					return distr;
+				}
+			}
+			
+			
 			
 			if (univarDistirbutions.contains(name)) {
 				switch (name) {
@@ -533,7 +611,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
         };
 
         // Get our lexer
-        CalculatorLexer lexer = new CalculatorLexer(new ANTLRInputStream(CASentence));
+        CalculatorLexer lexer = new CalculatorLexer(CharStreams.fromString(CASentence));        
         lexer.removeErrorListeners();
         lexer.addErrorListener(errorListener);
 

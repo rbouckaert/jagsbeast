@@ -13,6 +13,9 @@ import org.antlr.v4.runtime.dfa.DFA;
 
 import beast.app.beauti.BeautiConfig;
 import beast.app.beauti.BeautiDoc;
+import beast.core.BEASTObject;
+import beast.core.BEASTObjectStore;
+import beast.core.Input;
 import beast.core.MCMC;
 import beast.core.util.Log;
 import beast.util.XMLProducer;
@@ -49,6 +52,25 @@ public class REPL {
 		}
 		if (cmd.startsWith("quit") || cmd.startsWith("end") || cmd == null) {
 			System.exit(0);
+		} else if (cmd.startsWith("?")) {
+			cmd = cmd.trim().substring(1);
+			CalculatorListenerImpl.initNameMap();
+			String _class = CalculatorListenerImpl.mapNameToClass.get(cmd);
+			if (_class != null) {
+				try {
+					Object o = Class.forName(_class).newInstance();
+					List<Input<?>> inputs = BEASTObjectStore.listInputs(o);
+					if (o instanceof BEASTObject) {
+						Log.info(((BEASTObject)o).getDescriptionString());
+					}
+					for (Input input : inputs) {
+						Log.info(input.getName() + ": " + input.getTipText());
+					}
+				} catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				
+			}
 		} else if (cmd.startsWith("save")) {
 			save(cmd);
 		} else {
