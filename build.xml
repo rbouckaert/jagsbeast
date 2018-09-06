@@ -6,7 +6,7 @@
     <property name="lib" location="lib"/>
 
     <!-- Location to check for local copy of beast2 repository -->
-    <property name="beastDir" location="../beast2"/>
+    <property name="beastDir" location="../xbeast"/>
 
     <!-- Location to check for local copy of BEASTLabs repository -->
     <!--property name="beastLabsDir" location="../BEASTLabs"/-->
@@ -66,12 +66,14 @@
     </target>
 
     <target name="build-remote-beast" depends="find-beast" unless="localBeastAvailable">
-        <echo>No local copy of the beast2 source found at ${beastDir}.</echo>
-        <echo>Compiling against version ${beast-version} from GitHub.</echo>
+        <echo>No local copy of the xbeast source found at ${beastDir}.</echo>
+        <echo>Grabbing released jar from GitHub.</echo>
+        <get src="https://github.com/rbouckaert/xbeast/releases/download/v0.0.1/xbeast.jar" dest="${build-lib}/xbeast.jar"/>
 
+        <!--
         <property name="build-beast" location="build-beast"/>
         <mkdir dir="${build-beast}"/>
-        <get src="https://github.com/CompEvol/beast2/archive/${beast-branch}.zip" dest="${build-beast}/beast.zip"/>
+        <get src="https://github.com/rbouckaert/xbeast/archive/${beast-branch}.zip" dest="${build-beast}/beast.zip"/>
         <unzip src="${build-beast}/beast.zip" dest="${build-beast}"/>
         <mkdir dir="${build-beast}/beast2-${beast-version}/build"/>
         <javac target="${targetVersion}" source="${sourceVersion}"
@@ -91,6 +93,7 @@
             <fileset dir="${build-beast}/beast2-${beast-version}/lib" includes="*.jar"/>
         </copy>
         <delete dir="${build-beast}" />
+        -->
     </target>
 
     <target name="build-local-beast" depends="find-beast" if="localBeastAvailable">
@@ -100,7 +103,7 @@
         <mkdir dir="${build-beast}"/>
 
         <javac target="${targetVersion}" source="${sourceVersion}"
-            srcdir="${beastDir}/src"
+            srcdir="${beastDir}/src:${beastDir}/beast1:${beastDir}/beast2"
             destdir="${build-beast}" includeantruntime="false">
             <classpath>
                 <pathelement path="${classpath}"/>
