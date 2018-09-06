@@ -12,6 +12,8 @@ import jags.nodes.JFunction;
 
 @Description("Uniform distribution over a given interval (including lower and upper values)")
 public class Uniform extends JAGSDistribution {
+    public Uniform(){}
+
 
     UniformImpl distr = new UniformImpl();
 

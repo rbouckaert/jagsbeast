@@ -15,6 +15,8 @@ import beast.core.Param;
 		+ "without replacement, from a finite population of size N that contains exactly K objects "
 		+ "with that feature.")
 public class Hypergeometric extends JAGSDistribution {
+    public Hypergeometric(){}
+
 
 	JFunction popSize, sampleSize, successCount;
 

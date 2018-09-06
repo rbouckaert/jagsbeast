@@ -16,6 +16,8 @@ import jags.nodes.JFunction;
         "If the input x is a multidimensional parameter, each of the dimensions is considered as a " +
         "separate independent component.")
 public class InverseGamma extends JAGSDistribution {
+    public InverseGamma(){}
+
 
     InverseGammaImpl dist = new InverseGammaImpl(2, 2);
     JFunction alpha, beta;

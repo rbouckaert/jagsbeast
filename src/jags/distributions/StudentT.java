@@ -13,6 +13,8 @@ import beast.core.Param;
 
 @Description("Student's T distribution, a symmetric and bell-shaped distribution, like the normal distribution, but has heavier tails.")
 public class StudentT extends JAGSDistribution {
+    public StudentT(){}
+
 
 	JFunction df;
 

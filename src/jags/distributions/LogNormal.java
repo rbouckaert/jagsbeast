@@ -18,6 +18,8 @@ import beast.core.parameter.RealParameter;
  */
 @Description("A log-normal distribution with mean and variance parameters.")
 public class LogNormal extends JAGSDistribution {
+    public LogNormal(){}
+
 //    final public Input<RealParameter> MParameterInput = new Input<>("M", "M parameter of lognormal distribution. Equal to the mean of the log-transformed distribution.");
 //    final public Input<RealParameter> SParameterInput = new Input<>("S", "S parameter of lognormal distribution. Equal to the standard deviation of the log-transformed distribution.");
 //    final public Input<Boolean> hasMeanInRealSpaceInput = new Input<>("meanInRealSpace", "Whether the M parameter is in real space, or in log-transformed space. Default false = log-transformed.", false);
@@ -86,6 +88,8 @@ public class LogNormal extends JAGSDistribution {
     }
 
     public class LogNormalImpl implements ContinuousDistribution {
+    public LogNormalImpl(){}
+
         double m_fMean;
         double m_fStdDev;
         NormalDistributionImpl m_normal = new NormalDistributionImpl(0, 1);

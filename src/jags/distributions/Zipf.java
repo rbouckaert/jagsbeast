@@ -13,6 +13,8 @@ import beast.core.Param;
 
 @Description("Zipf distribution: based on an empirical law called Zipf's law.")
 public class Zipf extends JAGSDistribution {
+    public Zipf(){}
+
 
 	JFunction elementCount, exponent;
 

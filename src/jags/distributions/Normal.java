@@ -15,6 +15,8 @@ import beast.core.Param;
         "If the input x is a multidimensional parameter, each of the dimensions is considered as a " +
         "separate independent component.")
 public class Normal extends JAGSDistribution {
+    public Normal(){}
+
 //    final public Input<RealParameter> meanInput = new Input<>("mean", "mean of the normal distribution, defaults to 0");
 //    final public Input<RealParameter> sigmaInput = new Input<>("sigma", "standard deviation of the normal distribution, defaults to 1");
 //    final public Input<RealParameter> tauInput = new Input<>("tau", "precission of the normal distribution, defaults to 1", Validate.XOR, sigmaInput);

@@ -55,21 +55,41 @@ public class REPL {
 		} else if (cmd.startsWith("?")) {
 			cmd = cmd.trim().substring(1);
 			CalculatorListenerImpl.initNameMap();
-			String _class = CalculatorListenerImpl.mapNameToClass.get(cmd);
-			if (_class != null) {
-				try {
-					Object o = Class.forName(_class).newInstance();
-					List<Input<?>> inputs = BEASTObjectStore.listInputs(o);
-					if (o instanceof BEASTObject) {
-						Log.info(((BEASTObject)o).getDescriptionString());
-					}
-					for (Input input : inputs) {
-						Log.info(input.getName() + ": " + input.getTipText());
-					}
-				} catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
-					e.printStackTrace();
+			if (cmd.length() == 0) {
+				StringBuilder b = new StringBuilder();
+				b.append("Functions: ");
+				for (String s : CalculatorListenerImpl.mapNameToClass.keySet()) {
+					b.append(s);
+					b.append(", ");
 				}
-				
+				b.delete(b.length() - 2, b.length());
+				b.append("\nDistributions: ");
+				for (String s : CalculatorListenerImpl.mapDistrToClass.keySet()) {
+					b.append(s);
+					b.append(", ");
+				}
+				b.delete(b.length() - 2, b.length());
+				Log.info(b.toString())
+				;
+			} else {
+				String _class = CalculatorListenerImpl.mapNameToClass.get(cmd);
+				if (_class == null) {
+					_class = CalculatorListenerImpl.mapDistrToClass.get(cmd);
+				}
+				if (_class != null) {
+					try {
+						Object o = Class.forName(_class).newInstance();
+						List<Input<?>> inputs = BEASTObjectStore.listInputs(o);
+						if (o instanceof BEASTObject) {
+							Log.info(((BEASTObject)o).getDescriptionString());
+						}
+						for (Input input : inputs) {
+							Log.info(input.getName() + ": " + input.getTipText());
+						}
+					} catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		} else if (cmd.startsWith("save")) {
 			save(cmd);

@@ -55,15 +55,18 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				Class _impl = Class.forName(_class);
 					if (!Modifier.isAbstract(_impl.getModifiers())) {
 					Constructor<?> ctor;
-					JFunction t = null;
+					Object t = null;
 					try {
 						ctor = _impl.getConstructor();
-						t = (JFunction) ctor.newInstance();
+						t = ctor.newInstance();
 					} catch (NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
 						// ignore
 					}
 					if (t != null) {
-						String name = t.getJAGSName();
+						String name =
+								t instanceof JFunction ?
+								((JFunction)t).getJAGSName() :
+								((JAGSDistribution)t).getName();
 						mapNameToClass.put(name, _class);
 					}
 				}

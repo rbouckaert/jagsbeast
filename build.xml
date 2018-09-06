@@ -69,7 +69,7 @@
         <echo>No local copy of the xbeast source found at ${beastDir}.</echo>
         <echo>Grabbing released jar from GitHub.</echo>
         <get src="https://github.com/rbouckaert/xbeast/releases/download/v0.0.1/xbeast.jar" dest="${build-lib}/xbeast.jar"/>
-
+        <get src="https://github.com/CompEvol/beast2/raw/master/lib/junit-4.8.2.jar" dest="${build-lib}/junit-4.8.2.jar"/>
         <!--
         <property name="build-beast" location="build-beast"/>
         <mkdir dir="${build-beast}"/>

@@ -14,6 +14,7 @@ import jags.nodes.JFunction;
         "separate independent component.")
 public class Poisson extends JAGSDistribution {
 
+
 	static org.apache.commons.math.distribution.PoissonDistribution dist = new PoissonDistributionImpl(1);
     JFunction lambda;
 

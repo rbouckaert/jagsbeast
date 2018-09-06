@@ -13,6 +13,8 @@ import beast.core.Param;
 
 @Description("F distribution, also known as Snedecor's F distribution or the Fisher–Snedecor distribution.")
 public class F extends JAGSDistribution {
+    public F(){}
+
 
 	JFunction numdf, denomdf;
 

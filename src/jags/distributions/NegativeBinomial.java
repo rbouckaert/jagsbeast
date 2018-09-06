@@ -15,6 +15,8 @@ import beast.core.Param;
 		+ "distributed Bernoulli trials before a specified (non-random) number of failures occurs. "
 		+ "Also known as Pascal distribution.")
 public class NegativeBinomial extends JAGSDistribution {
+    public NegativeBinomial(){}
+
 
 	JFunction r, p;
 

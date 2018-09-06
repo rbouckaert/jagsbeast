@@ -14,6 +14,8 @@ import jags.nodes.JFunction;
         "the Laplace density is expressed in terms of the absolute difference from the mean. Consequently the Laplace " +
         "distribution has fatter tails than the normal distribution.")
 public class LaplaceDistribution extends JAGSDistribution {
+    public LaplaceDistribution(){}
+
 
 	JFunction _scale, _mu;
     // the mean parameter

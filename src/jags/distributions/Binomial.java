@@ -14,6 +14,8 @@ import beast.core.Param;
 @Description("Binomial distribution of the number of successes in a sequence of n independent experiments "
 		+ "with probability p of success")
 public class Binomial extends JAGSDistribution {
+    public Binomial(){}
+
 
 	JFunction n, p;
 

@@ -15,6 +15,8 @@ import jags.nodes.JFunction;
         "If the input x is a multidimensional parameter, each of the dimensions is considered as a " +
         "separate independent component.")
 public class Cauchy extends JAGSDistribution {
+    public Cauchy(){}
+
 
 	    static org.apache.commons.math.distribution.CauchyDistribution m_dist = new CauchyDistributionImpl(0, 1);
 	    

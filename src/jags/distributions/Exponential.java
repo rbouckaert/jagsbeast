@@ -13,6 +13,8 @@ import beast.core.util.Log;
         "If the input x is a multidimensional parameter, each of the dimensions is considered as a " +
         "separate independent component.")
 public class Exponential extends JAGSDistribution {
+    public Exponential(){}
+
     
     JFunction lambda;
     

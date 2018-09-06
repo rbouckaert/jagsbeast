@@ -14,6 +14,8 @@ import beast.core.Param;
         "If the input x is a multidimensional parameter, each of the dimensions is considered as a " +
         "separate independent component.")
 public class Beta extends JAGSDistribution {
+    public Beta(){}
+
 
 	JFunction alpha, beta;
 

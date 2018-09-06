@@ -12,6 +12,8 @@ import beast.core.Param;
 
 @Description("Weibull distribution")
 public class Weibull extends JAGSDistribution {
+    public Weibull(){}
+
 
 	JFunction alpha, beta;
 
