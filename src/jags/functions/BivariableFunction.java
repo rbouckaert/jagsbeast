@@ -11,6 +11,8 @@ abstract public class BivariableFunction extends Transform {
 	public enum Mode {mode11,modeN1, mode1N, modeNN}
 	protected Mode mode;
 	
+	public BivariableFunction() {}
+	
 	protected BivariableFunction(
 			@Param(name="x", description="argument of this function") JFunction x,
 			@Param(name="y", description="argument of this function") JFunction y

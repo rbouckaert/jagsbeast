@@ -9,6 +9,8 @@ import beast.core.Param;
 abstract public class UnivariableFunction extends Transform {
 	protected JFunction x;
 	
+	public UnivariableFunction() {}
+	
 	protected UnivariableFunction(@Param(name="x", description="argument of cosine function") JFunction x) {
 		super();
 		this.x = x;
