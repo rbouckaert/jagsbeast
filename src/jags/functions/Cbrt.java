@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Cbrt function")
 public class Cbrt extends UnivariableFunction {
+    public Cbrt(){}
+
 
 	public Cbrt(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

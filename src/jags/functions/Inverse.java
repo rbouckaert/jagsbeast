@@ -11,6 +11,8 @@ import jags.nodes.Transform;
 
 @Description("performs a matrix inverse")
 public class Inverse extends Transform {
+    public Inverse(){}
+
 	JFunction a;
 
 	public Inverse(@Param(name="a", description="matrix to be inverted") JFunction a) {

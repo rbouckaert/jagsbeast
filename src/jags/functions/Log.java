@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Log function")
 public class Log extends UnivariableFunction {
+    public Log(){}
+
 
 	public Log(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

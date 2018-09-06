@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Hypot function")
 public class Hypot extends BivariableFunction {
+    public Hypot(){}
+
 
 	public Hypot(@Param(name="x", description="first function or value argument") JFunction x, @Param(name="y", description="second function or value argument")JFunction y) {
 		super(x, y);

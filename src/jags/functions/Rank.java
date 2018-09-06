@@ -8,6 +8,8 @@ import beast.core.Description;
 
 @Description("Performs the Rank function")
 public class Rank extends UnivariableFunction {
+    public Rank(){}
+
 	// inverse of Order(x)
 	public Rank(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

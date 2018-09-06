@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Ceil function")
 public class Ceil extends UnivariableFunction {
+    public Ceil(){}
+
 
 	public Ceil(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

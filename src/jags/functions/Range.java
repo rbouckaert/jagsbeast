@@ -8,6 +8,8 @@ import jags.nodes.Transform;
 
 @Description("Represents continuous range from x to y")
 public class Range extends Transform {
+    public Range(){}
+
 	JFunction x, y;
 	
 	public Range(@Param(name="start", description="start of range, is included in range") JFunction x, 

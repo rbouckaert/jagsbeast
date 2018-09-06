@@ -18,7 +18,7 @@ public class Hypergeometric extends JAGSDistribution {
 
 	JFunction popSize, sampleSize, successCount;
 
-    static org.apache.commons.math.distribution.HypergeometricDistribution m_dist = new HypergeometricDistributionImpl(1, 2, 1);
+    static org.apache.commons.math.distribution.HypergeometricDistribution m_dist = new HypergeometricDistributionImpl(1, 1, 1);
 
     
     public Hypergeometric(@Param(name="popSize", description="the numerator degrees of freedom") JFunction popSize,

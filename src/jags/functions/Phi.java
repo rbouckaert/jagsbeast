@@ -11,6 +11,8 @@ import beast.core.Description;
 
 @Description("Performs the Phi function")
 public class Phi extends UnivariableFunction {
+    public Phi(){}
+
 	NormalDistribution norm;
 	
 	public Phi(@Param(name="x", description="function or value argument") JFunction x) {

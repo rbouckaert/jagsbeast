@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Signum function")
 public class Signum extends UnivariableFunction {
+    public Signum(){}
+
 
 	public Signum(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

@@ -8,6 +8,8 @@ import beast.core.Description;
 
 @Description("Performs the Mean function")
 public class Mean extends Transform {
+    public Mean(){}
+
 	JFunction x;
 
 	public Mean(@Param(name="x", description="list of values to calulate mean of") JFunction x) {

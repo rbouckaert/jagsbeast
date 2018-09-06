@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Step function")
 public class Step extends UnivariableFunction {
+    public Step(){}
+
 
 	public Step(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

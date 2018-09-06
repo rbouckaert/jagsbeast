@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Sin function")
 public class Sin extends UnivariableFunction {
+    public Sin(){}
+
 
 	public Sin(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

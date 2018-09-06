@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Tan function")
 public class Tan extends UnivariableFunction {
+    public Tan(){}
+
 
 	public Tan(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

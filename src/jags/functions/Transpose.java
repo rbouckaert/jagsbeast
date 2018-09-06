@@ -11,6 +11,8 @@ import jags.nodes.Transform;
 
 @Description("performs a matrix transpose")
 public class Transpose extends Transform {
+    public Transpose(){}
+
 	JFunction a;
 
 	public Transpose(@Param(name="a", description="matrix to be transposed") JFunction a) {

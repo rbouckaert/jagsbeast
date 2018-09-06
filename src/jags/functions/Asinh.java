@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Asinh function")
 public class Asinh extends UnivariableFunction {
+    public Asinh(){}
+
 
 	public Asinh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

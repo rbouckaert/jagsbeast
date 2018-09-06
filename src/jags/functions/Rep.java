@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("Replicates a vector multiple times")
 public class Rep extends Transform {
+    public Rep(){}
+
 	JFunction x;
 	JFunction t;
 	
@@ -26,4 +28,22 @@ public class Rep extends Transform {
 		}		
 	}
 
+	public JFunction getX() {
+		return x;
+	}
+
+	public void setX(JFunction x) {
+		this.x = x;
+	}
+
+	public JFunction getT() {
+		return t;
+	}
+
+	public void setT(JFunction t) {
+		this.t = t;
+	}
+
+	
+	
 }

@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Abs function")
 public class Abs extends UnivariableFunction {
+    public Abs(){}
+
 
 	public Abs(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

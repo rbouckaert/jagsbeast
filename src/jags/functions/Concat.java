@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("Concatenates list of functions into a new array")
 public class Concat extends Transform {
+    public Concat(){}
+
 	JFunction [] function;
 	
 	public Concat(@Param(name="f", description="list of values, or functions, making up the new array") JFunction [] function) {

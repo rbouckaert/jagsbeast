@@ -9,6 +9,8 @@ import beast.core.Description;
 
 @Description("Gets maximum of list of functions")
 public class Max extends Transform {
+    public Max(){}
+
 	JFunction [] function;
 	
 	public Max(@Param(name="f", description="list of values, or functions") JFunction [] function) {

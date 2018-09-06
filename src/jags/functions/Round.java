@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Round function")
 public class Round extends UnivariableFunction {
+    public Round(){}
+
 
 	public Round(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

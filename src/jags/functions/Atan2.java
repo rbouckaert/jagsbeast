@@ -8,6 +8,8 @@ import beast.core.Description;
 
 @Description("Performs the Atan function")
 public class Atan2 extends BivariableFunction {
+    public Atan2(){}
+
 
 	public Atan2(@Param(name="x", description="first function or value argument") JFunction x, @Param(name="y", description="second function or value argument")JFunction y) {
 		super(x, y);

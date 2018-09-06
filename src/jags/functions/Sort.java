@@ -9,6 +9,8 @@ import beast.core.Description;
 
 @Description("Performs the Sort function")
 public class Sort extends UnivariableFunction {
+    public Sort(){}
+
 
 	public Sort(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

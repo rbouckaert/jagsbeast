@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("Gets sum of list of functions")
 public class Sum extends Transform {
+    public Sum(){}
+
 	JFunction [] function;
 	
 	public Sum(@Param(name="f", description="list of values, or functions") JFunction [] function) {

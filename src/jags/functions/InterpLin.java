@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("Linear interpolation function (from bugs)")
 public class InterpLin extends Transform {
+    public InterpLin(){}
+
 	JFunction e, v1, v2;
 
 	public InterpLin(@Param(name="e", description="scalar") JFunction e,
@@ -48,5 +50,31 @@ public class InterpLin extends Transform {
 	            }
 	        }
 		}
+
+		public JFunction getE() {
+			return e;
+		}
+
+		public void setE(JFunction e) {
+			this.e = e;
+		}
+
+		public JFunction getV1() {
+			return v1;
+		}
+
+		public void setV1(JFunction v1) {
+			this.v1 = v1;
+		}
+
+		public JFunction getV2() {
+			return v2;
+		}
+
+		public void setV2(JFunction v2) {
+			this.v2 = v2;
+		}
+		
+		
 
 	}

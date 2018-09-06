@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Sqrt function")
 public class Sqrt extends UnivariableFunction {
+    public Sqrt(){}
+
 
 	public Sqrt(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

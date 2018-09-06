@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Expm function")
 public class Expm1 extends UnivariableFunction {
+    public Expm1(){}
+
 
 	public Expm1(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

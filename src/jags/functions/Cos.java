@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Cos function")
 public class Cos extends UnivariableFunction {
+    public Cos(){}
+
 
 	public Cos(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

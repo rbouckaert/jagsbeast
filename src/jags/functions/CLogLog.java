@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the CLogLog function")
 public class CLogLog extends UnivariableFunction {
+    public CLogLog(){}
+
 
 	public CLogLog(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

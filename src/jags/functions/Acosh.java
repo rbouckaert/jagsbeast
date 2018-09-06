@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Acosh function")
 public class Acosh extends UnivariableFunction {
+    public Acosh(){}
+
 
 	public Acosh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

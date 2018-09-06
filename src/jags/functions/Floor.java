@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Floor function")
 public class Floor extends UnivariableFunction {
+    public Floor(){}
+
 
 	public Floor(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

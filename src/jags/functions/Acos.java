@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Acos function")
 public class Acos extends UnivariableFunction {
+    public Acos(){}
+
 
 	public Acos(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

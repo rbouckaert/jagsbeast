@@ -12,6 +12,8 @@ import jags.nodes.Transform;
 
 @Description("Calculates log determinant of a matrix")
 public class LogDet extends Transform {
+    public LogDet(){}
+
 	JFunction a;
 
 	public LogDet(@Param(name="a", description="matrix to be inverted") JFunction a) {

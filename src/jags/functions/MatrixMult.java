@@ -12,6 +12,8 @@ import jags.nodes.Transform;
 
 @Description("performs multiplications of two matrices")
 public class MatrixMult extends Transform {
+    public MatrixMult(){}
+
 	JFunction a;
 	JFunction b;
 

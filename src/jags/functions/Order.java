@@ -9,6 +9,8 @@ import beast.core.Description;
 
 @Description("Performs the Order function")
 public class Order extends UnivariableFunction {
+    public Order(){}
+
 
 	public Order(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Atan function")
 public class Atan extends UnivariableFunction {
+    public Atan(){}
+
 
 	public Atan(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

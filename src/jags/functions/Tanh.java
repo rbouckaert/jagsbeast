@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Tanh function")
 public class Tanh extends UnivariableFunction {
+    public Tanh(){}
+
 
 	public Tanh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

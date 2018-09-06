@@ -65,10 +65,10 @@ public class Zipf extends JAGSDistribution {
 	}
 
 	
-	public JFunction getSlementCount() {
+	public JFunction getElementCount() {
 		return elementCount;
 	}
-	public void setSlementCount(JFunction elementCount) {
+	public void setElementCount(JFunction elementCount) {
 		this.elementCount = elementCount;
 	}
 	public JFunction getExponent() {

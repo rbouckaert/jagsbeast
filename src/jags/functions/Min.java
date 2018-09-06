@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("Gets minimum of list of functions")
 public class Min extends Transform {
+    public Min(){}
+
 	JFunction [] function;
 	
 	public Min(@Param(name="f", description="list of values, or functions") JFunction [] function) {

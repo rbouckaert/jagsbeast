@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Logit function")
 public class Logit extends UnivariableFunction {
+    public Logit(){}
+
 
 	public Logit(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

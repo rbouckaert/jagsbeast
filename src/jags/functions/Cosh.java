@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Cosh function")
 public class Cosh extends UnivariableFunction {
+    public Cosh(){}
+
 
 	public Cosh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

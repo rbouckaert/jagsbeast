@@ -7,6 +7,8 @@ import jags.nodes.Transform;
 
 @Description("If/then/else function")
 public class IfElse extends Transform {
+    public IfElse(){}
+
 	JFunction x, a, b;
 
 	public IfElse(@Param(name="x", description="condition to be tested for non-zeroness") JFunction x,
@@ -28,4 +30,35 @@ public class IfElse extends Transform {
 		}
 	}
 
+
+	public JFunction getX() {
+		return x;
+	}
+
+
+	public void setX(JFunction x) {
+		this.x = x;
+	}
+
+
+	public JFunction getA() {
+		return a;
+	}
+
+
+	public void setA(JFunction a) {
+		this.a = a;
+	}
+
+
+	public JFunction getB() {
+		return b;
+	}
+
+
+	public void setB(JFunction b) {
+		this.b = b;
+	}
+
+	
 }

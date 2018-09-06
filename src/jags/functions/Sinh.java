@@ -7,6 +7,8 @@ import beast.core.Description;
 
 @Description("Performs the Sinh function")
 public class Sinh extends UnivariableFunction {
+    public Sinh(){}
+
 
 	public Sinh(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

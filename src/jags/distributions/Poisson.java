@@ -14,7 +14,7 @@ import jags.nodes.JFunction;
         "separate independent component.")
 public class Poisson extends JAGSDistribution {
 
-    static org.apache.commons.math.distribution.PoissonDistribution dist = new PoissonDistributionImpl(1);
+	static org.apache.commons.math.distribution.PoissonDistribution dist = new PoissonDistributionImpl(1);
     JFunction lambda;
 
     // Must provide empty constructor for construction by XML. Note that this constructor DOES NOT call initAndValidate();
@@ -68,4 +68,12 @@ public class Poisson extends JAGSDistribution {
 		return 1;
 	}
     
+    public JFunction getLambda() {
+		return lambda;
+	}
+
+	public void setLambda(JFunction lambda) {
+		this.lambda = lambda;
+	}
+
 } // class Poisson

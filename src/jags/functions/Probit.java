@@ -9,6 +9,8 @@ import beast.core.Description;
 
 @Description("Performs the Probit function")
 public class Probit extends UnivariableFunction {
+    public Probit(){}
+
 	
 	public Probit(@Param(name="x", description="function or value argument") JFunction x) {
 		super(x);

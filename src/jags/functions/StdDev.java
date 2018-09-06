@@ -8,6 +8,8 @@ import beast.core.Description;
 
 @Description("Performs the StdDev function")
 public class StdDev extends Transform {
+    public StdDev(){}
+
 	JFunction x;
 
 	public StdDev(@Param(name="x", description="list of values to calulate standard deviation of") JFunction x) {
