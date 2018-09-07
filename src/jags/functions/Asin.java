@@ -21,4 +21,6 @@ public class Asin extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arcsin";}
 }

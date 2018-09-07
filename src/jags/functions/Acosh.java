@@ -22,4 +22,6 @@ public class Acosh extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arccosh";}
 }

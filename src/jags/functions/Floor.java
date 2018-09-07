@@ -21,4 +21,6 @@ public class Floor extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "trunc";}
 }

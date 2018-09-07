@@ -42,4 +42,7 @@ public class StdDev extends Transform {
 		this.x = x;
 		resetValue(1);
 	}
+
+	@Override
+	public String getJAGSAlias() {return "sd";}
 }

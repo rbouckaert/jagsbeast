@@ -21,4 +21,6 @@ public class Acos extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arccos";}
 }

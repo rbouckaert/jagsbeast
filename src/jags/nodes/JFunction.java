@@ -45,4 +45,8 @@ public interface JFunction extends beast.core.Function {
 	default public String getJAGSName() {
 		return this.getClass().getSimpleName().toLowerCase();
 	}
+	/** return alias for the name, e.g. arcsin for ASin **/
+	default public String getJAGSAlias() {
+		return null;
+	}
 }

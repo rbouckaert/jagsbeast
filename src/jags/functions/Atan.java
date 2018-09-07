@@ -21,4 +21,6 @@ public class Atan extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arctan";}
 }

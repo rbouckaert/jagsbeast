@@ -24,4 +24,7 @@ public class LogGamma extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "loggamm";}
+	
 }

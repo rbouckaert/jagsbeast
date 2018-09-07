@@ -70,4 +70,7 @@ public class Transpose extends Transform {
 	public void setA(JFunction a) {
 		this.a = a;
 	}
+	
+	@Override
+	public String getJAGSAlias() {return "t";}
 }

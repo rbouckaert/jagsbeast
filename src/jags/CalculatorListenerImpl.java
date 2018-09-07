@@ -68,6 +68,12 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 								((JFunction)t).getJAGSName() :
 								((JAGSDistribution)t).getName();
 						mapNameToClass.put(name, _class);
+						if (t instanceof JFunction) {
+							name = ((JFunction) t).getJAGSAlias();
+							if (name != null) {
+								mapNameToClass.put(name, _class);
+							}
+						}
 					}
 				}
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
@@ -392,7 +398,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			}
 			
 			
-			
+			/*
 			if (univarDistirbutions.contains(name)) {
 				switch (name) {
 				//case "dchisq": distr = new Chisq(f1); break;
@@ -438,6 +444,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			if (distr == null) {
 				throw new IllegalArgumentException("Distributions not implemented yet");
 			}
+			*/
 			return distr; 
 		}
 		
@@ -492,7 +499,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 		@Override
 		public Object visitMethodCall(CalculatorParser.MethodCallContext ctx) {
-			Transform transform;
+			Transform transform = null;
 			String functionName = ctx.children.get(0).getText();
 			
 			if (functionName.equals("c")) {
@@ -503,11 +510,40 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			
 			// process expression_list
 			JFunction [] f =  (JFunction[]) visit(ctx.getChild(2));
-			
+			if (mapNameToClass.containsKey(functionName)) {
+				String className = mapNameToClass.get(functionName);
+				Constructor ctor = null;
+				try {
+				switch (f.length) {
+				case 0: 
+					ctor = Class.forName(className).getConstructor();
+					transform = (Transform) ctor.newInstance();
+					break;
+				case 1: 
+					ctor = Class.forName(className).getConstructor(JFunction.class); 
+					transform = (Transform) ctor.newInstance(f[0]);
+					break;
+				case 2: 
+					ctor = Class.forName(className).getConstructor(JFunction.class, JFunction.class); 
+					transform = (Transform) ctor.newInstance(f[0], f[1]);
+					break;
+				case 3: 
+					ctor = Class.forName(className).getConstructor(JFunction.class, JFunction.class, JFunction.class); 
+					transform = (Transform) ctor.newInstance(f[0], f[1], f[2]);
+					break;
+				}
+				} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+					// ignore
+				}
+				if (transform != null) {
+					return transform;
+				}
+			}
 			switch (functionName) {
-				// Univariable functions
 				case "length": transform = new Length(f[0]);break;
 				case "dim": transform = new Dim(f[0]);break;
+			/*
+				// Univariable functions
 
 				case "sort": transform = new Sort(f[0]);break;
 				case "rank": transform = new Rank(f[0]);break;
@@ -565,11 +601,14 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				case "prod":
 				case "%*%": transform = new MatrixMult(f[0], f[1]);break;
 				case "equals": transform = new Eq(f[0], f[1]);break;
-				case "inprod": transform = new Times(f[0], f[1]); break;
 				
 				case "ifelse": transform = new IfElse(f[0], f[1], f[2]);break;
 				case "interp.lin": transform = new InterpLin(f[0], f[1], f[2]);break;
-				
+				*/
+				case "inprod": transform = new Times(f[0], f[1]); break;
+				case "prod":
+				case "%*%": transform = new MatrixMult(f[0], f[1]);break;
+
 				case "min": transform = new Min(f);break;
 				case "max": transform = new Max(f);break;
 				case "sum": transform = new Sum(f);break;

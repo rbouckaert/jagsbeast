@@ -64,6 +64,7 @@ public class FunctionTest extends TestCase {
 	
 	@Test
 	public void testBivariableFunctions() {
+		assertEquals(test("a=pow(2.0,4.0)"), 16.0);
 		assertEquals(test("a=max(1.0,4.0)"), 4.0);
 		assertEquals(test("a=max(4.0,1.0)"), 4.0);
 		assertEquals(test("a=min(1.0,4.0)"), 1.0);
@@ -71,7 +72,6 @@ public class FunctionTest extends TestCase {
 		
 		assertEquals(test("a=hypot(1.0,1.0)"), sqrt(2));
 		assertEquals(test("a=atan2(1.0,1.0)"), PI/4);
-		assertEquals(test("a=pow(2.0,4.0)"), 16.0);
 		
 		assertEquals(test("a=equals(2.0,2.0)"), 1.0);
 		assertEquals(test("a=equals(2.0,-2.0)"), 0.0);

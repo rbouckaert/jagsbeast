@@ -22,4 +22,6 @@ public class Asinh extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arcsinh";}
 }

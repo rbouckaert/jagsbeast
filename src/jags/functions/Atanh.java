@@ -22,4 +22,6 @@ public class Atanh extends UnivariableFunction {
 		}
 	}
 
+	@Override
+	public String getJAGSAlias() {return "arctanh";}
 }
