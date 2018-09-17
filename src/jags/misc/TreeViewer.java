@@ -20,7 +20,7 @@ import beast.evolution.tree.Node;
 import beast.util.Randomizer;
 
 public class TreeViewer extends JPanel {
-	static int N = 5; // number of sliders
+	static int N = 3; // number of sliders
 	JPanel treePanel;
 	JPanel controlPanel;
 	//Tree tree;
