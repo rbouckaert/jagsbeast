@@ -3,9 +3,7 @@ package test.jags;
 import org.junit.Test;
 
 import beast.app.beauti.BeautiDoc;
-import beast.core.BEASTObject;
 import beast.core.util.Log;
-import beast.util.XMLProducer;
 import jags.CalculatorListenerImpl;
 import jags.CalculatorParsingException;
 import jags.nodes.*;

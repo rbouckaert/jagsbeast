@@ -2,14 +2,7 @@ package jags;
 
 
 import java.io.*;
-import java.util.BitSet;
 import java.util.List;
-
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
 
 import beast.app.beauti.BeautiConfig;
 import beast.app.beauti.BeautiDoc;
@@ -83,7 +76,7 @@ public class REPL {
 						if (o instanceof BEASTObject) {
 							Log.info(((BEASTObject)o).getDescriptionString());
 						}
-						for (Input input : inputs) {
+						for (Input<?> input : inputs) {
 							Log.info(input.getName() + ": " + input.getTipText());
 						}
 					} catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
@@ -96,7 +89,11 @@ public class REPL {
 		} else {
 			try {
 				CalculatorListenerImpl parser = new CalculatorListenerImpl(doc);
-				parser.parse("model{" + cmd + "}");
+				Object o = parser.parse("model{" + cmd + "}");
+				if (o instanceof BEASTObject) {
+					XMLProducer producer = new XMLProducer();
+					System.out.println(producer.toXML((BEASTObject) o));
+				}
 				//parser.parse(cmd);
 			} catch (CalculatorParsingException e) {
 				Log.info("model{" + cmd + "}");

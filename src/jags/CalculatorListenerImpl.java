@@ -222,6 +222,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 		@Override
 		public Object visitStoch_relation(CalculatorParser.Stoch_relationContext ctx) {
+			System.out.println(2);
 			ParametricDistribution distr = (ParametricDistribution) visit(ctx.getChild(2));
 			String id = ctx.getChild(0).getText();
 			JFunction f;
@@ -246,7 +247,15 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			doc.registerPlugin(distribution);
 			
 			return distribution;
-		}		
+		}
+		
+		@Override
+		protected Object aggregateResult(Object aggregate, Object nextResult) {
+			if (nextResult != null) {
+				return nextResult;
+			}
+			return aggregate;
+		}
 		
 		@Override
 		public Object visitVar(VarContext ctx) {
@@ -392,9 +401,6 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 				} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
 					
 				}
-				if (distr != null) {
-					return distr;
-				}
 			}
 			
 			
@@ -441,10 +447,11 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 						Arrays.toString(trivarDistirbutions.toArray()) 
 						);
 			}
-			if (distr == null) {
-				throw new IllegalArgumentException("Distributions not implemented yet");
-			}
 			*/
+			if (distr == null) {
+				throw new IllegalArgumentException("Distributions not implemented yet. "
+						+ "Choose one of " + Arrays.toString(mapDistrToClass.keySet().toArray(new String[]{})));
+			}
 			return distr; 
 		}
 		
@@ -622,7 +629,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 		
 	}
 
-	public void parse(String CASentence) {
+	public Object parse(String CASentence) {
         // Custom parse/lexer error listener
         BaseErrorListener errorListener = new BaseErrorListener() {
         	@Override
@@ -678,7 +685,7 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
         // Traverse parse tree, constructing BEAST tree along the way
         CalculatorASTVisitor visitor = new CalculatorASTVisitor();
 
-        visitor.visit(parseTree);
+        return visitor.visit(parseTree);
 	}
 	
 }

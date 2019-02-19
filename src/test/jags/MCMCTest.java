@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import beast.app.beauti.BeautiDoc;
 import beast.core.Logger;
+import beast.core.Logger.LogFileMode;
 import beast.core.MCMC;
 import beast.core.util.Log;
 import beast.evolution.operators.ScaleOperator;
@@ -34,7 +35,7 @@ public class MCMCTest extends TestCase {
 			Logger logger = new Logger();
 			logger.initByName("log", a, "log", logP, "fileName", FILE_NAME, "logEvery", 10);
 			
-			Logger.FILE_MODE = Logger.FILE_MODE.overwrite;
+			Logger.FILE_MODE = LogFileMode.overwrite;
 			MCMC mcmc = new MCMC();
 			mcmc.initByName("distribution", logP, "operator", operator, "logger", logger, "chainLength", 100000L);
 
@@ -72,7 +73,7 @@ public class MCMCTest extends TestCase {
 			Logger logger = new Logger();
 			logger.initByName("log", b, "log", a, "log", logP, "fileName", FILE_NAME, "logEvery", 10);
 			
-			Logger.FILE_MODE = Logger.FILE_MODE.overwrite;
+			Logger.FILE_MODE = LogFileMode.overwrite;
 			MCMC mcmc = new MCMC();
 			mcmc.initByName("distribution", logP, "operator", operator, "logger", logger, "chainLength", 100000L);
 
