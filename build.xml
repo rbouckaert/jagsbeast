@@ -6,7 +6,7 @@
     <property name="lib" location="lib"/>
 
     <!-- Location to check for local copy of beast2 repository -->
-    <property name="beastDir" location="../xbeast"/>
+    <property name="beastDir" location="../beast"/>
 
     <!-- Location to check for local copy of BEASTLabs repository -->
     <!--property name="beastLabsDir" location="../BEASTLabs"/-->
@@ -25,6 +25,7 @@
          a Github peculiarity) -->
     <property name="beast-branch" value="master"/>
     <property name="beast-version" value="master"/>
+    <property name="beastSrcRevision" value="master"/>
 
     <!-- Names of temporary build/test directories -->
     <property name="build" location="build"/>
@@ -66,34 +67,11 @@
     </target>
 
     <target name="build-remote-beast" depends="find-beast" unless="localBeastAvailable">
-        <echo>No local copy of the xbeast source found at ${beastDir}.</echo>
+        <echo>No local copy of the beast2 source found at ${beastDir}.</echo>
         <echo>Grabbing released jar from GitHub.</echo>
-        <get src="https://github.com/rbouckaert/xbeast/releases/download/v0.0.1/xbeast.jar" dest="${build-lib}/xbeast.jar"/>
-        <get src="https://github.com/CompEvol/beast2/raw/master/lib/junit-4.8.2.jar" dest="${build-lib}/junit-4.8.2.jar"/>
-        <!--
         <property name="build-beast" location="build-beast"/>
-        <mkdir dir="${build-beast}"/>
-        <get src="https://github.com/rbouckaert/xbeast/archive/${beast-branch}.zip" dest="${build-beast}/beast.zip"/>
-        <unzip src="${build-beast}/beast.zip" dest="${build-beast}"/>
-        <mkdir dir="${build-beast}/beast2-${beast-version}/build"/>
-        <javac target="${targetVersion}" source="${sourceVersion}"
-            srcdir="${build-beast}/beast2-${beast-version}/src"
-            destdir="${build-beast}/beast2-${beast-version}/build" includeantruntime="false">
-            <classpath>
-                <pathelement path="${classpath}"/>
-                <fileset dir="${build-beast}/beast2-${beast-version}/lib" includes="*.jar"/>
-            </classpath>
-        </javac>
-        <copy todir="${build-beast}/beast2-${beast-version}/build">
-            <fileset dir="${build-beast}/beast2-${beast-version}/src" includes="**/*.properties" />
-            <fileset dir="${build-beast}/beast2-${beast-version}/src" includes="**/*.png" />
-        </copy>
-        <jar jarfile="${build-lib}/beast2.jar" basedir="${build-beast}/beast2-${beast-version}/build" />
-        <copy todir="${build-lib}">
-            <fileset dir="${build-beast}/beast2-${beast-version}/lib" includes="*.jar"/>
-        </copy>
-        <delete dir="${build-beast}" />
-        -->
+        <get src="https://github.com/CompEvol/beast2/releases/download/v2.6.2pre/beast.jar" dest="${build-lib}/beast.jar"/>
+        <get src="https://github.com/CompEvol/beast2/raw/master/lib/junit-4.8.2.jar" dest="${build-lib}/junit-4.8.2.jar"/>
     </target>
 
     <target name="build-local-beast" depends="find-beast" if="localBeastAvailable">
@@ -119,63 +97,6 @@
 
     <target name="build-beast" depends="build-local-beast,build-remote-beast"/>
 
-    <!-- Get BEASTLabs -->
-<!--
-    <target name="find-beastlabs" depends="init">
-        <available file="${beastLabsDir}" property="localBeastLabsAvailable"/>
-    </target>
-
-    <target name="build-remote-beastlabs" depends="find-beastlabs" unless="localBeastLabsAvailable">
-        <echo>No local copy of the BEASTLabs source found at ${beastLabsDir}.</echo>
-        <echo>Compiling against version ${beast-version} from GitHub.</echo>
-
-        <property name="build-beastlabs" location="build-beastlabs"/>
-        <mkdir dir="${build-beastlabs}"/>
-
-        <get src="https://github.com/beast2-dev/BEASTLabs/archive/master.zip" dest="${build-beastlabs}/beastlabs.zip"/>
-        <unzip src="${build-beastlabs}/beastlabs.zip" dest="${build-beastlabs}"/>
-        <mkdir dir="${build-beastlabs}/BEASTLabs-master/build"/>
-        <javac target="${targetVersion}" source="${sourceVersion}"
-            srcdir="${build-beastlabs}/BEASTLabs-master/src"
-            destdir="${build-beastlabs}/BEASTLabs-master/build" includeantruntime="false">
-            <classpath>
-                <pathelement path="${classpath}"/>
-                <fileset dir="${build-beastlabs}/BEASTLabs-master/lib" includes="*.jar"/>
-                <fileset dir="${build-lib}" includes="*.jar"/>
-            </classpath>
-        </javac>
-        <jar jarfile="${build-lib}/beastlabs.jar" basedir="${build-beastlabs}/BEASTLabs-master/build" />
-        <copy todir="${build-lib}">
-            <fileset dir="${build-beastlabs}/BEASTLabs-master/lib" includes="*.jar"/>
-        </copy>
-
-        <delete dir="${build-beastlabs}" />
-    </target>
-    <target name="build-local-beastlabs" depends="find-beastlabs" if="localBeastLabsAvailable">
-        <echo>Compiling against local BEASTLabs source found at ${beastLabsDir}.</echo>
-
-        <property name="build-beastlabs" location="build-beastlabs"/>
-        <mkdir dir="${build-beastlabs}"/>
-
-        <javac target="${targetVersion}" source="${sourceVersion}"
-            srcdir="${beastLabsDir}/src"
-            destdir="${build-beastlabs}" includeantruntime="false">
-            <classpath>
-                <pathelement path="${classpath}"/>
-                <fileset dir="${beastLabsDir}/lib" includes="*.jar"/>
-                <fileset dir="${build-lib}" includes="*.jar"/>
-            </classpath>
-        </javac>
-        <jar jarfile="${build-lib}/beastlabs.jar" basedir="${build-beastlabs}" />
-        <copy todir="${build-lib}">
-            <fileset dir="${beastLabsDir}/lib" includes="*.jar"/>
-        </copy>
-
-        <delete dir="${build-beastlabs}" />
-    </target>
-
-    <target name="build-beastlabs" depends="build-local-beastlabs,build-remote-beastlabs"/>
--->
 
     <!-- Compile -->
 <!--

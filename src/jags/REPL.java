@@ -74,7 +74,7 @@ public class REPL {
 						Object o = Class.forName(_class).newInstance();
 						List<Input<?>> inputs = BEASTObjectStore.listInputs(o);
 						if (o instanceof BEASTObject) {
-							Log.info(((BEASTObject)o).getDescriptionString());
+							Log.info(((BEASTObject)o).getDescription());
 						}
 						for (Input<?> input : inputs) {
 							Log.info(input.getName() + ": " + input.getTipText());

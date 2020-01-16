@@ -46,6 +46,8 @@ public class CalculatorListenerImpl extends CalculatorBaseListener {
 			mapDistrToClass = new HashMap<>();
 			initMap(JAGSDistribution.class, mapDistrToClass);
 		}
+		System.out.println(Arrays.toString(mapNameToClass.keySet().toArray()));
+		System.out.println(Arrays.toString(mapDistrToClass.keySet().toArray()));
 	}
 
 	private static void initMap(Class baseClass, Map<String, String> mapNameToClass) {
